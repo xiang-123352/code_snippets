@@ -26,44 +26,47 @@ morse_alphabet = {
     "w":".--",
     "x":"-..-",
     "y":"-.--",
-    "z":"--.."
+    "z":"--..",
+    "'":".----.",
+    ",":"--..--",
+    ".":".-.-.-"
     }
 
 def wort_zu_morsecode(wort):
     wort = wort.lower()
-    morsecode = ""
+    morsecode_buchstabe = ""
 
-    # buchstaben getrennt durch ein leerzeichen
+    # morsecode buchstaben getrennt durch ein leerzeichen
     for buchstabe in wort:
-        morsecode += morse_alphabet[buchstabe] + " "
+        morsecode_buchstabe += morse_alphabet[buchstabe] + " "
 
-    return morsecode.rstrip(" ")
+    return morsecode_buchstabe.rstrip(" ")
 
 def satz_zu_morsecode(satz):
-    morsecode = ""
+    morsecode_wort = ""
 
-    # worte getrennt durch zwei leerzeichen
+    # morsecode worte getrennt durch zwei leerzeichen
     for wort in satz.split():
-        morsecode += wort_zu_morsecode(wort) + "  "
+        morsecode_wort += wort_zu_morsecode(wort) + "  "
 
-    return morsecode.rstrip("  ")
+    return morsecode_wort.rstrip("  ")
 
-def morsecode_zu_wort(morsecode):
+def morsecode_zu_wort(morsecode_wort):
     wort = ""
 
-    for zeichengruppe in morsecode.split(" "):
+    for morsecode_buchstabe in morsecode_wort.split(" "):
         for buchstabe in morse_alphabet.keys():
-            if zeichengruppe == morse_alphabet[buchstabe]:
+            if morsecode_buchstabe == morse_alphabet[buchstabe]:
                 wort += buchstabe
 
     return wort
 
-def morsecode_zu_satz(morsecode):
-    satz_morsecode = morsecode.replace("  ", "|")
+def morsecode_zu_satz(morsecode_satz):
+    morsecode_satz = morsecode_satz.replace("  ", "|")
     satz = ""
 
-    for wort in satz_morsecode.split("|"):
-        satz += morsecode_zu_wort(wort) + " "
+    for morsecode_wort in morsecode_satz.split("|"):
+        satz += morsecode_zu_wort(morsecode_wort) + " "
 
     return satz.rstrip(" ")
 
@@ -75,6 +78,14 @@ def morsecode_zu_satz(morsecode):
 # .... .- .-.. .-.. --- welt
 #
 # Soll es auch piepsen?
-#
-satz = morsecode_zu_satz("-.-- . .- ....  .- ... -.-. .. ..  .- .-. -")
-print(satz)
+
+if __name__ == '__main__':
+    while True:
+        eingabe = input("Morsecode: ")
+
+        if eingabe == "x":
+            break
+        else:
+            satz = morsecode_zu_satz(eingabe)
+
+            print(satz)

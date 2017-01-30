@@ -58,6 +58,15 @@ def morsecode_zu_wort(morsecode):
 
     return wort
 
+def morsecode_zu_satz(morsecode):
+    satz_morsecode = morsecode.replace("  ", "|")
+    satz = ""
+
+    for wort in satz_morsecode.split("|"):
+        satz += morsecode_zu_wort(wort) + " "
+
+    return satz.rstrip(" ")
+
 # Ich will das er mir ganze Sätze in Morsecode übersetzt und umgekeht
 #
 # Format:
@@ -67,11 +76,5 @@ def morsecode_zu_wort(morsecode):
 #
 # Soll es auch piepsen?
 #
-wort = morsecode_zu_wort("-.-- . .- ....")
-print(wort)
-
-morsecode = wort_zu_morsecode("yeah")
-print(morsecode)
-
-morsecode = satz_zu_morsecode("yeah ascii art")
-print(morsecode)
+satz = morsecode_zu_satz("-.-- . .- ....  .- ... -.-. .. ..  .- .-. -")
+print(satz)

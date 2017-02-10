@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cmd="$@"
+# command line to be run. Note that the resulting
+# process will hold this in /proc/PID/cmdline
+
+pid=`pgrep -nf "^$cmd$"`
+# most recent process having "$cmd" in /proc/PID/cmdline
+
+if [ -z "$pid" ]; then # no pid
+    exec $cmd
+    # run command
+else
+    winid=`xdotool search --all --pid $pid --onlyvisible | head -1`
+    # first visible window owned by pid
+    xdotool windowactivate $winid
+    # give window focus
+fi
+

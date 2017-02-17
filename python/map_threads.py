@@ -4,8 +4,8 @@
 from multiprocessing.dummy import Pool as ThreadPool
 import subprocess
 
-def map_thread():
-    cmds = [("echo", "hello world"), ("ls", "-l"), "pwd"]
+cmds = [("pluma", "new.txt"), ("pluma", "old.txt"), "xterm"]
 
-    pool = ThreadPool(4) # number of threads
-    pool.map(subprocess.check_output, cmds)
+pool = ThreadPool(4) # number of threads
+
+pool.map(subprocess.call, cmds)

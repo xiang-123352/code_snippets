@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding:utf-8 -*-
 
 def foo():
     print("foo")
@@ -9,8 +10,8 @@ def bar():
 def baz():
     print("baz")
 
-# Menübeschreibung
-menue = { "1":foo, "2":bar, "3":baz }
+# Menu description
+menu = { "1":foo, "2":bar, "3":baz }
 
-# Funktionsaufruf
-menue["1"]()
+# Function call
+menu["1"]()

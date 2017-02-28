@@ -5,8 +5,13 @@ except ImportError:
 else:
     # tab completion
     import rlcompleter
-
     readline.parse_and_bind("tab: complete")
+
+    # version()
+    from platform import python_version as version
+
+    # apropos()
+    from pydoc import apropos
 
     # history()
     def history():

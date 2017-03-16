@@ -1,7 +1,10 @@
 try:
     import readline
 except ImportError:
-    print("Module readline not available.")
+    try:
+        import pyreadline as readline
+    except ImportError:
+        print("Module readline not available.")
 else:
     # tab completion
     import rlcompleter

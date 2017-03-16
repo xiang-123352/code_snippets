@@ -14,7 +14,7 @@ def generate_setter(attr):
     attr = attr.lower()
     
     print("def _set_" + attr + "(self, " + attr + "):")
-    print("    self." + attr.capitalize() + " = " + attr + " ")
+    print("    self." + attr.capitalize() + " = " + attr)
     print("")
 
 def generate_property(attr):

@@ -37,5 +37,3 @@ produktionsland = ['Land']
 sprachen = ['Sprache', 'Untertitel']
 
 generate_get_set_property(sprachen)
-
-f.close()

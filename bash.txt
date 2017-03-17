@@ -1,0 +1,356 @@
+useradd
+usermod
+groupadd
+mysqldump -u $USER -p $DATABASE>dump.sql
+mysql -u $USER -p $DATABASE<dump.sql
+diff -r /path1/ /path2/ > Diff.txt # diff of two folders
+wipe -q -Q 1 -r $FOLDER # securely overwrite the folder and it's data with one pass of random data
+sqlite3 ex1 'select * from tbl1'|awk '{printf "<tr><td>%s<td>%s\n",$1,$2 }'
+echo '.dump'|sqlite3 ex1|gzip -c >ex1.dump.gz # make a backup of an sqlite3 database
+zcat ex1.dump.gz|sqlite3 ex2 # restore an sqlite3 database
+sqlite3 ex1 .dump|psql ex2 # export an sqlite3 database, import in an postgre-sql database
+unity # recover from a hanging desktop
+compiz --replace --display :0 # recover from a hanging desktop
+jobs # show running jobs
+kill %1 # kill job 1
+fg %2 # bring job 2 in foreground
+ls A*[^B].txt # exclude files from listing
+pdftotext file.pdf # convert file.pdf to file.txt
+ls -lb # show invisible characters in a filename
+tar --wildcards -xzvf file.tar.gz some_folder_*/*some_files_* # unpack single files from a tar.gz
+update-alternatives --list python # list alternatives for the default python version
+update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1 # register another version of python
+update-alternatives --install /usr/bin/python python /usr/bin/python3.4 2 # register another version of python
+update-alternatives --config python # choose default python version
+fstrim -av # trim all SSDs
+syndaemon -i 1.0 -t -K -R
+ubuntu-support-status # check the support status of the installed packages
+raspi-config # Raspberry Pi configuration tool (text version)
+rc-gui # Raspberry Pi configuration tool (graphical version)
+/boot/firmware/config.txt # Raspberry Pi 3 config.txt on Ubuntu MATE
+e2fsck -cc /dev/md3 #  cause e2fsck to run badblocks using a non-destructive read-write test
+hdparm -i /dev/sdX|grep "BufferSize=" # get device buffer size
+dd if=/dev/zero of=/dev/sdX bs=$BUFFERSIZE # use buffer size for better performance
+kernel /vmlinuz26 root=/dev/sda1 ro hda=$CYLINDERS,$HEADS,$SECTORS # tell grub disk geometry
+fsck.ext4 -p -b $SUPERBLOCK -B $BLOCKSIZE $DEVICE # repair ext4 using an alternate superblock
+xbacklight -set 30 # set backlight to 30%
+pgrep lighttpd # display only the process IDs of Lighttpd
+ps -C lighttpd -o pid= # display only the process IDs of Lighttpd
+ps -p 55977 -o comm= # display the name of PID
+ps -U $USER -u $USER u # See every process running as user
+ps -auxf|sort -nr -k4|head -10 # find out the top 10 memory consuming processes
+ps -auxf|sort -nr -k3|head -10 # find out the top 10 CPU consuming processes
+rm $HOME/Library/Caches/com.apple.preferencepanes.cache # reset system preferences pane
+devcon disable =Net USB\* # disable usb network device
+devcon enable =Net USB\* # enable usb network device
+nmap -sS 192.168.178.1 -p23 # check for open telnet port
+netsh wlan show profiles # show wlan profiles
+netsh wlan delete profile name="dlink 15" # delete wlan profile
+defaults write com.apple.screencapture type jpg # change default screenshot file type
+openssl enc -aes-256-cbc -e -in {path-in} -out {path-out} # encrypt any file
+openssl enc -aes-256-cbc -d -in {path-in} -out {path-out} # decrypt any file
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update frequency
+gtkperf # gtk benchmark
+xrender # x11 benchmark
+nmap -v -sP 192.168.1.0/24 # use nmap to ping all the hosts in a network subnet
+wmic diskdrive get status # check harddisk smart status
+rundll32 shell32.dll,Control_RunDLL hotplug.dll # open safe hardware remove dialog
+chcp 1252 # set cmd codepage to 1252
+rsync -aHAXSx --stats --progress --numeric-ids --exclude=/{dev,proc,sys,tmp,run,mnt,media,lost+found}/ / /mnt/disk/ # copy system to another disk
+head Makefile -n 3 # show the version of the linux kernel source
+make kernelversion # show the version of the linux kernel source
+xautolock -time 5 -locker "$COMMAND" [-killtime 5 -killer "$COMMAND"]
+cp -al $SOURCE $DESTINATION # copy a directory structure, where all files are hard links to the original files
+ln -F $SOURCE $DESTINATION # hard link to directory
+readlink -f $PATH # resolve a path to its canonical path
+ssh -t $SERVER sudo $COMMAND # force allocation of a pseudo-tty
+/var/lib/preload/preload.state
+wpa_passphrase $SSID $PSK|sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+pkill -u $USER bash # kill all the bash processes owned by $USER
+crontab -e # edit cronjob
+crontab -l # list cronjobs
+crontab -r # remove cronjobs
+%APPDATA%\Mozilla\Firefox\Profiles\%PROFILE%\prefs.js # custom made settings
+pacmd list-sinks|grep -e 'name:'  -e 'index' # list pulsaudio devices
+aplay -l # list alsa devices
+gcc -march=armv8-a+crc -mtune=cortex-a53 -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize -funsafe-math-optimizations # optimized compiler options for the Raspberry Pi 3
+gcc -mcpu=native -march=native -Q --help=target # show gcc target specific options
+ttyecho /dev/tty1 "$COMMAND" # run $COMMAND on /dev/tty1 (console must be unlocked)
+echo -ne "\033[13]">/dev/tty1 # unblank a screen
+echo -ne "\033[9;0]">/dev/tty1 # set blank timeout to 0 minutes
+setterm -blank 0 # set blank timeout to 0 minutes
+openvt -f -c 1 $COMMAND # force run command on tty1
+chvt 1 # change to virtual terminal 1
+cat /dev/vcs1 # show what is on tty1
+iw wlan0 get power_save # check wifi power saving
+iw wlan0 set power_save off # disable wifi power saving
+/DietPi/dietpi # path to the DietPi tools
+dns-fix # fix dns settings
+du -d 1 # show the size of the current files and directories
+php -m # list the loaded PHP extensions
+runas /noprofile /user:%USER% "%CMD%" # run command as user
+find /bin /dev /etc /home /lib /media /mnt /opt /root /sbin /srv /tmp /usr /var -cmin -${MINUTES} # search whole filesystem for changed files in the last few minutes
+asoundconf set-default-card $CARD # swap between soundcards
+alsa force-reload
+resize2fs /dev/sda1 #  online resize of the ext4 root filesystem
+touch /forcefsck # force fsck on next reboot
+awk 'NR > 2 { print }' $FILE # delete the first two lines of a file
+amixer cset numid=3 1 # raspberry pi enable sound over headphone jack
+getfacl -R $DIRECTORY>permissions.acl # backup permissions recursively
+setfacl --restore=permissions.acl # restore permissions
+watch -d -n 1 'ps -o "user pid cmd pcpu pmem rss" $(pgrep apache)' # monitor memory and cpu usage over time
+pkexec echo "test" # policykit execution test
+groups # show the groups you are a member of
+grep -P "\tstring" # grep for string with tabs
+awk -F"'|\"" '/menuentry/ {print $2}' /boot/grub/grub.cfg # show grub menu entries
+fallocate -l 8G /hibernate
+swap-offset /hibernate # get the swap resume offset
+mdmsetup # configuration gui for mdm
+mdm-recovery # repair mdm settings
+service mdm start # start login manager and X11
+service --status-all # determine which services are currently running
+bsdtar -C $DESTINATION -xf debian-8.2.0-i386-netinst.iso pool/main # extract files from an iso
+xorriso -osirrox on -indev debian-8.2.0-i386-netinst.iso -extract pool/main $DESTINATION # extract files from an iso
+isoinfo -J -x /pool/main/a/adduser/adduser_3.113+nmu3_all.deb -i debian-8.2.0-i386-netinst.iso > $DESTINATION/adduser_3.113+nmu3_all.deb # extract files from an iso
+7z x -o$DESTINATION -i\!pool/main debian-8.2.0-i386-netinst.iso # extract files from an iso
+time echo "scale=5000; a(1)*4"|bc -l  # benchmark the cpu by calculating pi
+sysbench --num-threads=1 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers
+sysbench --num-threads=4 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers
+deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main # force apt to use a certain architecture
+pdfseparate input.pdf %d.pdf # extract all pages from input.pdf
+pdfjam 1.pdf 2.pdf --nup 2x1 --twoside --outfile 1_2.pdf # merge two pdf files side by side
+pdfjam 1.pdf 2.pdf --nup 2x1 --landscape --outfile 1_2.pdf # merge two pdf files one over the other
+pdftk *.pdf cat output output.pdf # merge all pdf files into one pdf file
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dBATCH -sOutputFile=output.pdf input.pdf # reduce the file size of a scanned pdf file
+efi -L rEFInd # create uefi boot manager entry
+efibootmgr -b 0005 -B # delete uefi boot manager entry
+efibootmgr -o 0000,0002,0001,0004,0003,0005 # set uefi boot order
+mount -a # re-read fstab
+mount //java-doz/winshare winshare/ -t cifs -o username=teilnehmer,password=teilnehmer
+mount none /tmp -t tmpfs # create a ramdrive
+/dev/sda1 /mnt/first\040disk ext4 options 0 0 # fstab entry with spaces in the mount point path
+adb reboot -p # poweroff
+adb shell screencap -p|dos2unix>screen.png # take screenshot from your android phone
+cat /proc/mtd # show partitions and their labels
+nmcli dev wifi # show available wlan access points
+nmcli dev wifi connect $ACCESS_POINT password $PASSWORD # connect with access point
+/msg NickServ set password $PASSWORD # set irc password
+ls -l /dev/block/platform/sdhci.1/by-name # show partitions and their labels
+shutdown -F -r now # perform fsck at next reboot
+shutdown -c # cancel a pending shutdown
+last reboot # find last reboot time
+ffmpeg -i FILE.WAV -loop 1 -i IMG.JPG -shortest -movflags faststart FILE.MP4
+ffmpeg -i "Repo Man_Video.mp4" -i "Repo Man_Audio.wav" -vcodec copy "Repo Man2.mp4"
+ffmpeg -i somefile.avi -y -target pal-dvd -aspect 4:3 -b 1800 somefile.mpg # convert mp4 to mp2
+checkinstall -D --install=no # create debian package, but don't install it
+openssl rsa -in wildcard.mydomain.com.key > wildcard.mydomain.com.decrypted.key # strip out the password to allow your web service to start up unattended
+w_scan -c DE -X>channels.conf # create dvb-t channels.conf
+sqlite3 owncloud.db .dump<owncloud-sqlbkp.bak # import database
+sqlite3 owncloud.db .dump>owncloud-sqlbkp.bak # export database
+find $SOURCE -mindepth 1 -printf 'chown --reference=%p\t%p\n'|sed "s/\t$SOURCE/ $DEST/g"|sh # copy owner and group permissions from folder $SOURCE to folder $DEST
+find $SOURCE -mindepth 1 -printf 'chmod --reference=%p\t%p\n'|sed "s/\t$SOURCE/ $DEST/g"|sh # copy folder and file permissions from folder $SOURCE to folder $DEST
+chage -d 0 $USER # force user to change password on login
+openssl req -new -x509 -days 3650 -nodes -out /etc/ssl/certs/example.com.cert -keyout /etc/ssl/private/example.com.key # step #1 to create self signed certificate for "example.com"
+cat /etc/ssl/certs/example.com.cert /etc/ssl/private/example.com.key>/etc/ssl/certs/example.com.pem # step #2 to create self signed certificate for "example.com"
+make-jpkg jdk-7u2-linux-x64.tar.gz # convert java package to debian package
+pkill -KILL -u $USER # force logout a user
+killall -u $USER # force logout a user
+cat /etc/passwd|cut -d ":" -f1 # list all users
+irrecord --list-namespace
+lircd --driver=help # show lirc drivers
+iconv --from-code=ISO-8859-1 --to-code=UTF-8 ./channels.conf > ./channels_new.conf # convert a file from ISO-8859 to UTF-8
+/lib/modules/ # linux kernel modules
+/usr/src/ # linux kernel header
+/etc/initramfs-tools/conf.d/ # initramfs hooks
+v4l2:// :v4l2-dev=/dev/radio0 :v4l2-adev=/dev/dsp1 :v4l2-standard=0 :v4l2-tuner-frequency=95500000 # listen to the fm radio station on 95.5.mhz
+exec ck-launch-session gnome-session
+zswap.enabled=1 # enable zswap at boot time
+dconf dump /org/mate/terminal/profiles/default/>mate-terminal-default.dconf # export dconf settings
+dconf load /org/mate/terminal/profiles/default/<mate-terminal-default.dconf # import dconf settings
+gsettings set org.gnome.desktop.wm.preferences audible-bell false # silence the audible bell
+sudo sed -i '/NoDisplay=true/NoDisplay=false/g' /etc/xdg/autostart/*.desktop # display hidden autostart entries
+mkvdts2ac3 monsters.mkv # convert dts to ac3 in an mkv
+xinput --list --short
+xinput --list-props "Razer DeathAdder"
+xinput --set-prop "Razer DeathAdder" "Device Accel Velocity Scaling" 1
+xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0 # disable touchpad
+synclient TouchpadOff=1 # disable touchpad
+synclient TouchpadOff=0 # enable touchpad
+extlinux-install /dev/sda2 # install extlinux
+udevadm control --reload-rules # reload udev rules without restarting
+findmnt # find mounted file systems
+cat /etc/debian_version # get debian version
+passwd -u $USER # unlock user account
+passwd -l $USER # lock user account
+passwd -d $USER # delete user password
+cryptsetup --tcrypt-system --type tcrypt open /dev/sda1 WINDOWS && ntfs-3g /dev/mapper/WINDOWS /media/WINDOWS # use cryptsetup to mount truecrypt volumes 
+iptables RULE -m time --timestart TIME --timestop TIME --days DAYS -j ACTION
+chrome://adblockplus/content/ui/firstRun.html # show adblock plus first run wizard
+GTK_THEME="Adwaita OS X:dark" gtk3-widget-factory # run a gtk 3.x program with a different theme
+xprop -root|grep XKB # see set xkb options
+setxkbmap 'my_kb_layout' -variant 'my_kb_variant' -model 'my_eak_type'
+setxkbmap -option "" # reset xkb options
+setxkbmap -option srvrkeys:none # disable vt switch
+make localmodconfig # create a .config file from the modules you have loaded
+valac --pkg gtk+-3.0 hello.vala # compile a gtk 3.x program
+exiftool -Data -b v2lsFX.jpg|base64 -d>test.png # get the lens blur mask
+mate-session-save --shutdown-dialog # shutdown, restart, suspend or hibernate the system
+mate-session-save --logout-dialog # log out or switch user
+extundelete /dev/disk/by-label/DATA --restore-file user/an/important/file # undelete a file from an ext3/ext4 drive
+extundelete /dev/disk/by-label/DATA --restore-directory user/an/important/folder # undelete a folder from an ext3/ext4 drive
+rtcwake -m mem -s 300 # put the pc to sleep for 5 minutes
+mdmflexiserver --startnew Standard # start a MDM session
+mount -t cifs //speedport.ip/$DRIVE /media/$DRIVE -o user=$USER,password=$PASSWORD # mount windows share
+type command # check if a command is an interal shell command or an external executable
+xdg-user-dirs-gtk-update
+xdg-screensaver lock # lock screen
+xdg-mime default google-chrome-beta.desktop x-scheme-handler/http # change default browser
+xdg-mime default google-chrome-beta.desktop x-scheme-handler/https # change default browser
+mate-screensaver-command --lock # lock screen
+echo 0 > /sys/devices/system/cpu/cpu1/online # disabling CPU1
+echo > /sys/devices/system/cpu/cpu1/online # enabling CPU1
+convert * -compress jpeg -resize 1240x1753 -units PixelsPerInch -density 150x150 -page a4 multipage.pdf # merge multiple images to a pdf document
+uuidgen # generate an UUID
+tune2fs /dev/sde5 -U f0acce91-a416-474c-8a8c-43f3ed3768f9 # apply a new UUID to a partition
+xmlindent source.xml > output.xml # indent XML source subsequently
+plistutil -i preferences.plist -o preferences.plist.xml # convert a binary plist file to an XML plist file
+plutil -convert xml1 some_file.plist # convert a binary plist file to an XML plist file
+plutil -convert binary1 some_other_file.plist # convert an XML plist file to a binary plist file
+mkfs.ext4 -i 8192 -E stride=128,stripe-width=128 $DISK # SSD optimizations
+mkfs.ext4 -i 8192 $DISK # create filesystem with more inodes then default
+/etc/mke2fs.conf # mkfs.ext2 defaults
+wget -r <a href="ftp://domain.com/directory/">ftp://domain.com/directory/</a> # recursive FTP/HTTP Download
+fuser -k $FILENAME # kill the attached process to <filename>
+mount -a # remount /etc/fstab without restarting
+mount --move olddir newdir # move mountpoint from olddir to newdir
+sudo service dbus restart # restart dbus without logoff/reboot
+sudo /etc/init.d/dbus restart # restart dbus without logoff/reboot
+lsblk -f # list the disk partitions layout
+date +'%F %R+%Z' # date format for *.po translation files
+msgunfmt [path_to_file.mo] > [path_to_file.po] # convert a gettext .mo file into a .po file
+msgfmt file.po -o file.mo # convert a gettext .po file into a .mo file
+alien package.rpm # convert rpm to deb
+python setup.py --command-packages=stdeb.command bdist_rpm # convert python setup.py to rpm package
+python setup.py --command-packages=stdeb.command bdist_deb # convert python setup.py to deb package
+java -jar $FILENAME.jar # executing java archive files
+sshfs mobile@192.168.178.26:/ "/media/iPhone" # mount a jailbreak iPhone to "/media/iPhone"
+cat /dev/vcs1>tty1 # make a screenshot of tty1
+/usr/share/initramfs-tools/hooks # initramfs hooks
+chmod -x /usr/share/initramfs-tools/hooks/plymouth # disable initramfs trigger for plymouth
+find .|pio --quiet -H newc -o | gzip -9 -n>/boot/imagefile.img # recompress an initramfs
+start-pulseaudio-x11 # start pulseaudio desktop sessin
+pax11publish -r # Removes the configured PulseAudio configuration from the X11 root window
+service network-manager restart # restart network-manager
+inxi -xG # show graphic card infos
+unzip omni.ja -d ~/Desktop/omni/ # extract firefox resources file
+scp telekom-entertain-senderliste2.sh root@server.com:/ # upload file to "server.com"
+cat $FILE.tar.gz|ssh user@server "cd $DESTINATION; tar xzvf -" # decompress tar over ssh
+ssh root@server.com # login as root at "server.com"
+tune2fs -m 0 /dev/disk/by-label/DATA # set reserved blocks to "0"
+ps2pdf file.ps file.pdf # convert postscript file to pdf
+GTK2_RC_FILES=/usr/share/themes/$THEME/gtk-2.0/gtkrc pidgin # let a gtk app use its own gtk theme
+date +"%s" # show seconds since epoch
+date -d @1000000042 # convert epoch to human readible format
+pacman -Qo /path/to/file_name # search for file in installed arch linux package
+pacman -S --force PKG # install arch linux package and force overwrite files
+mount -o remount,rw $MOUNTPOINT # remount $MOUNTPOINT as writable
+ifconfig eth0 hw ether $MAC # change mac address for eth0
+xmacroplay<xmacro.rec # replay x11 mouse and keyboard input
+xmacrorec2 -k 9 >xmacro.rec # record x11 mouse and keyboard input
+repacman PKG # repack installed arch linux package
+pkgfile FILE # search in all arch linux packages for FILE
+makepkg -s --noconfirm # compile an arch linux package
+pacman -U /home/user/package.pkg.tar.xz # install an arch linux package
+gpasswd -a $USER $GROUP # add a user to a group
+import -frame -window WIN_ID image.png # make a screenshot of a window
+ffmpeg -i INPUT -loop 0 -pix_fmt rgb24 -r 10 OUTPUT.gif # convert video to gif
+make INSTALL_MOD_STRIP=1 modules_install # build and install all the kernel modules
+lsattr FILE # see the set attributes for FILE
+chattr +i FILE # set the immutable flag for FILE
+lscpu|grep "CPU op-mode" # check cpu for 64bit support
+fc-list # list all available fonts
+echo -e "\x22"|cat # print hex chars
+nmcli dev wifi list # list all available wifi connections
+nmcli con up id 'Connection' # connect with the connection "Connection"
+ln -s /lib/recovery-mode/recovery-menu /sbin # make ubuntu recovery-menu available as normal command
+xrandr|awk '/.*?\connected/{print $1}' # show the port the monitor is connected to
+xrandr -q # show available resolution
+xrandr -s 0 # reset X to its normal resolution after running a game in fullscreen
+blockdev --rereadpt /dev/sda # re-read partitiontable
+udevadm trigger # trigger udev
+udevtrigger # trigger udev
+ethtool -s eth0 wol d # disable WOL
+ifconfig ra0 txqueuelen 5000 # fix slow internet connection with torrent
+clamscan -ri $XDG_DOWNLOAD_DIR # scan the download folder for infected files
+python /usr/share/doc/devhelp/tools/man2xml.py>man.devhelp # create devhelp index for the installed manpages
+yelp man:man # show the manpage of man in the gnome help browser
+wine uninstaller # show add/remove software dialog
+alsa force-reload # reload alsa
+rpm2cpio package.rpm|cpio -id # extract rpm package
+rpm --querytags # query all avaiable rpm tags
+rpm -qp --qf "Package: %{NAME}\nVersion: %{VERSION}-%{RELEASE}\nArchitecture: %{ARCH}\nMaintainer:%{PACKAGER}\nDepends: %{REQUIRES}\nDescription: %{DESCRIPTION}\n" package.rpm>control # use an rpm package to create a debian control file
+update-pciids # update pci ids
+ffmpeg -i input.mp4 -vn -acodec copy output.mp4 # drop video, copy audio only
+ffmpeg -i input.mp4 -c copy output.mp4 # repair corrupt mp4
+make gconfig # start gtk kernel configuration tool
+cp /boot/config-$(uname -r) .config # copy current kernel configuration
+patch -N -p1 -i uksm-0.1.2.2-for-v3.2.ge.40.patch # apply a patch
+patch -R -p1 -i file.patch # reverse a patch
+make help # see a list of typical make targets
+make x86_64_defconfig # make a default kernel configuration
+make -C /lib/modules/$(uname -r)/build M=$PWD modules # build an external module
+make -C $PATH_TO_KERNEL_SRC M=$PWD # build an external module
+Xorg :1 -configure # create xorg.conf
+modprobe gspca # load usb video driver
+modprobe uvcvideo # load usb video driver
+hwinfo --usb # show usb devices
+smartctl -l scterc,10,10 /dev/disk # set the read/write retry timeout to 1 second (10 deciseconds)
+usermod -aG GROUP USER # add a user to a group
+cat /etc/group|cut -d\: -f1|sort|tr '\n' ' '; echo # show all avaiable groups
+echo "$USER ALL=(ALL:ALL) ALL">>/etc/sudoers # add a user to the sudoers file
+PATH=$PATH:/usr/local/bin && export PATH # adding a user defined path to $PATH
+sed -i 's/$/\r/' FILE # convert unix to dos line ending in a file
+sed -i 's/\r//' FILE # convert dos to unix line ending in a file
+paste -d"\n" FILE1 FILE2 # print two files line by line
+sort -nr FILE # print file content reverse
+extundelete /dev/disk/by-label/LABEL --restore-all # undelete all files from an ext3/ext4 drive
+gtk-builder-convert gui.glade gui.ui # convert glade to ui files
+vainfo # check for hardware accelerated video
+vlc --list|grep vdpau # check if vlc is compiled with hardware accelerated video
+insserv DAEMON # add a service (Debian 6.0)
+insserv -r DAEMON # remove a service (Debian 6.0)
+update-rc.d DAEMON defaults # add a service (< Debian 6.0)
+update-rc.d DAEMON disable # disable service (< Debian 6.0)
+update-rc.d DAEMON remove # remove a service (< Debian 6.0)
+dmidecode -t 16 # show the maximum amount of memory your motherboard support
+compton --inactive-dim 0.3 --no-fading-openclose # dim all inactive windows
+find $PATH -xtype l # find broken links
+gtk-update-icon-cache --force --ignore-theme-index /usr/share/icons/hicolor # rebuild icon cache
+inkscape FILE.svg --export-png=FILE.png # convert svg to png
+mint-choose-debian-mirror # find and use the fastest package mirror
+file disc.iso|cut -d' -f2 # view iso label
+gtk-update-icon-cache -f /usr/share/icons/Mint-X # force update icon cache
+hdparm -B 128 -S 60 /dev/sda # set harddisk mode to "quiet" and disable them after 5 minutes of inactivity
+xwininfo -root|grep Depth # get the current color depth of your display
+swap-offset $SWAP_FILE # get the resume offset
+filefrag -v $SWAP_FILE # get the resume offset
+update-initramfs -u -k all # update all initramfs
+grub-setup /dev/sda # reinstall grub2 mbr part only
+grub-install --boot-directory=/media/MINT/boot /dev/sda # reinstall grub2
+grub-install --root-directory=/media/MINT /dev/sda # reinstall grub
+grub-set-default "LMDE MATE 64-bit, 3.11-2-amd64 (/dev/sda5)" # set default selected menu entry
+aticonfig --set-pcs-u32=MCIL,PP_UserVariBrightEnable,0 # disabling varibright feature
+bccmd psset -s 0x0000 0x028c 0x0001 # enable bluetooth antenna
+setfattr -h -v '"0x0000002"' -n system.ntfs_attrib_be $FOLDER # set ntfs file attribut hidden
+split -b20m Largefilename Smallfilename # split a large file
+mencoder -idx input.avi -ovc copy -oac copy -o output.avi # fix an avi index
+mount -t tmpfs -o rw,nosuid,nodev,noexec,relatime,size=730400k tmpfs /dev/shm # fix audio issues
+mount -t iso9660 -o session=5 /dev/scd0 /media/cdrom1 # mount another session
+qemu-img resize disk.img +4G # resize qemu image disk
+echo "export PULSE_LATENCY_MSEC=30">>$HOME/.xprofile # pulse audio fix for skype
+pkill -SIGTERM lxsession # this is what lxsession-logout does, when you click on "logout"
+lxpanelctl run # open lxpanel run dialog
+touch -m "/usr/share/applications" # update menu cache
+dbus-send --print-reply --dest=org.telescope /Telescope org.telescope.Telescope.Show # show telescope task switcher
+transset-df -i $WIN_ID $OPACITY # change transparency of a window
+perl -p -i -e 's/unlink\0/atoi\0\0\0/' /opt/mint-flashplugin-11/libflashplayer.so # disable unlinking of cached files

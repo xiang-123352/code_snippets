@@ -14,7 +14,7 @@ def generate_setter(attr):
     attr = attr.lower()
     
     print("def _set_" + attr + "(self, " + attr + "):")
-    print("    self." + attr.capitalize() + " = " + attr + " ")
+    print("    self." + attr.capitalize() + " = " + attr)
     print("")
 
 def generate_property(attr):
@@ -29,8 +29,7 @@ def generate_get_set_property(liste):
         generate_setter(attr)
         generate_property(attr)
 
-f = open("output.py", "wt")
-sys.stdout = f
+sys.stdout = open("output.py", "wt")
 
 film = ['Title', 'Erscheinungsjahr', 'Dauer', 'Bewertung', 'FSK', 'Beschreibung', 'Kurzbeschreibung', 'Genre', 'Personen', 'Produktionsland', 'Sprachen']
 personen = ['Nachname', 'Vorname', 'Herkunft', 'Regisseur']
@@ -38,5 +37,3 @@ produktionsland = ['Land']
 sprachen = ['Sprache', 'Untertitel']
 
 generate_get_set_property(sprachen)
-
-f.close()

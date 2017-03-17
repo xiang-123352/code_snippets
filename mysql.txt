@@ -1,0 +1,17 @@
+SHOW variables WHERE variable_name = "datadir"; # show the path where the database is stored
+SHOW FIELDS FROM table_name; # show column name and type
+INSERT INTO table_name (column_name1, column_name2) VALUES (value1, value2); # work like pythons tuple assignment
+INSERT IGNORE INTO table_name (column_name) VALUE (value1); # skip over duplicate values
+INSERT IGNORE INTO table_name set column_name = value1; # skip over duplicate values
+ALTER TABLE table_name CHANGE COLUMN column_name_old column_name_new int(11); # rename column
+ALTER TABLE table_name MODIFY column_name int(5);
+ALTER TABLE table_name MODIFY column_name int;
+ALTER TABLE table_name ADD unique (column_name); # add "unique" attribute to column
+ALTER TABLE table_name ADD unique (column_name1 , column_name2, column_name3);
+ALTER TABLE table_name ADD column_name varchar(60); # add new column to the end of the table
+ALTER TABLE table_name ADD column_name varchar(60) FIRST; # add new column to the beggining of the table
+ALTER TABLE table_name ADD column_name varchar(60) AFTER column_name; # insert new column after a specific column
+RENAME TABLE table_name_old TO table_name_new;
+DELETE FROM table_name WHERE column_name = value1;
+DROP INDEX column_name ON table_name; # remove "unique" attribute from column
+SET FOREIGN_KEY_CHECKS = 0; # disable drop warning

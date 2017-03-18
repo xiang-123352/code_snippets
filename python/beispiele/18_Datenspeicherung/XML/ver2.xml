@@ -1,0 +1,13 @@
+<!--
+Zudem können Sie bei einem Tag Attribute angeben. Dazu wollen wir das
+vorherige Beispiel dahingehend erweitern, dass der Datentyp der Schlüssel
+und Werte des abzubildenden Dictionarys als Attribut des jeweiligen
+schluessel- bzw. wert-Tags gespeichert werden kann.
+-->
+<?xml version="1.0" encoding="UTF-8"?>
+<dictionary>
+    <eintrag>
+        <schluessel typ="str">Hallo</schluessel>
+        <wert typ="int">0</wert>
+    </eintrag>
+</dictionary>

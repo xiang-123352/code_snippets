@@ -18,6 +18,8 @@ curl -u 'john-doe' https://api.github.com/user/repos -d '{"name":"my_repo_name"}
 git remote set-url <name> <newurl> <oldurl>
 git remote add origin https://github.com/john-doe/my_repo_name.git
 git pull origin master # update local copy
+git reset # undo "git add"
+git reset <file> # undo "git add" for a file
 git reset --hard origin/master # force overwrite of untracked working tree files
 git init
 git add .
@@ -25,6 +27,7 @@ git rm --cached <file> # undo add of file
 git status
 git diff <commit> # see the changes in a commit
 git diff <commit_from> <commit_to>
+git diff --cached <file>
 git log
 git commit -m "Initial commit"
 git commit -m --amend # edit the last commit message

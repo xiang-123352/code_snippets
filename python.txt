@@ -1,3 +1,4 @@
+json.dumps(vars(class_name), sort_keys=True, indent=4) # serialize a class to a json file
 time.strftime("%Y-%m-%d %H:%M") # print time in the format "Year-Month-Day Hour:Minute"
 sys.stdout = open(file, "wt") # write stdout to file
 str1 = ' '.join(list1) # make a string from a list

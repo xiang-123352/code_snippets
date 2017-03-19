@@ -12,7 +12,7 @@ f1 = lambda x, y, z : (x - y) * z
 
 # entspricht
 
-def f2(x, y, z):
+def f1(x, y, z):
 	return (x - y) * z
 
 # lambda in Klammern ist Aufruf ohne

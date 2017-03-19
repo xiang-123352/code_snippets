@@ -22,6 +22,8 @@ help(modulename) # get the docs on all the functions at once
 dir(modulename) # list the names of all the functions and variables defined in the module
 dir() # list in scope variables
 dir(__builtins__) # list the intern defined functions and variables
+vars()
+vars(class) # list all vars of a class
 globals() # list global variables
 locals() # list local variables
 pip3 install thonny

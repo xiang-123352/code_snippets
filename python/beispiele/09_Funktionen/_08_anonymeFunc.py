@@ -13,9 +13,9 @@ f1 = lambda x, y, z : (x - y) * z
 # entspricht
 
 def f2(x, y, z):
-	return (x -y) * z
+	return (x - y) * z
 
 # lambda in Klammern ist Aufruf ohne
-# v erherige Referenzierung
+# vorherige Referenzierung
 
-print((lambda x, y, z: (x -y) * z)(1,2,3))
+print((lambda x, y, z: (x - y) * z)(1,2,3))

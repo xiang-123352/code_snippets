@@ -5,5 +5,5 @@ django-admin startproject mysite # creates "mysite" in the local folder
 settings.py ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 python mysite/manage.py migrate
 python mysite/manage.py createsuperuser
-python mysite/manage.py run_server # the server runs on localhost:8000
 python mysite/manage.py startapp blog
+python mysite/manage.py run_server # the server runs on localhost:8000

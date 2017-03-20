@@ -1,3 +1,4 @@
+elevate %CMD% ; run command with elevated privileges
 C:\Windows\System32\drivers\etc ; hosts file location in Windows
 mklink /d "C:\Users\Default\Downloads" "D:\Downloads" ; create symbolic link under Windows
 dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update

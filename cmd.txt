@@ -45,6 +45,5 @@ shutdown /f /s /t 0 ; force shutdown windows 8
 slmgr.vbs /dli ; check your windows 8 version
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 fsutil dirty set c: ; set dirty bit and force a filesystem check
-slmgr.vbs /dli ; check your windows 8 version
 wmiofck.exe -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 gcc -c -mno-cygwin hello.c && c++ -o hello.exe -mno-cygwin hello.o -I/usr/local/mingw/include -L/usr/local/mingw/lib

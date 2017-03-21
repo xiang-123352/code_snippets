@@ -1,3 +1,4 @@
+"blabla".encode("rot13")
 ord("a") # get the ascii value for a letter
 chr(97) # get the letter for an ascii value
 x >= 2 and y != 0 and (x/y) > 2 # guard evaluation to avoid ZeroDivisionError

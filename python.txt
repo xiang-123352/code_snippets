@@ -1,3 +1,4 @@
+MyClass = type("MyClass", (object,), {"x": "hello"}) # create a class in one line
 "blabla".encode("rot13")
 ord("a") # get the ascii value for a letter
 chr(97) # get the letter for an ascii value

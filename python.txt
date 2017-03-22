@@ -1,3 +1,4 @@
+sys.path # all directories that python will search for a specific module
 MyClass = type("MyClass", (object,), {"x":"hello"}) # define a class in one line
 "blabla".encode("rot13")
 ord("a") # get the ascii value for a letter

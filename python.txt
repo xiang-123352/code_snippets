@@ -1,3 +1,4 @@
+shopt # set and unset shell options
 builder.add_from_file("file.glade")
 widget = builder.get_object("widget_id")
 sys.path # all directories that python will search for a specific module

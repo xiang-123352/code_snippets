@@ -1,3 +1,5 @@
+builder.add_from_file("file.glade")
+widget = builder.get_object("widget_id")
 sys.path # all directories that python will search for a specific module
 MyClass = type("MyClass", (object,), {"x":"hello"}) # define a class in one line
 "blabla".encode("rot13")

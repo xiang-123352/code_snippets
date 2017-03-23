@@ -1,5 +1,7 @@
 shopt # set and unset shell options
 xprop -root -notype _NET_DESKTOP_VIEWPORT
+xprop _NET_WM_PID # get the PID of the selected window
+xprop -id 0x2200019 _NET_WM_PID # get the PID of a window with a specific id
 useradd
 usermod
 groupadd

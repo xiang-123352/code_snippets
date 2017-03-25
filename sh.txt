@@ -3,4 +3,4 @@ afsctool -c -l -k -v -i -9 /Library # transparent file compression
 ditto –hfsCompression # transparent file compression
 dscl . -append /groups/admin GroupMembership $USER # add user to the admin group on
 dscl . -delete /groups/admin GroupMembership $USER # delete user from the admin group
-caffeinate -i -t 3600 # prevent from going to sleep
+caffeinate -i -t 3600 # prevent pc from going to sleep

@@ -58,9 +58,6 @@ defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update fr
 gtkperf # gtk benchmark
 xrender # x11 benchmark
 nmap -v -sP 192.168.1.0/24 # use nmap to ping all the hosts in a network subnet
-wmic diskdrive get status # check harddisk smart status
-rundll32 shell32.dll,Control_RunDLL hotplug.dll # open safe hardware remove dialog
-chcp 1252 # set cmd codepage to 1252
 rsync -aHAXSx --stats --progress --numeric-ids --exclude=/{dev,proc,sys,tmp,run,mnt,media,lost+found}/ / /mnt/disk/ # copy system to another disk
 head Makefile -n 3 # show the version of the linux kernel source
 make kernelversion # show the version of the linux kernel source

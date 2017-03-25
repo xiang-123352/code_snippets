@@ -144,6 +144,7 @@ ls -l /dev/block/platform/sdhci.1/by-name # show partitions and their labels
 shutdown -F -r now # perform fsck at next reboot
 shutdown -c # cancel a pending shutdown
 last reboot # find last reboot time
+ffmpeg -i input.mp4 -movflags faststart -acodec copy -vcodec copy output.mp4 # optimize mp4 for faster streaming
 ffmpeg -i FILE.WAV -loop 1 -i IMG.JPG -shortest -movflags faststart FILE.MP4
 ffmpeg -i "Repo Man_Video.mp4" -i "Repo Man_Audio.wav" -vcodec copy "Repo Man2.mp4"
 ffmpeg -i somefile.avi -y -target pal-dvd -aspect 4:3 -b 1800 somefile.mpg # convert mp4 to mp2

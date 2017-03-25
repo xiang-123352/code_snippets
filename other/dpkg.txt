@@ -33,7 +33,7 @@ apt-mark showmanual # print a list of manually installed packages
 apt-get install gimp-plugin-registry # install gimp resynthesizer plugin
 apt-get install linux-source-3.2 # install kernel source (Debian)
 apt-get install xvba-va-driver libva-glx1 vainfo # install amd gpu acceleration framework
-apt-cache madison $PACKAGE --
+apt-cache madison $PACKAGE
 apt-get build-dep # get build dependencies for packages
 apt-get install mate-panel=1.8.0-0+wheezy # install package with a certain version
 apt-mark hold $PACKAGE # prevent a package from automatically being upgraded

@@ -1,0 +1,49 @@
+elevate %CMD% ; run command with elevated privileges
+C:\Windows\System32\drivers\etc ; hosts file location in Windows
+mklink /d "C:\Users\Default\Downloads" "D:\Downloads" ; create symbolic link under Windows
+dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
+runas /noprofile /user:%USER% "%CMD%" ; run command as user
+wmic path softwarelicensingservice get OA3xOriginalProductKey ; get windows product key
+powercfg -attributes SUB_SLEEP HIBERNATEIDLE +ATTRIB_HIDE ; hide the hibernate idle time-out setting
+powercfg -attributes SUB_SLEEP HIBERNATEIDLE -ATTRIB_HIDE ; expose the hibernate idle time-out setting
+devcon disable =Net USB\* ; disable usb network device
+devcon enable =Net USB\* ; enable usb network device
+wmic diskdrive get status ; check harddisk smart status
+rundll32 shell32.dll,Control_RunDLL hotplug.dll ; open safe hardware remove dialog
+chcp 1252 ; set cmd codepage to 1252
+powercfg /a ; check if hibernation is on
+powercfg -h on ; enable hibernate
+powercfg -h off ; disable hibernate
+%APPDATA%\Mozilla\Firefox\Profiles\%PROFILE%\prefs.js ; custom made settings
+control /name Microsoft.NetworkAndSharingCenter ; start network and sharing center
+Dir|Rename-Item âNewName { $_.name âreplace " ","_" } ; replace each space character with an underscore
+bcdedit /delete {identifier} ; remove boot entry
+bcdedit /export c:\boot.bcd ; backup bcd entries
+bcdedit /import c:\boot.bcd ; restore bcd entries
+bcdedit /delete {current} /f ; delete current boot entry
+bcdedit /set {current} description "any name" ; change boot entry name
+bcdboot c:\windows /s c: ; restore boot manager
+bootrec /fixmbr
+bootrec /fixboot
+bootrec /rebuildbcd
+net user Administrator /active:yes ; enable hidden administrator account
+net user %USERNAME% %PASSWORD% /add ; create new account
+net localgroup Administrators %USERNAME% /add ; assign user administrative privileges
+net user %USERNAME% * ; ask interactive for new password
+net user %USERNAME% "" ; set a password to blank
+shutdown -g -t 0 ; clean reboot
+shutdown -s -hybrid -f -t 0 ; hybrid shutdown
+shutdown -a ; abort shutdown
+netplwiz ; advanced user account management
+chkdsk e: /r ; repair disk (5 stages)
+chkdsk e: /f ; fix disk (3 stages)
+mountvol b: /s ; mount uefi partition to "b:"
+dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
+dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
+dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows ; repair an offline image using a mounted image as a repair source
+shutdown /f /s /t 0 ; force shutdown windows 8
+slmgr.vbs /dli ; check your windows 8 version
+wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
+fsutil dirty set c: ; set dirty bit and force a filesystem check
+wmiofck.exe -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
+gcc -c -mno-cygwin hello.c && c++ -o hello.exe -mno-cygwin hello.o -I/usr/local/mingw/include -L/usr/local/mingw/lib

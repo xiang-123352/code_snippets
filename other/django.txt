@@ -1,0 +1,16 @@
+apt-get install python-mysqldb # install python modules for mysql
+pip install mysql-python # install python modules for mysql
+pip install django
+pip install django --upgrade
+django-admin startproject mysite # creates "mysite" in the local folder
+settings.py ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+python mysite/manage.py makemigrations
+python mysite/manage.py migrate
+python mysite/manage.py shell
+python mysite/manage.py createsuperuser
+python mysite/manage.py startapp blog
+python mysite/manage.py run_server # the server runs on localhost:8000
+from app.models import *
+Film.objects.create(**kwargs)
+Film.objects.all().values()
+Film.objects.filter(film_title="Mad Max")

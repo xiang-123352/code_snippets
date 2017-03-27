@@ -1,0 +1,40 @@
+'abc'.decode('utf-8') # str to unicode
+u'abc'.encode('utf-8') # unicode to str
+builder.add_from_file("file.glade")
+widget = builder.get_object("widget_id")
+sys.path # all directories that python will search for a specific module
+MyClass = type("MyClass", (object,), {"x":"hello"}) # define a class in one line
+"blabla".encode("rot13")
+ord("a") # get the ascii value for a letter
+chr(97) # get the letter for an ascii value
+x >= 2 and y != 0 and (x/y) > 2 # guard evaluation to avoid ZeroDivisionError
+json.dumps(vars(class_name), sort_keys=True, indent=4) # serialize a class to a json file
+time.strftime("%Y-%m-%d %H:%M") # print time in the format "Year-Month-Day Hour:Minute"
+sys.stdout = open(file, "wt") # write stdout to file
+str1 = ' '.join(list1) # make a string from a list
+export PYTHONSTARTUP=$HOME/.python/__init__.py
+glob.glob("c:/windows/*.bmp") # get a list of paths matching a Unix-style glob pattern
+"a" if 2 > 1 else "b" # resembles if 2 > 1 ? "a" : "b"
+sorted_list = sorted(unsorted_list, key=lambda s: s.lower()) # sort list case insensitive
+type("fancy string") # get data type
+type("fancy string") is str # check for data type, returns True or False
+from platform import python_version; python_version() # get python version
+for key, value in dict.items() # iterate over dict keys and values
+for x1, x2 in zip(list1, list2, ...) # iterate over two lists in a flip flop way
+list = [randint(1, 100) for i in range(10)] # create a list with ten random values ranging from 1 to 100
+list = [0 for i in range(100)] # create a list with hundred 0 values
+print("\033c") # escape c to clear screen
+word[::-1] # reverse word
+from pydoc import apropos # so I can write apropos() instead of pydoc.apropos()
+apropos(keyword) # search the docs for keyword
+dir() # list in scope variables
+dir(__builtins__) # list the intern defined functions and variables
+dir(modulename) # list the names of all the functions and variables defined in the module
+help(modulename) # get the docs on all the functions at once
+vars()
+vars(class) # list all vars of a class
+globals() # list global variables
+locals() # list local variables
+pip3 install thonny
+turtle.speed(1.0) # set the drawing speed to "slow"
+turtle.done() # let the window stay open

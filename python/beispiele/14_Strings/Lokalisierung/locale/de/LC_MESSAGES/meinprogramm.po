@@ -1,0 +1,14 @@
+# JUST A TESTING *.MO
+# Copyright (C) 2016 BBQ
+# GYULA OROSZ 2016
+#
+
+#: gettextBsp.py:59
+# gettextBsp.py:64
+msgid "Please enter a value: "
+msgstr "Bitte geben Sie einen Wert ein: "
+
+#:gettextBsp.py:63
+# gettextBsp.py:59
+msgid "The random choice is {0}"
+msgstr "Die Zufallswahl ist {0}"

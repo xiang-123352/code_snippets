@@ -1,3 +1,5 @@
+lsof -i|grep "LISTEN" # show active network connections
+netstat -tulpn # show active network connections
 shopt # set and unset shell options
 xev -root
 xprop -root -notype _NET_DESKTOP_VIEWPORT

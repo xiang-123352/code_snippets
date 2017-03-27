@@ -10,6 +10,7 @@ usermod
 groupadd
 mysqldump -u $USER -p $DATABASE>dump.sql
 mysql -u $USER -p $DATABASE<dump.sql
+cat ~/.mysql_history # display the history of your sql queries
 diff -r /path1/ /path2/ > Diff.txt # diff of two folders
 wipe -q -Q 1 -r $FOLDER # securely overwrite the folder and it's data with one pass of random data
 sqlite3 ex1 'select * from tbl1'|awk '{printf "<tr><td>%s<td>%s\n",$1,$2 }'

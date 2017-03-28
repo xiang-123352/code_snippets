@@ -1,3 +1,4 @@
+lshw -businfo # show a short summary of the hardware
 pulseaudio -k && alsa force-reload # restart audio stack
 lsof -i|grep "LISTEN" # show active network connections
 netstat -tulpn # show active network connections

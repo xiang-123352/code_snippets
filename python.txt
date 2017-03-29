@@ -1,3 +1,4 @@
+import cPickle as pickle
 'abc'.decode('utf-8') # str to unicode
 u'abc'.encode('utf-8') # unicode to str
 builder.add_from_file("file.glade")

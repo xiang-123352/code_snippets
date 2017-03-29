@@ -1,4 +1,4 @@
-_print = sys.stdout.write # print without newline
+printf = sys.stdout.write # print without newline
 sys.stdout.flush()
 import cPickle as pickle
 'abc'.decode('utf-8') # str to unicode

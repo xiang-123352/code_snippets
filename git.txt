@@ -20,6 +20,7 @@ curl -u 'john-doe' https://api.github.com/user/repos -d '{"name":"my_repo_name"}
 git remote set-url <name> <newurl> <oldurl>
 git remote add origin https://github.com/john-doe/my_repo_name.git
 git pull origin master # update local copy
+git stash save <name> # name your stash
 git stash list
 git reset # undo "git add"
 git reset <file> # undo "git add" for a file

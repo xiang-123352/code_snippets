@@ -1,3 +1,4 @@
+ldconfig -v # print out the directories searched by the linker
 arp-scan -l --interface=wlan0
 arp-scan -l --interface=eth0
 arp-scan --localnet # see all computers connected in the network

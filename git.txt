@@ -7,6 +7,7 @@ git branch -d the_local_branch # delete a local branch
 git branch -m <old branch> <new branch> # rename a branch
 git push origin :the_remote_branch # remove a remote branch
 git config --list
+git config --global alias.timeline "log --oneline --graph --decorate"
 git config --global user.name "John Doe" # set git account username
 git config --global user.email "john.doe@gmail.com" # set git account email
 git config --global color.ui auto # color highlighted terminal output
@@ -36,6 +37,7 @@ git diff --cached <file>
 git log # show the detailed commit history
 git log -1 # show the last 1 commit
 git log --oneline #  show commit comments
+git log --oneline --graph --decorate # great visual graph
 git commit -m "Initial commit"
 git commit -m --amend # edit the last commit message
 git checkout filename # reset a single file

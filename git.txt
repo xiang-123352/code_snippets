@@ -4,7 +4,9 @@ git checkout <branch> # change to another branch
 git checkout <file> # restore files in working tree from index
 git checkout -b develop origin/develop
 git branch -d the_local_branch # delete a local branch
-git branch -m <old branch> <new branch> # rename a branch
+git branch -m <newname> # rename the current branch, you can do:
+git branch -m <oldname> <newname> # rename a branch
+git push -f --mirror # rename the branch on the remote
 git push origin :the_remote_branch # remove a remote branch
 git config --list
 git config --global alias.timeline "log --oneline --graph --decorate"

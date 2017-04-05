@@ -1,3 +1,4 @@
+subprocess.Popen(command_list) # execute subprocess in background
 os.getpid() # obtain the pid of the python script itself
 print("hello", end="", flush=True) # print without newline unbuffered
 printf = sys.stdout.write # print without newline

@@ -1,3 +1,8 @@
+ffmpeg -stream_loop -1 -re -i video.mpg -f mpegts udp://127.0.0.1:65000
+ffmpeg -stream_loop -1 -re -i video.mpg -f mpegts udp://127.0.0.1:65000?fifo_size=250000
+vlc --qt-start-minimized --loop video.mpg :sout=#http{mux=webm,dst=:4545/video.webm} :sout-all :sout-keep
+vlc --qt-start-minimized --loop video.mpg :file-caching=1000 :sout=#transcode{vcodec=theo,vb=800,scale=automatisch,acodec=vorb,ab=128,channels=2,samplerate=44100}:duplicate{dst=http{dst=:4545/video.ogg},dst=127.0.0.1:4545/video.ogg} :ttl=1 :sout-keep :sout-all
+vlc --qt-start-minimized --loop video.mpg :file-caching=1000 :sout=#transcode{vcodec=theo,vb=800,scale=0.65,acodec=vorb,ab=128,channels=2,samplerate=44100}:duplicate{dst=http{dst=:4545/video.ogg},dst=127.0.0.1:4545/video.ogg} :ttl=1 :sout-keep :sout-all
 notify-send "message" -h string:x-canonical-private-synchronous:anything # replace an existing notification
 cat /proc/asound/card*/pcm*/sub*/status # check if soundcard is used
 ldconfig -v # show the directories searched by the linker

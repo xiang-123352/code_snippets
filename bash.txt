@@ -1,3 +1,4 @@
+notify-send "message" -h string:x-canonical-private-synchronous:anything # replace an existing notification
 cat /proc/asound/card*/pcm*/sub*/status # check if soundcard is used
 ldconfig -v # show the directories searched by the linker
 ld --verbose|grep "SEARCH_DIR" # show the directories searched by the linker

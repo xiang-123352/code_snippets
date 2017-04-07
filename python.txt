@@ -1,4 +1,5 @@
 subprocess.Popen(command_list) # execute subprocess in background
+os.getenv("HOME") # get the path of the user directory
 os.getpid() # obtain the pid of the python script itself
 print("hello", end="", flush=True) # print without newline unbuffered
 printf = sys.stdout.write # print without newline

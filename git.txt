@@ -1,5 +1,3 @@
-https://www.ralfebert.de/git/ # Sehr gutes und einfaches Git Tutorial
-http://chris.beams.io/posts/git-commit/ # How to write proper Git commit messages
 git checkout <branch> # change to another branch
 git checkout <file> # restore files in working tree from index
 git checkout -b develop origin/develop

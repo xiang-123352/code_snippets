@@ -1,13 +1,17 @@
-Create a new repository on the command line:
+# Create a new repository on the command line:
 
+```
 echo "# Here goes the Readme string" >> README.md
 git init
 git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/username/repository.git
 git push -u origin master
+```
 
-Push an existing repository from the command line:
+# Push an existing repository from the command line:
 
+```
 git remote add origin https://github.com/username/repository.git
 git push -u origin master
+```

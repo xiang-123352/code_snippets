@@ -1,3 +1,4 @@
+subprocess.check_output(["grep 'this is' /tmp/test.txt"], shell=True)
 subprocess.Popen(command_list) # execute subprocess in background
 os.getenv("HOME") # get the path of the user directory
 os.getpid() # obtain the pid of the python script itself

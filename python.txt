@@ -1,3 +1,4 @@
+print("Print percent %% in sentence and not %s" % test)
 subprocess.check_output(["grep 'this is' /tmp/test.txt"], shell=True)
 subprocess.Popen(command_list) # execute subprocess in background
 os.getenv("HOME") # get the path of the user directory

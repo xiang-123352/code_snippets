@@ -1,12 +1,14 @@
 str_list = filter(None, str_list) # remove empty strings from a list of strings
 print("Print percent %% in sentence and not %s" % test)
+sys.stdout.flush()
+sys.stdout = open(file, "wt") # write stdout to file
+sys.exit(0) # set return code to "0"
 subprocess.check_output(["grep 'this is' /tmp/test.txt"], shell=True)
 subprocess.Popen(command_list) # execute subprocess in background
 os.getenv("HOME") # get the path of the user directory
 os.getpid() # obtain the pid of the python script itself
 print("hello", end="", flush=True) # print without newline unbuffered
 printf = sys.stdout.write # print without newline
-sys.stdout.flush()
 import cPickle as pickle
 'abc'.decode('utf-8') # str to unicode
 u'abc'.encode('utf-8') # unicode to str
@@ -20,7 +22,6 @@ chr(97) # get the letter for an ascii value
 x >= 2 and y != 0 and (x/y) > 2 # guard evaluation to avoid ZeroDivisionError
 json.dumps(vars(class_name), sort_keys=True, indent=4) # serialize a class to a json file
 time.strftime("%Y-%m-%d %H:%M") # print time in the format "Year-Month-Day Hour:Minute"
-sys.stdout = open(file, "wt") # write stdout to file
 str1 = ' '.join(list1) # make a string from a list
 export PYTHONSTARTUP=$HOME/.python/__init__.py
 glob.glob("c:/windows/*.bmp") # get a list of paths matching a Unix-style glob pattern

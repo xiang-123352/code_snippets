@@ -31,20 +31,21 @@ git init --bare /path/to/repo.git
 git add .
 git rm --cached <file> # undo add of file
 git status
+git diff --cached <file>
 git diff <commit> # see the changes in a commit
 git diff <commit_from> <commit_to>
-git diff --cached <file>
+git diff <commit_from> <commit_to> <file>
 git log # show the detailed commit history
 git log -1 # show the last 1 commit
 git log --oneline #  show commit comments
 git log --oneline --graph --decorate # great visual graph
-git log --oneline <filename> # view the change history of a file
-git log -p <filename> # generate the patches for each log entry
-git blame <filename> # print out a short commit id, the author, timestamp for each changed line
+git log --oneline <file> # view the change history of a file
+git log -p <file> # generate the patches for each log entry
+git blame <file> # print out a short commit id, the author, timestamp for each changed line
 git commit -m "Initial commit"
 git commit -m --amend # edit the last commit message
-git checkout filename # reset a single file
-git checkout -- filename # reset a single file with has the same name as a branch
+git checkout <file> # reset a single file
+git checkout -- <file> # reset a single file with has the same name as a branch
 git checkout feature_1 -- path/to/file/iwant # checkout a single file from another commit or branch
 git revert <commit>
 git push --set-upstream origin master

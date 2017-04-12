@@ -32,7 +32,7 @@ type("fancy string") is str # check for data type, returns True or False
 from platform import python_version; python_version() # get python version
 for key, value in dict.items() # iterate over dict keys and values
 for x1, x2 in zip(list1, list2, ...) # iterate over two lists in a flip flop way
-list = [int(i) for i in list] # convert all values to int
+list = [int(i) for i in list] # change type of a whole list
 list = [randint(1, 100) for i in range(10)] # create a list with ten random values ranging from 1 to 100
 list = [0 for i in range(100)] # create a list with hundred 0 values
 print("\033c") # escape c to clear screen

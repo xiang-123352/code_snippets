@@ -1,3 +1,4 @@
+re.findall('"((http|ftp)s?://.*?)"', html) # get all links from a website
 str_list = filter(None, str_list) # remove empty strings from a list of strings
 print("Print percent %% in sentence and not %s" % test)
 sys.stdout.flush()

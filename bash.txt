@@ -142,6 +142,7 @@ sysbench --num-threads=1 --cpu-max-prime=10000 --test=cpu run # benchmark the cp
 sysbench --num-threads=4 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main # force apt to use a certain architecture
 pdfseparate input.pdf %d.pdf # extract all pages from input.pdf
+pdfunite input1.pdf input2.pdf output.pdf # merge several pdf files
 pdfjam 1.pdf 2.pdf --nup 2x1 --twoside --outfile 1_2.pdf # merge two pdf files side by side
 pdfjam 1.pdf 2.pdf --nup 2x1 --landscape --outfile 1_2.pdf # merge two pdf files one over the other
 pdftk *.pdf cat output output.pdf # merge all pdf files into one pdf file

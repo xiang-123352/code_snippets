@@ -1,3 +1,4 @@
+x = () # create an empty tuple
 square = lambda x: x**2 # call the method with square(5)
 re.findall('"((http|ftp)s?://.*?)"', html) # get all links from a website
 str_list = filter(None, str_list) # remove empty strings from a list of strings

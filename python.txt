@@ -1,3 +1,4 @@
+kernprof.py -l -v fib.py # line-by-line timing and execution frequency with a profiler
 pip install --upgrade pip
 window_id.get_full_property(ewmh.display.intern_atom('_NET_FRAME_EXTENTS'), Xatom.CARDINAL).value
 x = () # create an empty tuple

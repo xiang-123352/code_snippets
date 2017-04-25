@@ -1,3 +1,4 @@
+pip install --upgrade pip
 window_id.get_full_property(ewmh.display.intern_atom('_NET_FRAME_EXTENTS'), Xatom.CARDINAL).value
 x = () # create an empty tuple
 square = lambda x: x**2 # call the method with square(5)

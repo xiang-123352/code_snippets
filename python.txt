@@ -1,3 +1,4 @@
+print("Hi", end="\r") # overwrite the previous print
 test = str.replace(test, '\n', '\r\n') # add carriage return at the end of a string
 print("%-20.20s" % value) # left aligned, minimum 20 letters, maximum 20 letters long string
 kernprof.py -l -v fib.py # line-by-line timing and execution frequency with a profiler

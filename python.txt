@@ -1,4 +1,6 @@
-a[start:end:step] # start through not past end, by step
+globals().update(var=value) # assign a variable to global
+list.__setitem__(index, value) # assign a variable to a mutable sequence or a map
+a[start:end:step] # start to end by step
 print("Hi", end="\r") # overwrite the previous print
 test = str.replace(test, '\n', '\r\n') # add carriage return to the end of a string
 print("%-20.20s" % value) # left aligned, minimum 20 letters, maximum 20 letters long string

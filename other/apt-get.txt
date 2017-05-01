@@ -1,4 +1,4 @@
-ubufox: sudo apt remove --purge xul-ext-ubufox
+ubufox: sudo apt-get remove --purge xul-ext-ubufox
 anchor-cms: sudo apt-get install php-gd php-mcrypt php-curl php-sqlite3 php-mysql
 boot-tools: sudo apt-get install rtirq-init ksm zram-config ureadahead preload
 fglrx-driver: sudo apt-get install fglrx-driver fglrx-control fglrx-modules-dkms xvba-va-driver

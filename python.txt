@@ -1,3 +1,5 @@
+uid = os.getuid() # get the uid
+path_uid = os.stat('/path').st_uid # get the uid of path
 globals().update(var=value) # assign a variable to global
 list.__setitem__(index, value) # assign a variable to a mutable sequence or a map
 a[start:end:step] # start to end by step

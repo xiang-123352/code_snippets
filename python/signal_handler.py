@@ -7,7 +7,6 @@ import time
 
 def sigterm_handler(signal, frame):
     # save the state here or do whatever you want
-    
     print('booyah! bye bye')
     
     sys.exit(0)

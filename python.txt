@@ -1,3 +1,4 @@
+_ # stores the last printed expression on the interactive prompt
 {value: key for key, value in original.items()} # dict comprehension
 {w[0] for w in words} # set comprehension
 [j + k for j in s1 for k in s2] # list comprehension with nested for loops

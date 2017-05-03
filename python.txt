@@ -3,6 +3,7 @@
 [j + k for j in s1 for k in s2] # list comprehension with nested for loops
 [(j, k) for j in s1 for k in s2]
 [x for i in range(2) for x in range(10) if i == x%2]
+[x for x in string if x.isdigit()]
 uid = os.getuid() # get the uid
 path_uid = os.stat('/path').st_uid # get the uid of path
 globals().update(var=value) # assign a variable to global

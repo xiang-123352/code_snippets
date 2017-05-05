@@ -1,3 +1,5 @@
+python setup.py --command-packages=stdeb.command bdist_rpm # convert python setup.py to rpm package
+python setup.py --command-packages=stdeb.command bdist_deb # convert python setup.py to deb package
 _ # stores the last printed expression on the interactive prompt
 {value: key for key, value in original.items()} # dict comprehension
 {w[0] for w in words} # set comprehension

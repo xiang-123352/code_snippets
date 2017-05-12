@@ -1,3 +1,6 @@
+os.path.isfile("path")
+os.path.isdir("path")
+os.path.exists("path")
 python setup.py --command-packages=stdeb.command bdist_rpm # convert python setup.py to rpm package
 python setup.py --command-packages=stdeb.command bdist_deb # convert python setup.py to deb package
 python setup.py --command-packages=stdeb.command sdist_dsc # generate source packages only

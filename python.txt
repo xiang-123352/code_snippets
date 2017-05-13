@@ -1,3 +1,4 @@
+sys.path.append(lib_path)
 os.path.isfile("path")
 os.path.isdir("path")
 os.path.exists("path")

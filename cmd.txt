@@ -33,7 +33,7 @@ net user %USERNAME% * ; ask interactive for new password
 net user %USERNAME% "" ; set a password to blank
 shutdown -g -t 0 ; clean reboot
 shutdown -s -hybrid -f -t 0 ; hybrid shutdown
-shutdown -s -t 60 # shutdown in 60 seconds
+shutdown -s -t 60 ; shutdown in 60 seconds
 shutdown -a ; abort shutdown
 shutdown /f /s /t 0 ; force shutdown windows 8
 netplwiz ; advanced user account management

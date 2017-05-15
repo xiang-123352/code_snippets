@@ -1,3 +1,4 @@
+[ condition ] && {things if true} || {things if false}
 do-release-upgrade # upgrade Ubuntu to a newer version
 echo ${ARRAY[*]} # reference all members of an array
 echo ${ARRAY[@]} # reference all members of an array

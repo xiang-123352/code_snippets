@@ -1,3 +1,4 @@
+git rebase --onto new-source old-source my-branch # avoid problems if the new source branch has had its history rewritten
 git checkout <branch> # change to another branch
 git checkout <file> # restore files in working tree from index
 git checkout -b develop origin/develop

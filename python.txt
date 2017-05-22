@@ -1,3 +1,4 @@
+set(string.lowercase) <= set(s.lower()) # is pangram
 sys.path.append("path")
 os.path.isfile("path")
 os.path.isdir("path")

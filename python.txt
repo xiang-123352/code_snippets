@@ -1,3 +1,4 @@
+io.open(file, mode='rb', encoding='utf-8')
 print("%r" % data) # print raw format
 a if True else b # conditional if/else
 str.translate(str.maketrans("ABCEGHILOSTZ", "@8(36#!10$72")) # convert a string to leet speak

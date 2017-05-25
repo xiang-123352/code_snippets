@@ -1,3 +1,4 @@
+a if True else b
 str.translate(str.maketrans("ABCEGHILOSTZ", "@8(36#!10$72")) # convert a string to leet speak
 set(string.lowercase) <= set(s.lower()) # check if a string is a pangram
 set(string.ascii_lowercase).issubset(s.lower()) # check if a string is a pangram

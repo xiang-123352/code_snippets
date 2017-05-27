@@ -1,3 +1,5 @@
+math.isnan(var) # check if value is not a number (Nan)
+math.isinf(var) # check if value is infinite (INF)
 io.open(file, mode='rb', encoding='utf-8')
 print("%r" % data) # print raw format
 a if True else b # conditional if/else

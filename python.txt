@@ -1,3 +1,4 @@
+math.modf(4,4) # get a tuple containing the fractional and whole number parts of a number
 math.isnan(var) # check if var is not a number (Nan)
 math.isinf(var) # check if var is infinite (INF)
 io.open(file, mode='rb', encoding='utf-8')

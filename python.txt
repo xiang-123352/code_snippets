@@ -1,3 +1,4 @@
+random.choice([1, 2, 3])
 random.randrange(0, 101, 5) # generate a random integer from a range, with a step of the lower bound
 math.modf(4,4) # get a tuple containing the fractional and whole number parts of a number
 math.isnan(var) # check if var is not a number (Nan)

@@ -1,2 +1,3 @@
-package java.lang; // specify a java file belongs to a certain package
+System.out.println("Hello World!");
 import java.io.*; // import a package
+package java.lang; // specify a java file belongs to a certain package

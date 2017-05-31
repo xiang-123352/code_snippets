@@ -1,4 +1,4 @@
-1 < x < 15 # chain comparison operators
+x < y < 15 # chain comparison operators
 pydoc modules # check available python modules
 help('modules') # check available python modules
 difflib.unified_diff(text_A, text_B)

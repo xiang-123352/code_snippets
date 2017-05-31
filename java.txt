@@ -1,0 +1,2 @@
+package java.lang; // specify a java file belongs to a certain package
+import java.io.*; // import a package

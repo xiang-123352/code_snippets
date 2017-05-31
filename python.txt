@@ -1,3 +1,4 @@
+difflib.unified_diff(text_A, text_B)
 turtle.pencolor("red")
 turtle.setposition(x, y)
 turtle.dot()

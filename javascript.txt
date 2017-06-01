@@ -1,1 +1,2 @@
+(function(){ // code goes here })(); // immediately-invoked function expression (IIFE)
 "use strict"; // enable strict mode

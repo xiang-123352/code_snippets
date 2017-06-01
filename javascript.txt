@@ -1,3 +1,6 @@
+parseInt("10", 10);//base 10, 10
+parseInt("011", 2);//binary, 3
+parseFloat("0.1");// 0.1
 typeof var; // get the type of a variable
 (function(){ // code goes here })(); // immediately-invoked function expression (IIFE)
 "use strict"; // enable strict mode

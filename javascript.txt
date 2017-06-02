@@ -1,3 +1,5 @@
+myArray.push(555); // append values to an array (list)
+myArray.push(5,6,7); // append values to an array (list)
 parseInt("10", 10); // decimal, base 10
 parseInt("011", 2); // binary, base 2
 parseFloat("0.1");

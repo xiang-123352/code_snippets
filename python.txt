@@ -1,3 +1,4 @@
+random.sample(items, n) # select n random items
 x < y < 15 # chain comparison operators
 pydoc modules # check available python modules
 help('modules') # check available python modules

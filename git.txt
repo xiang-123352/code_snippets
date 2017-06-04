@@ -8,6 +8,7 @@ git branch -m <oldname> <newname> # rename a branch
 git push -f --mirror # rename the branch on the remote
 git push origin :the_remote_branch # remove a remote branch
 git config --list
+git config --global help.autocorrect 30 # add autocorrect to git
 git config --global alias.timeline "log --oneline --graph --decorate"
 git config --global user.name "John Doe" # set git account username
 git config --global user.email "john.doe@gmail.com" # set git account email

@@ -1,3 +1,4 @@
+enki.f() == Enki.f(enki)
 abs(num) # compute the absolute value of a number
 random.sample(items, n) # select n random items
 x < y < 15 # chain comparison operators

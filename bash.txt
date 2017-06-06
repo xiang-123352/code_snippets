@@ -1,3 +1,4 @@
+python -m pdb python-script.py # run a python program in debug mode
 [ condition ] && {things if true} || {things if false}
 do-release-upgrade # upgrade Ubuntu to a newer version
 echo ${ARRAY[*]} # reference all members of an array

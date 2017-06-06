@@ -1,5 +1,5 @@
 os.path.expanduser('~') # get the home directory
-enki.f() == Enki.f(enki)
+enki.f() == Enki.f(enki) # two ways to call a class and its function
 abs(num) # compute the absolute value of a number
 random.sample(items, n) # select n random items
 x < y < 15 # chain comparison operators

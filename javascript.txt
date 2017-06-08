@@ -1,3 +1,5 @@
+const year = 2016; // declare a constant
+Object.freeze();
 myArray.splice(0, 1, 4); // remove 1st element and insert new
 myArray.push(555); // append values to an array (list)
 myArray.push(5,6,7); // append values to an array (list)

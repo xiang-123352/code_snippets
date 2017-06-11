@@ -1,3 +1,4 @@
+dget -x http://example.com/some/path/to/foo_1.0-1.dsc # download and extract a source package
 dpkg -s $PACKAGE # show package status
 dpkg-reconfigure xserver-xorg # fix computer graphic issues
 dpkg-reconfigure resolvconf # fix "resolv.conf is not a symlink" error

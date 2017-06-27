@@ -1,3 +1,6 @@
+"http://www.google.com".startswith(("http://", "https://")) # search for multiple prefixes in a string
+max(set(test), key=test.count) # find the most frequent value in a list
+test(**testDict) # unpack values of a dict
 testSet = {i * 2 for i in xrange(10)} # set comprehension
 list_a.reverse() # reverse the items in a list
 bytearray.fromhex('2ef0f1f2') # create a bytearray object from a hexadecimal string

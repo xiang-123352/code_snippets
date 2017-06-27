@@ -1,3 +1,4 @@
+testSet = {i * 2 for i in xrange(10)} # set comprehension
 list_a.reverse() # reverse the items in a list
 bytearray.fromhex('2ef0f1f2') # create a bytearray object from a hexadecimal string
 bytearray(b'\xf0\xf1\xf2').hex() # convert a bytearray to a hexadecimal string

@@ -1,4 +1,4 @@
-ifconfig -u # show only inactive connections
+ifconfig -u # show inactive network connections
 python -m pdb python-script.py # run a python program in debug mode
 [ condition ] && {things if true} || {things if false}
 do-release-upgrade # upgrade Ubuntu to a newer version

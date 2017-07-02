@@ -36,6 +36,7 @@ net user %USERNAME% %PASSWORD% /add ; create new account
 net localgroup Administrators %USERNAME% /add ; assign user administrative privileges
 net user %USERNAME% * ; ask interactive for new password
 net user %USERNAME% "" ; set a password to blank
+shutdown /r /o /f /t 00 ; reboot into recovery mode
 shutdown -g -t 0 ; clean reboot
 shutdown -s -hybrid -f -t 0 ; hybrid shutdown
 shutdown -s -t 60 ; shutdown in 60 seconds

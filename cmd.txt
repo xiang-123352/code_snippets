@@ -1,3 +1,8 @@
+regedit /s yourfile.reg
+reg import yourfile.reg
+for %f in (.\*) do @echo %f ; iterate through files in current dir
+for /d %s in (.\*) do @echo %s ; iterate through subdirs in current dir
+for /r %f in (.\*) do @echo %f ; iterate through files in current and all subdirs
 elevate %CMD% ; run command with elevated privileges
 C:\Windows\System32\drivers\etc ; hosts file location in Windows
 mklink /d "C:\Users\Default\Downloads" "D:\Downloads" ; create symbolic link under Windows

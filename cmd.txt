@@ -47,6 +47,7 @@ chkdsk e: /f ; fix disk (3 stages)
 mountvol b: /s ; mount uefi partition to "b:"
 dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
 dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
+dism /Online /Cleanup-Image /RestoreHealth
 dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows ; repair an offline image using a mounted image as a repair source
 slmgr.vbs /dli ; check your windows 8 version
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h

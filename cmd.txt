@@ -1,3 +1,5 @@
+bcdedit /set testsigning on
+bcdedit /set nointegritychecks on
 regedit /s yourfile.reg
 reg import yourfile.reg
 for %f in (.\*) do @echo %f ; iterate through files in current dir

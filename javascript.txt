@@ -1,3 +1,4 @@
+console.log("hello, world");
 const year = 2016; // declare a constant
 Object.freeze();
 myArray.splice(0, 1, 4); // remove 1st element and insert new

@@ -1,3 +1,5 @@
+icacls "C:\Users" /t /grant:r "Administrator":(OI)(CI)F
+icacls "C:\Users" /reset /t
 bcdedit /set testsigning on
 bcdedit /set nointegritychecks on
 regedit /s yourfile.reg

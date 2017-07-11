@@ -1,3 +1,5 @@
+net stop wuauserv ; disable windows update service
+net start wuauserv ; enable windows update service
 icacls "C:\Users" /t /grant:r "Administrator":(OI)(CI)F
 icacls "C:\Users" /reset /t
 bcdedit /set testsigning on

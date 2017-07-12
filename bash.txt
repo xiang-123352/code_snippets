@@ -1,4 +1,4 @@
-read [-p $FILE] $VAR # read text from a file into a variable
+read VARIABLE # read a line into a variable
 ifconfig -u # show inactive network connections
 python -m pdb python-script.py # run a python program in debug mode
 [ condition ] && {things if true} || {things if false}

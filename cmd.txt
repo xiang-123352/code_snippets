@@ -1,3 +1,4 @@
+fsutil resource setautoreset true C:\ ; delete ntfs metadata transactions on next mount
 wusa /uninstall /kb:{update ID} ; uninstall windows update
 wusa /uninstall /kb:3035583 ; uninstall windows 10 upgrade update
 net stop wuauserv ; disable windows update service

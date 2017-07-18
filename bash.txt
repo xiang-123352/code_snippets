@@ -1,3 +1,5 @@
+rm -rf ~/.local/share/gvfs-metadata
+xkill -id $WINDOW_ID
 read VARIABLE # read a line into a variable
 ifconfig -u # show inactive network connections
 python -m pdb python-script.py # run a python program in debug mode

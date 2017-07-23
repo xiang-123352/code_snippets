@@ -1,3 +1,4 @@
+desktop-file-validate <your desktop file>
 rm -rf ~/.local/share/gvfs-metadata
 xkill -id $WINDOW_ID
 read VARIABLE # read a line into a variable

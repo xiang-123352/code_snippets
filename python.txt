@@ -1,3 +1,5 @@
+x11 = ctypes.DLL("libX11.so") # initialize Xlib bindings
+x11.XInitThreads() # use Xlib bindings
 datetime.datetime.now().strftime('%H:%M:%S:%f') # using %f with strftime() get microseconds
 os.listdir(path) # get a list of all files in a given directory
 [int(i) for i in re.findall("\-?[\d]+", str(nested_list))] # convert nested list into a unified list

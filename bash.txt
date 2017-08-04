@@ -1,3 +1,4 @@
+xlsatoms # list all x11 server atoms, the identifier and its associated string
 desktop-file-validate <your desktop file>
 rm -rf ~/.local/share/gvfs-metadata
 xkill -id $WINDOW_ID

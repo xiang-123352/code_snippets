@@ -59,7 +59,7 @@ git blame <file> # print out a short commit id, the author, timestamp for each c
 git commit -m "Initial commit"
 git commit -m --amend # edit the last commit message
 git checkout <file> # reset a single file
-git checkout -- <file> # reset a single file with has the same name as a branch
+git checkout -- <file> # reset a single file which has the same name as a branch
 git checkout feature_1 -- path/to/file/iwant # checkout a single file from another commit or branch
 git revert <commit>
 git push --set-upstream origin master

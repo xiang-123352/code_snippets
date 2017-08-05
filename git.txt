@@ -35,6 +35,7 @@ git stash drop <id> # delete a stash
 git stash clear # delete all stashes
 git reset # undo "git add"
 git reset <file> # undo "git add" for a file
+git reset --hard HEAD
 git reset --hard origin/master # force overwrite of untracked working tree files
 git init
 git init --bare /path/to/repo.git

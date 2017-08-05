@@ -49,6 +49,7 @@ git diff <commit_from> <commit_to> <file>
 git log # show the detailed commit history
 git log -1 # show the last 1 commit
 git log --all
+git log --all --graph
 git log --author="enki\|Joe" # search for the commits made by "enki" or "Joe"
 git log --oneline #  show commit comments
 git log --oneline --graph --decorate # great visual graph

@@ -50,6 +50,7 @@ git diff <commit_from> <commit_to>
 git diff <commit_from> <commit_to> <file>
 git log # show the detailed commit history
 git log -1 # show the last 1 commit
+git log --after="2016-01-01" --before="2016-01-05"
 git log --since="last month" # limit log output by time
 git log --all
 git log --all --graph

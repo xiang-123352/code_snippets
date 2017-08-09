@@ -61,6 +61,7 @@ git commit -m --amend # edit the last commit message
 git checkout <file> # reset a single file
 git checkout -- <file> # reset a single file which has the same name as a branch
 git checkout feature_1 -- path/to/file/iwant # checkout a single file from another commit or branch
+git revert HEAD
 git revert <commit>
 git push --set-upstream origin master
 git push -u origin master # replace master with the name of the branch you want to push

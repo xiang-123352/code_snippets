@@ -1,3 +1,4 @@
+sorted(my_list, reverse=True)
 x11 = ctypes.DLL("libX11.so") # initialize Xlib bindings
 x11.XInitThreads() # use Xlib bindings
 datetime.datetime.now().strftime('%H:%M:%S:%f') # using %f with strftime() get microseconds

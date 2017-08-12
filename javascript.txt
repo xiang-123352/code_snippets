@@ -1,3 +1,6 @@
+performance.mark("start"); // timestamps named 'start' and 'end'
+performance.mark("end"); // ... do something
+performance.measure("duration", "start", "end"); // measure the time elapsed
 new Notification(title, options);
 console.log("hello, world");
 const year = 2016; // declare a constant

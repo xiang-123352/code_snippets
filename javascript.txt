@@ -1,3 +1,4 @@
+new Notification(title, options);
 console.log("hello, world");
 const year = 2016; // declare a constant
 Object.freeze();

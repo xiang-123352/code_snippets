@@ -1,3 +1,4 @@
+git remote rename origin enki
 git bisect run
 git help commit
 git rebase --onto new-source old-source my-branch # avoid problems if the new source branch has had its history rewritten

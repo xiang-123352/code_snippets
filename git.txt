@@ -11,6 +11,8 @@ git branch -m <newname> # rename the current branch, you can do:
 git branch -m <oldname> <newname> # rename a branch
 git push -f --mirror # rename the branch on the remote
 git push origin :the_remote_branch # remove a remote branch
+git config credential.helper 'cache --timeout=900' # remember the password for 15 minutes
+git config core.sparsecheckout true
 git config --list
 git config --global help.autocorrect 30 # add autocorrect to git
 git config --global alias.last 'log -1 HEAD'
@@ -20,7 +22,6 @@ git config --global user.email "john.doe@gmail.com" # set git account email
 git config --global color.ui auto # color highlighted terminal output
 git config --global core.safecrlf false # disable "LF will be replaced by CLRF" warning in git on Windows
 git config --global credential.helper cache # cache the password in the memory
-git config credential.helper 'cache --timeout=900' # remember the password for 15 minutes
 git config --global push.default simple # push only to active upstream branch
 git config --global alias.unstage "reset HEAD" # setup an alias
 git config --unset <variable> # reset variable

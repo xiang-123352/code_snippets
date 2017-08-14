@@ -15,7 +15,6 @@ for /r %f in (.\*) do @echo %f ; iterate through files in current and all subdir
 elevate %CMD% ; run command with elevated privileges
 C:\Windows\System32\drivers\etc ; hosts file location in Windows
 mklink /d "C:\Users\Default\Downloads" "D:\Downloads" ; create symbolic link under Windows
-dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
 runas /noprofile /user:%USER% "%CMD%" ; run command as user
 wmic path softwarelicensingservice get OA3xOriginalProductKey ; get windows product key
 powercfg -attributes SUB_SLEEP HIBERNATEIDLE +ATTRIB_HIDE ; hide the hibernate idle time-out setting
@@ -59,6 +58,7 @@ dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
 dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
 dism /Online /Cleanup-Image /RestoreHealth
 dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows ; repair an offline image using a mounted image as a repair source
+dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
 slmgr.vbs /dli ; check your windows 8 version
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 fsutil dirty set c: ; set dirty bit and force a filesystem check

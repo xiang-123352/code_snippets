@@ -59,6 +59,7 @@ netplwiz ; advanced user account management
 chkdsk e: /r ; repair disk (5 stages)
 chkdsk e: /f ; fix disk (3 stages)
 mountvol b: /s ; mount uefi partition to "b:"
+dism /online /Cleanup-Image /StartComponentCleanup
 dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
 dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
 dism /Online /Cleanup-Image /RestoreHealth

@@ -3,6 +3,7 @@ String s = Float.toString(5.4); // convert numbers to strings
 Double.isNaN(ans) // comparisons with NaN
 boolean b1 = s1.equals(s2); // false
 bool dog = s.contains("dog");
+String[] sub1 = s.split(","); split a string using regular expressions
 String s = String.toUpper("dog"); // convert a string to upper case
 String s = String.toLower("DOG"); // convert a string to lower case
 myAgeInt.equals(hisAgeInt);

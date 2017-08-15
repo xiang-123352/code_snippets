@@ -1,4 +1,5 @@
-chkntfs /x C: ; cancel scheduled disk check
+sfc /scannow /offbootdir=d:\ /offwindir=d:\windows
+chkntfs /x c: ; cancel scheduled disk check
 copy d:\windows\system32\config\RegBack\* d:\windows\system32\config ; restore your windows registry
 findstr /c:"[SR]" CBS.log >sfcdetails.txt
 fsutil resource setautoreset true C:\ ; delete ntfs metadata transactions on next mount

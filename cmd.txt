@@ -59,13 +59,16 @@ netplwiz ; advanced user account management
 chkdsk e: /r ; repair disk (5 stages)
 chkdsk e: /f ; fix disk (3 stages)
 mountvol b: /s ; mount uefi partition to "b:"
-dism /online /Cleanup-Image /StartComponentCleanup
+cleanmgr /sageset:65535
+cleanmgr /sagerun:65535
+dism /Online /Cleanup-Image /StartComponentCleanup
+dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
 dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
 dism /Online /Cleanup-Image /RestoreHealth
 dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows ; repair an offline image using a mounted image as a repair source
 dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
-DISM /Online /Cleanup-Image /RestoreHealth /Source:WIM:F:\Sources\Install.wim:1 /LimitAccess
+dism /Online /Cleanup-Image /RestoreHealth /Source:WIM:F:\Sources\Install.wim:1 /LimitAccess
 slmgr.vbs /dli ; check your windows 8 version
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 fsutil dirty set c: ; set dirty bit and force a filesystem check

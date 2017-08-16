@@ -52,7 +52,7 @@ a[start:end:step] # start to end by step
 print("Hi", end="\r") # overwrite the previous print
 test = str.replace(test, '\n', '\r\n') # add carriage return to the end of a string
 print("%-20.20s" % value) # left aligned, minimum 20 letters, maximum 20 letters long string
-kernprof.py -l -v fib.py # line-by-line timing and execution frequency with a profiler
+kernprof -l -v fib.py # line-by-line timing and execution frequency with a profiler
 window_id.get_full_property(ewmh.display.intern_atom('_NET_FRAME_EXTENTS'), Xatom.CARDINAL).value
 x = () # create an empty tuple
 square = lambda x: x**2 # call the method with square(5)

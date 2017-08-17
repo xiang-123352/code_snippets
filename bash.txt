@@ -1,3 +1,5 @@
+pep8 optparse.py # check your code for conformance
+autopep8 --in-place optparse.py #  automatically reformat code
 pip install SomePackage-1.0-py2.py3-none-any.whl
 python -m pip uninstall lxml
 python -m pip install lxml==3.6.0

@@ -1,3 +1,4 @@
+taskmgr /0 /startup ; open the task manager startup tab
 sfc /scannow /offbootdir=d:\ /offwindir=d:\windows
 chkntfs /x c: ; cancel scheduled disk check
 copy d:\windows\system32\config\RegBack\* d:\windows\system32\config ; restore your windows registry

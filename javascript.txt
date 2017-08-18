@@ -3,6 +3,7 @@ var aTag = document.createElement('a');
 aTag.setAttribute('href',"yourlink.htm");
 aTag.innerHTML = "link text";
 mydiv.appendChild(aTag);
+document.body.insertBefore(mydiv, document.body.firstChild);
 performance.mark("start"); // timestamps named 'start' and 'end'
 performance.mark("end"); // ... do something
 performance.measure("duration", "start", "end"); // measure the time elapsed

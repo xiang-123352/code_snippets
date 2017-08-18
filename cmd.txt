@@ -1,3 +1,7 @@
+shell:Startup ; open the startup folder for your account
+C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+shell:Common Startup ;  open the startup folder for all user accounts
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
 taskmgr /0 /startup ; open the task manager startup tab
 sfc /scannow /offbootdir=d:\ /offwindir=d:\windows
 chkntfs /x c: ; cancel scheduled disk check

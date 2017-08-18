@@ -1,4 +1,4 @@
-git clone https://github.com/OpenTechSchool/underground.wiki.git # make wiki changes and push it to GitHub
+git clone https://github.com/john-doe/my_repo_name.wiki.git # make wiki changes and push it to GitHub
 git checkout -b gh-pages # branch for a basic GitHub page site
 git cherry-pick <commit>
 git remote rename origin enki

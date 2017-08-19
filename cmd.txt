@@ -2,9 +2,13 @@ wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "S
 bcdedit /set {current} safeboot
 bcdedit /set {current} safeboot network
 bcdedit /set {current} safebootalternateshell yes
-diskpart list vol exit
-diskpart sel disk 2 list partition exit
-diskpart sel disk 2 partition 1 assign=z exit; mount offline windows partition to drive letter z:\
+diskpart list disk
+diskpart select disk 0
+diskpart list partition
+diskpart select partition 1
+diskpart assign letter=z ; mount offline windows partition to drive letter z:\
+diskpart remove letter=z
+diskpart list volume
 shell:Startup ; open the startup folder for your account
 C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 shell:Common Startup ;  open the startup folder for all user accounts

@@ -1,3 +1,4 @@
+runas /user:Administrator regedit
 net user Administrator * ; set password for the administrator account
 wmic volume get deviceid 
 wmic /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"

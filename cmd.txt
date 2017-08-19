@@ -2,7 +2,7 @@ bcdedit /set {current} safeboot
 bcdedit /set {current} safeboot network
 bcdedit /set {current} safebootalternateshell yes
 diskpart list disk
-diskpart select disk 2 list partitions
+diskpart select disk 2 list partition
 diskpart select disk 2 partition 1 assign=z ; mount offline windows partition to drive letter z:\
 shell:Startup ; open the startup folder for your account
 C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup

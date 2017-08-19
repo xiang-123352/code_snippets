@@ -1,5 +1,5 @@
 wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
-bcdedit /set {current} safeboot
+bcdedit /set {current} safeboot minimal
 bcdedit /set {current} safeboot network
 bcdedit /set {current} safebootalternateshell yes
 diskpart list disk

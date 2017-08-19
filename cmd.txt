@@ -1,4 +1,4 @@
-sfc /scanfile
+sfc /scanfile=d:\windows\system32\kernel32.dll
 runas /user:Administrator regedit
 net user User /add
 net user User /delete

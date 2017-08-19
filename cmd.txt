@@ -1,3 +1,4 @@
+sfc /scanfile
 runas /user:Administrator regedit
 net user Administrator * ; set password for the administrator account
 wmic volume get deviceid 

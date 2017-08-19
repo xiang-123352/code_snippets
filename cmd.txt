@@ -3,6 +3,7 @@ bcdedit /store E:\boot\BCD /enum
 bcdedit /set {default} safeboot minimal
 bcdedit /set {default} safeboot network
 bcdedit /set {default} safebootalternateshell yes
+bcdedit /deletevalue {default} safeboot
 diskpart list volume
 diskpart list disk
 diskpart select disk 0

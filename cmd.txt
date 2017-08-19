@@ -1,4 +1,5 @@
-wmic.exe /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
+wmic volume get deviceid 
+wmic /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
 bcdedit /store E:\boot\BCD /enum
 bcdedit /set {default} safeboot minimal
 bcdedit /set {default} safeboot network

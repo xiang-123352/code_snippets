@@ -1,3 +1,5 @@
+reagentc /disable ; disable windows recovery environment
+reagentc /enable ; enable windows recovery environment
 rstrui /OFFLINE:c:\windows ; system restore on another windows installation
 reg load hku\Old_User C:\Users\Jack\ntuser.dat
 reg load hklm\Old_System C:\Windows\System32\Config\System

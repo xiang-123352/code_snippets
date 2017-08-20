@@ -1,3 +1,4 @@
+condition_is_true if condition else condition_is_false
 some_func(fargs, *args, **kwargs)
 sorted(my_list, reverse=True)
 x11 = ctypes.DLL("libX11.so") # initialize Xlib bindings

@@ -1,3 +1,5 @@
+bcdedit /set {default} bootmenupolicy legacy
+bcdedit /set {default} bootmenupolicy standard
 bcdedit /set recoveryenabled
 fsutil repair set c: 0
 reagentc /disable ; disable windows recovery environment

@@ -1,3 +1,4 @@
+rstrui /OFFLINE:c:\windows
 reg load hku\Old_User C:\Users\Jack\ntuser.dat
 reg load hklm\Old_System C:\Windows\System32\Config\System
 reg unload hklm\Old_System

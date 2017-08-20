@@ -1,3 +1,6 @@
+reg load hku\Old_User C:\Users\Jack\ntuser.dat
+reg load hklm\Old_System C:\Windows\System32\Config\System
+reg unload hklm\Old_System
 sfc /scanfile=d:\windows\system32\kernel32.dll
 net user User /add
 net user User /delete

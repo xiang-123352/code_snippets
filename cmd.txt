@@ -1,8 +1,8 @@
 sfc /scanfile=d:\windows\system32\kernel32.dll
-runas /user:Administrator regedit
 net user User /add
 net user User /delete
 net user Administrator * ; set password for the administrator account
+runas /user:Administrator regedit
 wmic volume get deviceid 
 wmic /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
 bcdedit /store E:\boot\BCD /enum

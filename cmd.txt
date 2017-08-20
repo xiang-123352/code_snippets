@@ -1,3 +1,5 @@
+icacls . /t /c /reset
+takeown /r /f .
 bcdedit /set {default} bootmenupolicy legacy
 bcdedit /set {default} bootmenupolicy standard
 bcdedit /set recoveryenabled

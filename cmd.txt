@@ -15,6 +15,8 @@ net user User /add
 net user User /delete
 net user Administrator * ; set password for the administrator account
 runas /user:Administrator regedit
+wmic product get name ; list installed programs
+wmic product where name="Program Name" call uninstall ; uninstall program
 wmic volume get deviceid 
 wmic /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
 bcdedit /store E:\boot\BCD /enum

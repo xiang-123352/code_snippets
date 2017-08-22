@@ -1,3 +1,7 @@
+python -m SimpleHTTPServer # simple web server
+python -m http.server # simple web server
+cat file.json|python -m json.tool # print json quickly from a file
+python -m cProfile my_script.py # profiling a script
 pep8 optparse.py # check your code for conformance
 autopep8 --in-place optparse.py #  automatically reformat code
 pip install SomePackage-1.0-py2.py3-none-any.whl

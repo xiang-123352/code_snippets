@@ -1,3 +1,4 @@
+string = "".join(file.readlines()) # merge all lines from a file into a string
 lowerList = map(str.lower, inputList)
 dir() # returns all names in the current scope
 pdb.set_trace()

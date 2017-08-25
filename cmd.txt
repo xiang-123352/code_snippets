@@ -1,3 +1,9 @@
+openfiles ; View open files and the corresponding process names
+openfiles /query /fo list ; view the output in list format
+openfiles /query /fo csv ; view the output in csv format
+openfiles|clip ; copy the output to clipboard
+openfiles|findstr /i <filename> ; find if a particular file is being in use by a program
+openfiles /disconnect <filename>; disconnect files opened from shared folder
 icacls . /t /c /reset
 takeown /r /f .
 bcdedit /set {default} bootmenupolicy legacy

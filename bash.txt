@@ -1,4 +1,4 @@
-install -C -m 775 -o sk -g ostechnix /dir1/file1 /dir2 # change the permissions and ownership of a file during copy
+install -C -o owner -g group -m 775 /source /destination # change the permissions and ownership of a file during copy
 python -m SimpleHTTPServer # simple web server
 python -m http.server # simple web server
 cat file.json|python -m json.tool # print json quickly from a file

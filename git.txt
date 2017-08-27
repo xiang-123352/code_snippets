@@ -29,6 +29,7 @@ git config --global core.safecrlf false # disable "LF will be replaced by CLRF" 
 git config --global credential.helper cache # cache the password in the memory
 git config --global push.default simple # push only to active upstream branch
 git config --global alias.unstage "reset HEAD" # setup an alias
+git config --global -e # open your global .gitconfig file in a text editor
 git config --unset <variable> # reset variable
 curl -u 'john-doe' https://api.github.com/user/repos -d '{"name":"my_repo_name"}' # remote setup github repo
 git remote set-url <name> <newurl> <oldurl>

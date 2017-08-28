@@ -1,3 +1,5 @@
+ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, 0) # run script with admin permissions
+ctypes.windll.shell32.IsUserAnAdmin() # check if user is an admin
 collection = [e if condition1(e) and condition2(e) else modify(e) for e in list]
 sys.path.append(".")
 importlib.reload(module) # reload module

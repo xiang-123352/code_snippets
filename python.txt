@@ -1,3 +1,4 @@
+collection = [e if condition1(e) and condition2(e) else modify(e) for e in list]
 sys.path.append(".")
 importlib.reload(module) # reload module
 string = "".join(file.readlines()) # merge all lines from a file into a string

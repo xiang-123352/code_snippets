@@ -1,3 +1,4 @@
+SELECT column_names FROM table_name WHERE column_name IN (values);
 SHOW databases;
 USE database;
 SHOW variables WHERE variable_name = "datadir"; # show the path where the database is stored

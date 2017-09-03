@@ -43,7 +43,7 @@ math.isinf(var) # check if var is infinite (INF)
 io.open(file, mode='rb', encoding='utf-8')
 print("%r" % data) # print raw format
 a if True else b # conditional if/else
-str.translate(str.maketrans("ABCEGHILOSTZ", "@8(36#!10$72")) # convert a string to leet speak
+"LEETSPEAK".translate(str.maketrans("ABCEGHILOSTZ", "@8(36#!10$72")) # convert a string to leet speak
 set(string.lowercase) <= set(s.lower()) # check if a string is a pangram
 set(string.ascii_lowercase).issubset(s.lower()) # check if a string is a pangram
 sys.path.append("path")

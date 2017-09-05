@@ -346,8 +346,8 @@ ffmpeg -i input.mp4 -vn -acodec copy output.mp4 # drop video, copy audio only
 ffmpeg -i input.mp4 -c copy output.mp4 # repair corrupt mp4
 make gconfig # start gtk kernel configuration tool
 cp /boot/config-$(uname -r) .config # copy current kernel configuration
-patch -N -p1 -i uksm-0.1.2.2-for-v3.2.ge.40.patch # apply a patch
-patch -R -p1 -i file.patch # reverse a patch
+patch -N -p0 -i uksm-0.1.2.2-for-v3.2.ge.40.patch # apply a patch
+patch -R -p0 -i file.patch # reverse a patch
 make help # see a list of typical make targets
 make x86_64_defconfig # make a default kernel configuration
 make -C /lib/modules/$(uname -r)/build M=$PWD modules # build an external module

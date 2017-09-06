@@ -1,3 +1,4 @@
+ln -F <src> <dst> # hard link to a directory
 mate-panel --reset
 install -C -o owner -g group -m 775 /source /destination # change the permissions and ownership of a file during copy
 python -m SimpleHTTPServer # simple web server

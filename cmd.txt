@@ -1,4 +1,5 @@
-openfiles ; View open files and the corresponding process names
+rmdir ; delete empty directory
+openfiles ; view open files and the corresponding process names
 openfiles /query /fo list ; view the output in list format
 openfiles /query /fo csv ; view the output in csv format
 openfiles|clip ; copy the output to clipboard

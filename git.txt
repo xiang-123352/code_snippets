@@ -53,6 +53,9 @@ git add .
 git rm --cached <file> # undo add of file
 git status
 git status --short
+git diff -b
+git diff -w
+git diff --ignore-space-at-eol # ignore whitespace at end of lines
 git diff --cached <file>
 git diff <commit> # see the changes in a commit
 git diff <commit_from> <commit_to>

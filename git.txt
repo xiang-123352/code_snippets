@@ -60,6 +60,7 @@ git diff --cached <file>
 git diff <commit> # see the changes in a commit
 git diff <commit_from> <commit_to>
 git diff <commit_from> <commit_to> <file>
+git diff branch1..branch2
 git log # show the detailed commit history
 git log -1 # show the last 1 commit
 git log --after="2016-01-01" --before="2016-01-05"

@@ -1,3 +1,4 @@
+finddupe -hardlink c:\photos ; replace duplicates with hard links
 compact /c /s /a /f /q /i /exe:xpress16k %PROGRAMFILES%
 rmdir D:\Temp ; delete empty directory
 openfiles ; view open files and the corresponding process names

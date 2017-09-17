@@ -1,3 +1,4 @@
+dpkg-name bar-foo.deb # rename bar-foo.deb to bar-foo_1.0-2_i386.deb
 reporepo -b /path/to/repo includedeb $DISTRIBUTION $PACKAGE.deb # add a debian package to a repository
 dget -x http://example.com/some/path/to/foo_1.0-1.dsc # download and extract a source package
 dpkg -s $PACKAGE # show package status

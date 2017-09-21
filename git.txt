@@ -9,6 +9,7 @@ git help commit
 git rebase --onto new-source old-source my-branch # avoid problems if the new source branch has had its history rewritten
 git checkout -- <file> # discard changes in working directory
 git checkout <branch> # change to another branch
+git checkout <branch> <file>
 git checkout <file> # restore files in working tree from index
 git checkout -b develop origin/develop
 git branch -d the_local_branch # delete a local branch

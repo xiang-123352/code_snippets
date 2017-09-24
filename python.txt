@@ -1,3 +1,4 @@
+fp = StringIO.StringIO(str) # create a filepointer from a string
 locale.getpreferredencoding() # get the users default encoding 
 "Hello world!".replace('l', 'z', 1)
 "Hello world!".replace('l', 'z')

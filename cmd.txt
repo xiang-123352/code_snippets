@@ -1,3 +1,5 @@
+sc create <service> ; create a service
+sc delete <service> ; delete a service
 finddupe -hardlink c:\photos ; replace duplicates with hard links
 compact /c /s /a /f /q /i /exe:xpress16k %PROGRAMFILES%
 rmdir D:\Temp ; delete empty directory

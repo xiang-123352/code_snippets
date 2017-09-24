@@ -1,3 +1,5 @@
+sc start <service> ; start a service
+sc stop <service> ; stop a service
 sc create <service> ; create a service
 sc delete <service> ; delete a service
 finddupe -hardlink c:\photos ; replace duplicates with hard links

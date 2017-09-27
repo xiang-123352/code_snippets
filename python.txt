@@ -2,8 +2,8 @@ re.sub(r"(\w+)", lambda m: callback(m, 'another_arg'), string) # calling a funct
 re.sub(r"%(\w+)%", lambda m: os.getenv(m.group(1)), string) # resolve windows environment variables in a string
 fp = StringIO.StringIO(str) # create a filepointer from a string
 locale.getpreferredencoding() # get the users default encoding 
-"Hello world!".replace('l', 'z') # replace all occourances of "l"
-"Hello world!".replace('l', 'z', 2) # replace two occourances of "l"
+"Hello world!".replace('l', 'z') # replace all occourances of "l" with "z"
+"Hello world!".replace('l', 'z', 2) # replace two occourances of "l" with "z"
 re.findall(r"(\w)\1{2}", "www") # match three of the same characters
 hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, 0) # run script with admin permissions
 ctypes.windll.shell32.IsUserAnAdmin() # check if user is an admin

@@ -1,3 +1,4 @@
+pip install pypiwin32 # install the package for the win32api module
 lame --preset standard file.wav # convert wav to mp3
 backportpackage -s precise -d oneiric -u amplidata-2.5 -r ocaml # backport the ocaml source package from precise (12.04) to lucid (10.04)
 cd -P /proc/7267/cwd # resolve link and change directory

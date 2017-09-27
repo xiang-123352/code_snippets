@@ -1,4 +1,5 @@
-pip install pypiwin32 # install the package for the win32api module
+autopep8 --in-place --aggressive --aggressive <filename> # auto format python code to conform to the pep 8 style guide
+pip install pypiwin32 # install the package for the python win32api module
 lame --preset standard file.wav # convert wav to mp3
 backportpackage -s precise -d oneiric -u amplidata-2.5 -r ocaml # backport the ocaml source package from precise (12.04) to lucid (10.04)
 cd -P /proc/7267/cwd # resolve link and change directory
@@ -11,7 +12,7 @@ cat file.json|python -m json.tool # print json quickly from a file
 python -m cProfile my_script.py # profiling a script
 pep8 optparse.py # check your code for conformance
 autopep8 --in-place optparse.py #  automatically reformat code
-pip install SomePackage-1.0-py2.py3-none-any.whl
+pip install SomePackage-1.0-py2.py3-none-any.whl # install python package
 python -m pip uninstall lxml
 python -m pip install lxml==3.6.0
 python setup.py --command-packages=stdeb.command bdist_rpm # convert python setup.py to rpm package

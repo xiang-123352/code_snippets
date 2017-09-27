@@ -1,5 +1,5 @@
 re.sub(r"()", lambda m: callback(m, 'another_arg'), string) # calling a function on a capture group
-re.sub(r"%(\w+)%", lambda m: os.getenv(m.group(1)), string) # resolve windows environment variables
+re.sub(r"%(\w+)%", lambda m: os.getenv(m.group(1)), string) # resolve windows environment variables in a string
 fp = StringIO.StringIO(str) # create a filepointer from a string
 locale.getpreferredencoding() # get the users default encoding 
 "Hello world!".replace('l', 'z', 1)

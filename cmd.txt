@@ -92,6 +92,7 @@ bcdedit /import c:\boot.bcd ; restore bcd entries
 bcdedit /delete {current} /f ; delete current boot entry
 bcdedit /set {current} description "any name" ; change boot entry name
 bcdboot c:\windows /s c: ; restore boot manager
+bootsect /nt60 SYS
 bootrec /fixmbr
 bootrec /fixboot
 bootrec /rebuildbcd

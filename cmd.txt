@@ -123,7 +123,6 @@ dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windo
 dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
 dism /Online /Cleanup-Image /RestoreHealth /Source:WIM:F:\Sources\Install.wim:1 /LimitAccess
 slmgr.vbs /dli ; check your windows 8 version
-wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 fsutil dirty set c: ; set dirty bit and force a filesystem check
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 gcc -c -mno-cygwin hello.c && c++ -o hello.exe -mno-cygwin hello.o -I/usr/local/mingw/include -L/usr/local/mingw/lib

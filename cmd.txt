@@ -112,6 +112,8 @@ chkdsk e: /f ; fix disk (3 stages)
 mountvol b: /s ; mount uefi partition to "b:"
 cleanmgr /sageset:65535
 cleanmgr /sagerun:65535
+dism /Image:C:\ /Get-Packages
+Dism /Image:C:\ /Remove-Package /PackageName:Package_for_KB######
 dism /Online /Cleanup-Image /StartComponentCleanup
 dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption

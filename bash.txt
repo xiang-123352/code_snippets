@@ -1,3 +1,4 @@
+lsof -P -T -p <pid>
 gcore <pid> # dump the memory of the process
 grep -o <pattern> # output the matching regex pattern in a line
 autopep8 --in-place --aggressive --aggressive <filename> # auto format python code to conform to the pep 8 style guide

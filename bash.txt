@@ -1,3 +1,9 @@
+nm <file> # list the symbols inside an object file (.o) or a (static) library (.a)
+ldd <file> # list the dynamic libraries this library (.so) or executable binary depends on
+ldd -Ur <file> # try to process all relocations and dynamic linking and output errors
+objdump -x <file> # dump the content of the object file, library, or executable
+readelf -a <file> # parse the internal structures of ELF files (.o, .so, .sl, executables) and dump them
+elfdump <file>
 lsof -P -T -p <pid>
 gcore <pid> # dump the memory of the process
 grep -o <pattern> # output the matching regex pattern in a line

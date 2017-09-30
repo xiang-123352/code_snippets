@@ -1,3 +1,5 @@
+os.path.dirname(__file__) # get the path of the file that is currently executed
+os.getcwd() # get working directory
 re.sub(r"(\w+)", lambda m: callback(m, 'another_arg'), string) # calling a function on a capture group
 re.sub(r"%(\w+)%", lambda m: os.getenv(m.group(1)), string) # resolve windows environment variables in a string
 fp = StringIO.StringIO(str) # create a filepointer from a string

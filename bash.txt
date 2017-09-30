@@ -1,3 +1,4 @@
+find -name "*.js" -not -path "directory/*" # exclude directory
 genisoimage -o ../freedos_biosupdate.iso -q -l -N -boot-info-table -iso-level 4 -no-emul-boot -b isolinux/isolinux.bin .
 nm <file> # list the symbols inside an object file (.o) or a (static) library (.a)
 ldd <file> # list the dynamic libraries this library (.so) or executable binary depends on

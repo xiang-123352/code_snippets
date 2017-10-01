@@ -1,3 +1,4 @@
+localedef -f ISO-8859-1 -i de_DE.neu de_TEST
 sort -o <file> <file> # safely sort a file in place
 exec python script.py # replace shell process
 find . -name "*.js" -not -path "directory/*" # exclude directory from find command

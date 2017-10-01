@@ -1,3 +1,4 @@
+tar -zvxf documents.tgz -C /tmp/tgz/ # extract .tar.gz or .tgz files to different directory
 strace -e trace=open <program> # print all fopen-calls sent to the system
 localedef -f ISO-8859-1 -i en_US.new en_NEW # translate en_US.new and safe the locale as en_NEW
 sort -o <file> <file> # safely sort a file in place

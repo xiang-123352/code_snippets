@@ -1,4 +1,4 @@
-localedef -f ISO-8859-1 -i en_US.new en_NEW # translate en_US.new with the charset ISO-8859-1 and safe the locale as en_NEW
+localedef -f ISO-8859-1 -i en_US.new en_NEW # translate en_US.new and safe the locale as en_NEW
 sort -o <file> <file> # safely sort a file in place
 exec python script.py # replace shell process
 find . -name "*.js" -not -path "directory/*" # exclude directory from find command

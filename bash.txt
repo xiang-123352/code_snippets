@@ -1,4 +1,4 @@
-dconf reset -f / # reset desktop to default settings
+dconf reset -f / # reset desktop settings to default
 readelf -h /bin/uname
 tar -zvxf documents.tgz -C /tmp/tgz/ # extract .tar.gz or .tgz files to a different directory
 strace -e trace=open <program> # print all fopen-calls sent to the system

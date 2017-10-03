@@ -1,6 +1,7 @@
+sc create <program> binpath= "C:\Windows\System32\srvany.exe" type= own start= auto DisplayName= "My Sample Program"
 sc config <service> start= <mode>
-for %file in (file1 file2 file3) do (xcopy /h %file destination) ; copy hidden files to destination
-robocopy C:\WINDOWS D:\WINDOWS /mir ; backup windows folder
+for %file in (file1 file2 file3) do (xcopy /h %file <destination>) ; copy hidden files to destination
+robocopy C:\Windows D:\Windows /mir ; backup windows folder
 start cmd ; create a new cmd.exe window
 sc start <service> ; start a service
 sc stop <service> ; stop a service

@@ -1,3 +1,4 @@
+sc config <service> start= <mode>
 for %file in (file1 file2 file3) do (xcopy /h %file destination) ; copy hidden files to destination
 robocopy C:\WINDOWS D:\WINDOWS /mir ; backup windows folder
 start cmd ; create a new cmd.exe window

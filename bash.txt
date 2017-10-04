@@ -1,4 +1,4 @@
-limit -t 600s -m 1000000k <command> <arguments>
+limit -t 600s -m 1000000k <command> <arguments> # limit time and memory consumption of a program
 grep -o '[^,]*$'
 ffmpeg -f concat -i inputs.txt -c copy output.mpg
 ffmpeg -i input_0.mp4 -i input_1.mp4 -c copy -map 0:0 -map 1:1 -shortest out.mp4

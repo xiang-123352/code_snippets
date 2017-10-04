@@ -1,3 +1,4 @@
+schtasks /Query
 schtasks /Create /RU SYSTEM /TN "Aero Glass" /XML task.xml
 schtasks /Run /TN "Aero Glass"
 sc create <program> binpath= "C:\Windows\System32\srvany.exe" type= own start= auto DisplayName= "My Sample Program"

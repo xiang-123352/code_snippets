@@ -1,3 +1,5 @@
+msdt /id <diagnostic_id> ; running a troubleshooter from the command line
+msdt /id NetworkDiagnosticsWeb
 schtasks /Query
 schtasks /Create /RU SYSTEM /TN "Aero Glass" /XML task.xml
 schtasks /Run /TN "Aero Glass"

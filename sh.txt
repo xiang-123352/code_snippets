@@ -1,3 +1,4 @@
+defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 diskutil eject /dev/disk1s3 # remove disk
 hdiutil chpass /path/to/the/diskimage # change the password on an encrypted disk image
 hdiutil attach example.dmg -shadow /tmp/example.shadow -noverify # mount a read-only disk image as read-write

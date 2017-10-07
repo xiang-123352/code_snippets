@@ -1,5 +1,6 @@
+ipconfig /all|findstr /R "DNS\ Servers" ; show dns server address
 tskill explorer
-msdt /id <diagnostic_id> ; running a troubleshooter from the command line
+msdt /id <diagnostic_id> ; run a troubleshooter from the command line
 msdt /id NetworkDiagnosticsWeb
 schtasks /Query
 schtasks /Create /RU SYSTEM /TN "Aero Glass" /XML task.xml
@@ -139,3 +140,4 @@ slmgr.vbs /dli ; check your windows 8 version
 fsutil dirty set c: ; set dirty bit and force a filesystem check
 wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 gcc -c -mno-cygwin hello.c && c++ -o hello.exe -mno-cygwin hello.o -I/usr/local/mingw/include -L/usr/local/mingw/lib
+ipconfig /all | findstr /R "DNS\ Servers"

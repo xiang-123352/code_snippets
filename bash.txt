@@ -126,15 +126,11 @@ ps -U $USER -u $USER u # See every process running as user
 ps -auxf|sort -nr -k4|head -10 # find out the top 10 memory consuming processes
 ps -auxf|sort -nr -k3|head -10 # find out the top 10 CPU consuming processes
 rm $HOME/Library/Caches/com.apple.preferencepanes.cache # reset system preferences pane
-devcon disable =Net USB\* # disable usb network device
-devcon enable =Net USB\* # enable usb network device
 nmap -sS 192.168.178.1 -p23 # check for open telnet port
 netsh wlan show profiles # show wlan profiles
 netsh wlan delete profile name="dlink 15" # delete wlan profile
-defaults write com.apple.screencapture type jpg # change default screenshot file type
 openssl enc -aes-256-cbc -e -in {path-in} -out {path-out} # encrypt any file
 openssl enc -aes-256-cbc -d -in {path-in} -out {path-out} # decrypt any file
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update frequency
 gtkperf # gtk benchmark
 xrender # x11 benchmark
 nmap -v -sP 192.168.1.0/24 # use nmap to ping all the hosts in a network subnet

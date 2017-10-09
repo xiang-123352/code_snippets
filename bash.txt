@@ -1,3 +1,5 @@
+vi /etc/rc.local.shutdown
+wpa_passphrase <ssid> <psk>
 wpa_supplicant -h # list of valid driver values
 locale charmap # query the name of the character encoding in your current locale with the command
 locale -m # provide a list with the names of all installed character encodings

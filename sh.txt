@@ -1,3 +1,5 @@
+defaults write com.apple.screencapture type jpg # change default screenshot file type
+defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update frequency
 defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 diskutil eject /dev/disk1s3 # remove disk
 hdiutil chpass /path/to/the/diskimage # change the password on an encrypted disk image

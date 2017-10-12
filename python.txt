@@ -1,3 +1,4 @@
+lambda x: exec("raise Exception")
 os.path.dirname(__file__) # get the path of the file that is currently executed
 os.getcwd() # get working directory
 re.sub(r"(\w+)", lambda m: callback(m, 'another_arg'), string) # calling a function on a capture group

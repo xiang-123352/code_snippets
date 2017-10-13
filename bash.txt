@@ -1,4 +1,4 @@
-wkhtmltopdf http://www.cyberciti.biz/path/to/url.html output.pdf # convert html page to a pdf
+wkhtmltopdf http://www.cyberciti.biz/path/to/url.html output.pdf # convert a html page to a pdf
 vi /etc/rc.local.shutdown
 wpa_passphrase <ssid> <psk>
 wpa_supplicant -h # list of valid driver values

@@ -1,3 +1,4 @@
+apt-get -s install $PACKAGE # simulate package installation
 dpkg-deb -I $PACKAGE # show package info
 dpkg-deb -c $PACKAGE # list package content
 dpkg-name bar-foo.deb # rename bar-foo.deb to bar-foo_1.0-2_i386.deb

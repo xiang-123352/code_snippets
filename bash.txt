@@ -1,3 +1,4 @@
+modinfo -p <module> # print module parameters
 hdparm -r0 /dev/sdb # turn off the disk devices write protect
 wget -e robots=off <url> # ignore robots.txt
 wkhtmltopdf http://www.cyberciti.biz/path/to/url.html output.pdf # convert a html page to a pdf

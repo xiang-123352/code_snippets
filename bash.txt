@@ -1,3 +1,5 @@
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
 modinfo -p <module> # print possible module parameters
 hdparm -r0 /dev/sdb # turn off the disk devices write protect
 wget -e robots=off <url> # ignore robots.txt

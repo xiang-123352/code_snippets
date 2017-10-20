@@ -1,3 +1,4 @@
+convert d: /fs:ntfs /NoSecurity ; convert an usb-stick from fat32 to ntfs
 ipconfig /all|findstr /R "DNS\ Servers" ; show dns server address
 tskill explorer
 msdt /id <diagnostic_id> ; run a troubleshooter from the command line

@@ -1,3 +1,4 @@
+expand -d file.cab ; show filelist in source
 msiexec /a c:\testfile.msi /qb TARGETDIR=c:\temp\test
 convert d: /fs:ntfs /NoSecurity ; convert an usb-stick from fat32 to ntfs
 ipconfig /all|findstr /R "DNS\ Servers" ; show dns server address

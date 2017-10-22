@@ -196,6 +196,7 @@ service --status-all # determine which services are currently running
 bsdtar -C $DESTINATION -xf debian-8.2.0-i386-netinst.iso pool/main # extract files from an iso
 xorriso -osirrox on -indev debian-8.2.0-i386-netinst.iso -extract pool/main $DESTINATION # extract files from an iso
 isoinfo -J -x /pool/main/a/adduser/adduser_3.113+nmu3_all.deb -i debian-8.2.0-i386-netinst.iso > $DESTINATION/adduser_3.113+nmu3_all.deb # extract files from an iso
+isoinfo -d -i debian-8.2.0-i386-netinst.iso # get the iso label
 7z x -o$DESTINATION -i\!pool/main debian-8.2.0-i386-netinst.iso # extract files from an iso
 time echo "scale=5000; a(1)*4"|bc -l  # benchmark the cpu by calculating pi
 sysbench --num-threads=1 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers

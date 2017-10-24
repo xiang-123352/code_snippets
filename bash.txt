@@ -30,6 +30,7 @@ objdump -x <file> # dump the content of the object file, library, or executable
 readelf -a <file> # parse the internal structures of ELF files (.o, .so, .sl, executables) and dump them
 elfdump <file>
 lsof -P -T -p <pid>
+fuser -v /dev/snd/*
 gcore <pid> # dump the memory of the process
 grep -o <pattern> # output the matching regex pattern in a line
 autopep8 --in-place --aggressive --aggressive <filename> # auto format python code to conform to the pep 8 style guide

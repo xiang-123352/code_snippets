@@ -315,6 +315,7 @@ mount -a # remount /etc/fstab without restarting
 mount --move olddir newdir # move mountpoint from olddir to newdir
 sudo service dbus restart # restart dbus without logoff/reboot
 sudo /etc/init.d/dbus restart # restart dbus without logoff/reboot
+sudo /etc/init.d/alsa-utils restart
 lsblk -f # list the disk partitions layout
 date +'%F %R+%Z' # date format for *.po translation files
 msgunfmt [path_to_file.mo] > [path_to_file.po] # convert a gettext .mo file into a .po file

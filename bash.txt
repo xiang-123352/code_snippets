@@ -1,5 +1,6 @@
 nbd-client -d /dev/nbd0'
 modprobe <module> <parameter>=<value>
+modprobe -c <module> # dump out the effective configuration
 count=‘expr $count + 1‘
 update-mime-database /usr/share/mime 
 grub2-mkconfig -o /boot/grub2/grub.cfg

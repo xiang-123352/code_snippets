@@ -1,3 +1,4 @@
+modprobe <module> <parameter>=<value>
 count=‘expr $count + 1‘
 update-mime-database /usr/share/mime 
 grub2-mkconfig -o /boot/grub2/grub.cfg

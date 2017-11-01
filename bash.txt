@@ -1,3 +1,4 @@
+nbd-client -d /dev/nbd0'
 modprobe <module> <parameter>=<value>
 count=‘expr $count + 1‘
 update-mime-database /usr/share/mime 

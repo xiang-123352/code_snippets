@@ -1,3 +1,4 @@
+sed 'N; /\n,/s/"\? *\n//; P; D' title_csv # regular expression over multiple lines
 gcc -S file.c # convert a c language file to assembly
 nbd-client -d /dev/nbd0'
 modprobe <module> <parameter>=<value>

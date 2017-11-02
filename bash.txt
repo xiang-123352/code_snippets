@@ -1,3 +1,4 @@
+gcc -S file.c # convert a c language file to assembly
 nbd-client -d /dev/nbd0'
 modprobe <module> <parameter>=<value>
 modprobe -c <module> # dump out the effective configuration

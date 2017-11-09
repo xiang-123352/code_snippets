@@ -1,5 +1,0 @@
-boot-tools: sudo apt-get install rtirq-init ksm zram-config ureadahead preload
-fglrx-driver: sudo apt-get install fglrx-driver fglrx-control fglrx-modules-dkms xvba-va-driver
-compton-git: sudo apt-get install libx11-dev libxcomposite-dev libxdamage-dev libxfixes-dev libxext-dev libxrender-dev libxrandr-dev libxinerama-dev pkg-config make x11proto-core-dev libpcre3-dev libconfig-dev libdrm-dev libgl1-mesa-dev libdbus-1-dev asciidoc
-top-tools: sudo apt-get install powertop htop iotop
-virtualbox: sudo apt-get purge virtualbox-guest-dkms virtualbox-guest-x11 virtualbox-guest-utils

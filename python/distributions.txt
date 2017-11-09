@@ -1,0 +1,10 @@
+Ubuntu
+Debian
+Sabayon
+Fedora
+Arch
+Mint
+Slackware
+Mandriva
+Sidux
+Mepis

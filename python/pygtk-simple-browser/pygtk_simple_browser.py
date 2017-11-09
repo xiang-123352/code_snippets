@@ -46,10 +46,6 @@ class SimpleBrowser:
     def on_addressbar_activate(self, widget):
         self.loadurl()
 
-    def on_addressbar_icon_clicked(self, widget, icon, event):
-        if icon.value_name == "GTK_ENTRY_ICON_SECONDARY":
-            self.on_gobutton_clicked(widget)
-
     def on_gobutton_clicked(self, button):
         self.loadurl()
 

@@ -1,0 +1,23 @@
+"abc".repeat(3); // "abcabcabc"
+var mydiv = document.getElementById("myDiv");
+var aTag = document.createElement('a');
+aTag.setAttribute('href',"yourlink.htm");
+aTag.innerHTML = "link text";
+mydiv.appendChild(aTag);
+document.body.insertBefore(mydiv, document.body.firstChild);
+performance.mark("start"); // timestamps named 'start' and 'end'
+performance.mark("end"); // ... do something
+performance.measure("duration", "start", "end"); // measure the time elapsed
+new Notification(title, options);
+console.log("hello, world");
+const year = 2016; // declare a constant
+Object.freeze();
+myArray.splice(0, 1, 4); // remove 1st element and insert new
+myArray.push(555); // append values to an array (list)
+myArray.push(5,6,7); // append values to an array (list)
+parseInt("10", 10); // decimal, base 10
+parseInt("011", 2); // binary, base 2
+parseFloat("0.1");
+typeof var; // get the type of a variable
+(function(){ // code goes here })(); // immediately-invoked function expression (IIFE)
+"use strict"; // enable strict mode

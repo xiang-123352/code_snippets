@@ -1,0 +1,4 @@
+.backup tablename backup.sqlite
+.tables # list the tables in your database
+.schema tablename # list how the table looks
+.help # list all of the available SQLite prompt commands

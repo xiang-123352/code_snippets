@@ -1,3 +1,96 @@
+sed 'N; /\n,/s/"\? *\n//; P; D' title_csv # regular expression over multiple lines
+gcc -S file.c # convert a c language file to assembly
+nbd-client -d /dev/nbd0'
+modprobe <module> <parameter>=<value>
+modprobe -c <module> # dump out the effective configuration
+count=‘expr $count + 1‘
+update-mime-database /usr/share/mime 
+grub2-mkconfig -o /boot/grub2/grub.cfg
+grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+modinfo -p <module> # print possible module parameters
+hdparm -r0 /dev/sdb # turn off the disk devices write protect
+wget -e robots=off <url> # ignore robots.txt
+wkhtmltopdf http://www.cyberciti.biz/path/to/url.html output.pdf # convert a html page to a pdf
+vi /etc/rc.local.shutdown
+wpa_passphrase <ssid> <psk>
+wpa_supplicant -h # list of valid driver values
+locale charmap # query the name of the character encoding in your current locale with the command
+locale -m # provide a list with the names of all installed character encodings
+limit -t 600s -m 1000000k <command> <arguments> # limit time and memory consumption of a program
+grep -o '[^,]*$'
+ffmpeg -f concat -i inputs.txt -c copy output.mpg
+ffmpeg -i input_0.mp4 -i input_1.mp4 -c copy -map 0:0 -map 1:1 -shortest out.mp4
+ffmpeg -i input_0.mp4 -i input_1.mp4 -c copy -map 0:v:0 -map 1:a:0 -shortest out.mp4
+dconf reset -f / # reset desktop settings to default
+readelf -h /bin/uname
+tar -zvxf documents.tgz -C /tmp/tgz/ # extract .tar.gz or .tgz files to a different directory
+strace -e trace=open <program> # print all fopen-calls sent to the system
+localedef -f ISO-8859-1 -i en_US.new en_NEW # translate en_US.new and safe the locale as en_NEW
+sort -o <file> <file> # safely sort a file in place
+exec python script.py # replace shell process
+find . -name "*.js" -not -path "directory/*" # exclude directory from find command
+genisoimage -o ../freedos_biosupdate.iso -q -l -N -boot-info-table -iso-level 4 -no-emul-boot -b isolinux/isolinux.bin .
+nm <file> # list the symbols inside an object file (.o) or a (static) library (.a)
+ldd <file> # list the dynamic libraries this library (.so) or executable binary depends on
+ldd -Ur <file> # try to process all relocations and dynamic linking and output errors
+objdump -x <file> # dump the content of the object file, library, or executable
+readelf -a <file> # parse the internal structures of ELF files (.o, .so, .sl, executables) and dump them
+elfdump <file>
+lsof -P -T -p <pid>
+fuser -v /dev/snd/*
+gcore <pid> # dump the memory of the process
+grep -o <pattern> # output the matching regex pattern in a line
+autopep8 --in-place --aggressive --aggressive <filename> # auto format python code to conform to the pep 8 style guide
+pip install pypiwin32 # install the package for the python win32api module
+lame --preset standard file.wav # convert wav to mp3
+backportpackage -s precise -d oneiric -u amplidata-2.5 -r ocaml # backport the ocaml source package from precise (12.04) to lucid (10.04)
+cd -P /proc/7267/cwd # resolve link and change directory
+ln -F <src> <dst> # hard link to a directory
+mate-panel --reset
+install -C -o owner -g group -m 775 /source /destination # change the permissions and ownership of a file during copy
+python -m SimpleHTTPServer # simple web server
+python -m http.server # simple web server
+cat file.json|python -m json.tool # print json quickly from a file
+python -m cProfile my_script.py # profiling a script
+pep8 optparse.py # check your code for conformance
+autopep8 --in-place optparse.py #  automatically reformat code
+pip install SomePackage-1.0-py2.py3-none-any.whl # install python package
+python -m pip uninstall lxml
+python -m pip install lxml==3.6.0
+python setup.py --command-packages=stdeb.command bdist_rpm # convert python setup.py to rpm package
+python setup.py --command-packages=stdeb.command bdist_deb # convert python setup.py to deb package
+python setup.py --command-packages=stdeb.command sdist_dsc # generate source packages only
+pip install --upgrade pip
+pip3 install thonny
+xlsatoms # list all x11 server atoms, the identifier and its associated string
+desktop-file-validate <your desktop file>
+rm -rf ~/.local/share/gvfs-metadata
+xkill -id $WINDOW_ID
+read VARIABLE # read a line into a variable
+ifconfig -u # show inactive network connections
+python -m pdb python-script.py # run a python program in debug mode
+[ condition ] && {things if true} || {things if false}
+do-release-upgrade # upgrade Ubuntu to a newer version
+echo ${ARRAY[*]} # reference all members of an array
+echo ${ARRAY[@]} # reference all members of an array
+wget -6 http://[2a02:908:...:8a2]:80
+ffmpeg -stream_loop -1 -re -i video.mpg -f mpegts udp://127.0.0.1:65000
+ffmpeg -stream_loop -1 -re -i video.mpg -f mpegts udp://127.0.0.1:65000?fifo_size=250000
+vlc --qt-start-minimized --loop video.mpg :sout=#http{mux=webm,dst=:4545/video.webm} :sout-all :sout-keep
+vlc --qt-start-minimized --loop video.mpg :file-caching=1000 :sout=#transcode{vcodec=theo,vb=800,scale=automatisch,acodec=vorb,ab=128,channels=2,samplerate=44100}:duplicate{dst=http{dst=:4545/video.ogg},dst=127.0.0.1:4545/video.ogg} :ttl=1 :sout-keep :sout-all
+vlc --qt-start-minimized --loop video.mpg :file-caching=1000 :sout=#transcode{vcodec=theo,vb=800,scale=0.65,acodec=vorb,ab=128,channels=2,samplerate=44100}:duplicate{dst=http{dst=:4545/video.ogg},dst=127.0.0.1:4545/video.ogg} :ttl=1 :sout-keep :sout-all
+notify-send "message" -h string:x-canonical-private-synchronous:anything # replace an existing notification
+cat /proc/asound/card*/pcm*/sub*/status # check if soundcard is used
+ldconfig -v # show the directories searched by the linker
+ld --verbose|grep "SEARCH_DIR" # show the directories searched by the linker
+gcc -print-search-dirs # show the directories searched by the linker
+arp-scan -l --interface=wlan0
+arp-scan -l --interface=eth0
+arp-scan --localnet # see all computers connected in the network
+lshw -businfo # show a short summary of the hardware
+pulseaudio -k && alsa force-reload # restart audio stack
+lsof -i|grep "LISTEN" # show active network connections
+netstat -tulpn # show active network connections
 shopt # set and unset shell options
 xev -root
 xprop -root -notype _NET_DESKTOP_VIEWPORT
@@ -8,6 +101,7 @@ usermod
 groupadd
 mysqldump -u $USER -p $DATABASE>dump.sql
 mysql -u $USER -p $DATABASE<dump.sql
+cat ~/.mysql_history # display the history of your sql queries
 diff -r /path1/ /path2/ > Diff.txt # diff of two folders
 wipe -q -Q 1 -r $FOLDER # securely overwrite the folder and it's data with one pass of random data
 sqlite3 ex1 'select * from tbl1'|awk '{printf "<tr><td>%s<td>%s\n",$1,$2 }'
@@ -46,15 +140,11 @@ ps -U $USER -u $USER u # See every process running as user
 ps -auxf|sort -nr -k4|head -10 # find out the top 10 memory consuming processes
 ps -auxf|sort -nr -k3|head -10 # find out the top 10 CPU consuming processes
 rm $HOME/Library/Caches/com.apple.preferencepanes.cache # reset system preferences pane
-devcon disable =Net USB\* # disable usb network device
-devcon enable =Net USB\* # enable usb network device
 nmap -sS 192.168.178.1 -p23 # check for open telnet port
 netsh wlan show profiles # show wlan profiles
 netsh wlan delete profile name="dlink 15" # delete wlan profile
-defaults write com.apple.screencapture type jpg # change default screenshot file type
 openssl enc -aes-256-cbc -e -in {path-in} -out {path-out} # encrypt any file
 openssl enc -aes-256-cbc -d -in {path-in} -out {path-out} # decrypt any file
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update frequency
 gtkperf # gtk benchmark
 xrender # x11 benchmark
 nmap -v -sP 192.168.1.0/24 # use nmap to ping all the hosts in a network subnet
@@ -114,12 +204,16 @@ service --status-all # determine which services are currently running
 bsdtar -C $DESTINATION -xf debian-8.2.0-i386-netinst.iso pool/main # extract files from an iso
 xorriso -osirrox on -indev debian-8.2.0-i386-netinst.iso -extract pool/main $DESTINATION # extract files from an iso
 isoinfo -J -x /pool/main/a/adduser/adduser_3.113+nmu3_all.deb -i debian-8.2.0-i386-netinst.iso > $DESTINATION/adduser_3.113+nmu3_all.deb # extract files from an iso
+isoinfo -d -i debian-8.2.0-i386-netinst.iso # get the iso label
 7z x -o$DESTINATION -i\!pool/main debian-8.2.0-i386-netinst.iso # extract files from an iso
 time echo "scale=5000; a(1)*4"|bc -l  # benchmark the cpu by calculating pi
 sysbench --num-threads=1 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers
 sysbench --num-threads=4 --cpu-max-prime=10000 --test=cpu run # benchmark the cpu by calculating prime numbers
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main # force apt to use a certain architecture
+gs -o output.pdf -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress input.pdf # fix/repair a corrupted pdf file
+pdftocairo -pdf input.pdf output.pdf # fix/repair a corrupted pdf file
 pdfseparate input.pdf %d.pdf # extract all pages from input.pdf
+pdfunite input1.pdf input2.pdf output.pdf # merge several pdf files
 pdfjam 1.pdf 2.pdf --nup 2x1 --twoside --outfile 1_2.pdf # merge two pdf files side by side
 pdfjam 1.pdf 2.pdf --nup 2x1 --landscape --outfile 1_2.pdf # merge two pdf files one over the other
 pdftk *.pdf cat output output.pdf # merge all pdf files into one pdf file
@@ -228,6 +322,7 @@ mount -a # remount /etc/fstab without restarting
 mount --move olddir newdir # move mountpoint from olddir to newdir
 sudo service dbus restart # restart dbus without logoff/reboot
 sudo /etc/init.d/dbus restart # restart dbus without logoff/reboot
+sudo /etc/init.d/alsa-utils restart
 lsblk -f # list the disk partitions layout
 date +'%F %R+%Z' # date format for *.po translation files
 msgunfmt [path_to_file.mo] > [path_to_file.po] # convert a gettext .mo file into a .po file
@@ -297,8 +392,8 @@ ffmpeg -i input.mp4 -vn -acodec copy output.mp4 # drop video, copy audio only
 ffmpeg -i input.mp4 -c copy output.mp4 # repair corrupt mp4
 make gconfig # start gtk kernel configuration tool
 cp /boot/config-$(uname -r) .config # copy current kernel configuration
-patch -N -p1 -i uksm-0.1.2.2-for-v3.2.ge.40.patch # apply a patch
-patch -R -p1 -i file.patch # reverse a patch
+patch -N -p0 -i uksm-0.1.2.2-for-v3.2.ge.40.patch # apply a patch
+patch -R -p0 -i file.patch # reverse a patch
 make help # see a list of typical make targets
 make x86_64_defconfig # make a default kernel configuration
 make -C /lib/modules/$(uname -r)/build M=$PWD modules # build an external module

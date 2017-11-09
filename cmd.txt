@@ -1,7 +1,91 @@
+expand -d file.cab ; show filelist in source
+msiexec /a c:\testfile.msi /qb TARGETDIR=c:\temp\test
+convert d: /fs:ntfs /NoSecurity ; convert an usb-stick from fat32 to ntfs
+ipconfig /all|findstr /R "DNS\ Servers" ; show dns server address
+tskill explorer
+msdt /id <diagnostic_id> ; run a troubleshooter from the command line
+msdt /id NetworkDiagnosticsWeb
+schtasks /Query
+schtasks /Create /RU SYSTEM /TN "Aero Glass" /XML task.xml
+schtasks /Run /TN "Aero Glass"
+sc create <program> binpath= "C:\Windows\System32\srvany.exe" type= own start= auto DisplayName= "My Sample Program"
+sc config <service> start= <mode>
+for %file in (file1 file2 file3) do (xcopy /h %file <destination>) ; copy hidden files to destination
+robocopy C:\Windows D:\Windows /mir ; backup windows folder
+start cmd ; create a new cmd.exe window
+sc start <service> ; start a service
+sc stop <service> ; stop a service
+sc create <service> ; create a service
+sc delete <service> ; delete a service
+finddupe -hardlink c:\photos ; replace duplicates with hard links
+compact /c /s /a /f /q /i /exe:xpress16k %PROGRAMFILES%
+rmdir D:\Temp ; delete empty directory
+openfiles ; view open files and the corresponding process names
+openfiles /query /fo list ; view the output in list format
+openfiles /query /fo csv ; view the output in csv format
+openfiles|clip ; copy the output to clipboard
+openfiles|findstr /i <filename> ; find if a particular file is being in use by a program
+openfiles /disconnect <filename>; disconnect files opened from shared folder
+icacls . /t /c /reset
+takeown /r /f .
+bcdedit /set {default} bootmenupolicy legacy
+bcdedit /set {default} bootmenupolicy standard
+bcdedit /set recoveryenabled
+fsutil repair set c: 0
+reagentc /disable ; disable windows recovery environment
+reagentc /enable ; enable windows recovery environment
+rstrui /OFFLINE:c:\windows ; system restore on another windows installation
+reg load hku\Old_User C:\Users\Jack\ntuser.dat
+reg load hklm\Old_System C:\Windows\System32\Config\System
+reg unload hklm\Old_System
+sfc /scanfile=d:\windows\system32\kernel32.dll
+net user User /add
+net user User /delete
+net user Administrator * ; set password for the administrator account
+runas /user:Administrator regedit
+wmic product get name ; list installed programs
+wmic product where name="Program Name" call uninstall ; uninstall program
+wmic volume get deviceid 
+wmic /Namespace:\\root\default Path SystemRestore Call CreateRestorePoint "System Restore Point", 100, 7"
+bcdedit /store E:\boot\BCD /enum
+bcdedit /set {default} safeboot minimal
+bcdedit /set {default} safeboot network
+bcdedit /set {default} safebootalternateshell yes
+bcdedit /deletevalue {default} safeboot
+diskpart list volume
+diskpart list disk
+diskpart select disk 0
+diskpart list partition
+diskpart select partition 1
+diskpart assign letter=e ; mount offline windows partition to drive letter z:\
+diskpart remove letter=e
+shell:Startup ; open the startup folder for your account
+C:\Users\User\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+shell:Common Startup ;  open the startup folder for all user accounts
+C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+taskmgr /0 /startup ; open the task manager startup tab
+sfc /scannow /offbootdir=d:\ /offwindir=d:\windows
+chkntfs /x c: ; cancel scheduled disk check
+copy d:\windows\system32\config\RegBack\* d:\windows\system32\config ; restore your windows registry
+findstr /c:"[SR]" CBS.log >sfcdetails.txt
+fsutil resource setautoreset true C:\ ; delete ntfs metadata transactions on next mount
+wusa /uninstall /kb:{update ID} ; uninstall windows update
+wusa /uninstall /kb:3035583 ; uninstall windows 10 upgrade update
+net stop wuauserv ; disable windows update service
+net start wuauserv ; enable windows update service
+icacls "C:\Users" /t /grant:r "Administrator":(OI)(CI)F
+icacls "C:\Users" /reset /t
+bcdedit /set testsigning on
+bcdedit /set nointegritychecks on
+bcdedit /set {default} recoveryenabled no ; disable automatic startup repair
+regedit /s yourfile.reg
+reg import yourfile.reg
+for %f in (.\*) do @echo %f ; iterate through files in current dir
+for /d %s in (.\*) do @echo %s ; iterate through subdirs in current dir
+for /r %f in (.\*) do @echo %f ; iterate through files in current and all subdirs
 elevate %CMD% ; run command with elevated privileges
 C:\Windows\System32\drivers\etc ; hosts file location in Windows
 mklink /d "C:\Users\Default\Downloads" "D:\Downloads" ; create symbolic link under Windows
-dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
 runas /noprofile /user:%USER% "%CMD%" ; run command as user
 wmic path softwarelicensingservice get OA3xOriginalProductKey ; get windows product key
 powercfg -attributes SUB_SLEEP HIBERNATEIDLE +ATTRIB_HIDE ; hide the hibernate idle time-out setting
@@ -22,7 +106,9 @@ bcdedit /export c:\boot.bcd ; backup bcd entries
 bcdedit /import c:\boot.bcd ; restore bcd entries
 bcdedit /delete {current} /f ; delete current boot entry
 bcdedit /set {current} description "any name" ; change boot entry name
+bcedit /set recoveryenabled no ; disable auto repair
 bcdboot c:\windows /s c: ; restore boot manager
+bootsect /nt60 SYS
 bootrec /fixmbr
 bootrec /fixboot
 bootrec /rebuildbcd
@@ -31,19 +117,30 @@ net user %USERNAME% %PASSWORD% /add ; create new account
 net localgroup Administrators %USERNAME% /add ; assign user administrative privileges
 net user %USERNAME% * ; ask interactive for new password
 net user %USERNAME% "" ; set a password to blank
+shutdown /r /o /f /t 00 ; reboot into safe boot mode
 shutdown -g -t 0 ; clean reboot
 shutdown -s -hybrid -f -t 0 ; hybrid shutdown
+shutdown -s -t 60 ; shutdown in 60 seconds
 shutdown -a ; abort shutdown
+shutdown /f /s /t 0 ; force shutdown windows 8
 netplwiz ; advanced user account management
 chkdsk e: /r ; repair disk (5 stages)
 chkdsk e: /f ; fix disk (3 stages)
 mountvol b: /s ; mount uefi partition to "b:"
+cleanmgr /sageset:65535
+cleanmgr /sagerun:65535
+dism /Image:C:\ /Get-Packages
+dism /Image:C:\ /Remove-Package /PackageName:Package_for_KB######
+dism /Online /Cleanup-Image /StartComponentCleanup
+dism /Online /Cleanup-Image /StartComponentCleanup /ResetBase
 dism /Online /Cleanup-Image /ScanHealth ; scan the image to check for corruption
 dism /Online /Cleanup-Image /CheckHealth ; check the image to see whether any corruption has been detected
+dism /Online /Cleanup-Image /RestoreHealth
 dism /Image:C:\offline /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows ; repair an offline image using a mounted image as a repair source
-shutdown /f /s /t 0 ; force shutdown windows 8
+dism /Online /Cleanup-Image /RestoreHealth /Source:C:\test\mount\windows /LimitAccess ; repair an online image using some of your own sources instead of Windows Update
+dism /Online /Cleanup-Image /RestoreHealth /Source:WIM:F:\Sources\Install.wim:1 /LimitAccess
 slmgr.vbs /dli ; check your windows 8 version
-wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 fsutil dirty set c: ; set dirty bit and force a filesystem check
-wmiofck.exe -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
+wmiofck -hwmidevs.h -m -u moftable.mbf ; decompile moftable.mbf to hwmidevs.h
 gcc -c -mno-cygwin hello.c && c++ -o hello.exe -mno-cygwin hello.o -I/usr/local/mingw/include -L/usr/local/mingw/lib
+ipconfig /all | findstr /R "DNS\ Servers"

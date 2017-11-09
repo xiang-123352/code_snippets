@@ -1,40 +1,94 @@
-https://www.ralfebert.de/git/ # Sehr gutes und einfaches Git Tutorial
-http://chris.beams.io/posts/git-commit/ # How to write proper Git commit messages
+git tag -a v1.0.0 -m "release version 1.0.0" # create github release
+git push --tags
+git stash <branch> <new_branch> # apply the stashed changes to a new branch before merging them into the old one
+git checkout stash@{0} -- <file> # restore a single file from stash
+gitk --all --date-order $(git log -g --pretty=%H)
+git clone https://github.com/john-doe/my_repo_name.wiki.git # make wiki changes and push it to GitHub
+git checkout -b gh-pages # branch for a basic GitHub page site
+git cherry-pick <commit>
+git remote rename origin enki
+git bisect run
+git help commit
+git rebase --onto new-source old-source my-branch # avoid problems if the new source branch has had its history rewritten
+git checkout -- <file> # discard changes in working directory
 git checkout <branch> # change to another branch
+git checkout <branch> <file>
 git checkout <file> # restore files in working tree from index
+git checkout -b develop origin/develop
 git branch -d the_local_branch # delete a local branch
+git branch -m <newname> # rename the current branch, you can do:
+git branch -m <oldname> <newname> # rename a branch
+git push -f --mirror # rename the branch on the remote
 git push origin :the_remote_branch # remove a remote branch
+git config credential.helper 'cache --timeout=900' # remember the password for 15 minutes
+git config core.sparsecheckout true
 git config --list
+git config --global help.autocorrect 30 # add autocorrect to git
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.timeline "log --oneline --graph --decorate"
 git config --global user.name "John Doe" # set git account username
 git config --global user.email "john.doe@gmail.com" # set git account email
 git config --global color.ui auto # color highlighted terminal output
 git config --global core.safecrlf false # disable "LF will be replaced by CLRF" warning in git on Windows
 git config --global credential.helper cache # cache the password in the memory
-git config credential.helper 'cache --timeout=900' # remember the password for 15 minutes
 git config --global push.default simple # push only to active upstream branch
 git config --global alias.unstage "reset HEAD" # setup an alias
+git config --global -e # open your global .gitconfig file in a text editor
 git config --unset <variable> # reset variable
 curl -u 'john-doe' https://api.github.com/user/repos -d '{"name":"my_repo_name"}' # remote setup github repo
 git remote set-url <name> <newurl> <oldurl>
 git remote add origin https://github.com/john-doe/my_repo_name.git
 git pull origin master # update local copy
+git stash # stash your changes
+git stash save <name> # name your stash
+git stash apply # restore your changes
+git stash list # show all stashes
+git stash apply stash@{1} # apply the second stash
+git stash pop # apply the top stash and delete it from the stack
+git stash drop <id> # delete a stash
+git stash clear # delete all stashes
 git reset # undo "git add"
 git reset <file> # undo "git add" for a file
+git reset --hard HEAD
 git reset --hard origin/master # force overwrite of untracked working tree files
 git init
+git init --bare /path/to/repo.git
 git add .
 git rm --cached <file> # undo add of file
 git status
+git status --short
+git diff -b
+git diff -w
+git diff --ignore-space-at-eol # ignore whitespace at end of lines
+git diff --cached <file>
 git diff <commit> # see the changes in a commit
 git diff <commit_from> <commit_to>
-git diff --cached <file>
-git log
+git diff <commit_from> <commit_to> <file>
+git diff branch1..branch2
+git log # show the detailed commit history
+git log -1 # show the last 1 commit
+git log --after="2016-01-01" --before="2016-01-05"
+git log --since="last month" # limit log output by time
+git log --all
+git log --all --graph
+git log --author="enki\|Joe" # search for the commits made by "enki" or "Joe"
+git log --oneline #  show commit comments
+git log --oneline --graph --decorate # great visual graph
+git log --oneline <file> # view the change history of a file
+git log -p <file> # generate the patches for each log entry
+git blame <file> # print out a short commit id, the author, timestamp for each changed line
 git commit -m "Initial commit"
-git commit -m --amend # edit the last commit message
-git checkout filename # reset a single file
-git checkout -- filename # reset a single file with has the same name as a branch
+git commit --amend # edit the last commit message
+git checkout <file> # reset a single file
+git checkout -- <file> # reset a single file which has the same name as a branch
 git checkout feature_1 -- path/to/file/iwant # checkout a single file from another commit or branch
+git revert HEAD
 git revert <commit>
+git push --set-upstream origin master
 git push -u origin master # replace master with the name of the branch you want to push
 git tag 1.0.0 <commit> # tag a commit
+git tag -a -m "Tagging version 1.28-5" 1.28-5 # assign a tag
+git push --tags # push the tags to github
+git tag -d 1.28-5 # delete a tag
+git push origin :refs/tags/1.28-5 # remove the tag from github
 git diff <tag>..<tag> # show difference from tag to tag

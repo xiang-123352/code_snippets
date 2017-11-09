@@ -8,9 +8,8 @@
 
 void print_help(char *prog_name) {
         printf("Usage: %s [-n] DEVNAME COMMAND\n", prog_name);
-        printf("\n");
-        printf("Options:\n");
-        printf("  -n\tdo not append a newline\n");
+        printf("Usage: '-n' is an optional argument if you want to push a new line at the end of the text\n");
+        printf("Usage: Will require 'sudo' to run if the executable is not setuid root\n");
         exit(1);
 }
 
@@ -19,12 +18,12 @@ int main (int argc, char *argv[]) {
     int i, fd;
     int devno, commandno, newline;
     int mem_len;
-    devno = 1; commandno = 2; newline = 1;
+    devno = 1; commandno = 2; newline = 0;
     if (argc < 3) {
         print_help(argv[0]);
     }
     if (argc > 3 && argv[1][0] == '-' && argv[1][1] == 'n') {
-        devno = 2; commandno = 3; newline=0;
+        devno = 2; commandno = 3; newline=1;
     } else if (argc > 3 && argv[1][0] == '-' && argv[1][1] != 'n') {
         printf("Invalid Option\n");
         print_help(argv[0]);
@@ -44,8 +43,9 @@ int main (int argc, char *argv[]) {
         }
 
         strcat(cmd, argv[i]);
+        strcat(cmd, " ");
     }
-    if (newline == 0)
+  if (newline == 0)
         usleep(225000);
     for (i = 0; cmd[i]; i++)
         ioctl (fd, TIOCSTI, cmd+i);

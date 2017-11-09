@@ -1,0 +1,15 @@
+Console console = System.console();
+String myString = console.readLine(); // read a line as a string
+char[] pw = console.readPassword(); // read a password as an array of chars
+Files.setOwner(file, owner); // set a file owner
+String s = Float.toString(5.4); // convert numbers to strings
+Double.isNaN(ans) // comparisons with NaN
+boolean b1 = s1.equals(s2); // false
+bool dog = s.contains("dog");
+String[] sub1 = s.split(","); split a string using regular expressions
+String s = String.toUpper("dog"); // convert a string to upper case
+String s = String.toLower("DOG"); // convert a string to lower case
+myAgeInt.equals(hisAgeInt);
+System.out.println("Hello World!");
+import java.io.*; // import a package
+package java.lang; // specify a java file belongs to a certain package

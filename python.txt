@@ -1,3 +1,99 @@
+lambda x: exec("raise Exception")
+os.path.dirname(__file__) # get the path of the file that is currently executed
+os.getcwd() # get working directory
+re.sub(r"(\w+)", lambda m: callback(m, 'another_arg'), string) # calling a function on a capture group
+re.sub(r"%(\w+)%", lambda m: os.getenv(m.group(1)), string) # resolve windows environment variables in a string
+fp = StringIO.StringIO(str) # create a filepointer from a string
+locale.getpreferredencoding() # get the users default encoding 
+"Hello world!".replace('l', 'z') # replace all occourances of "l" with "z"
+"Hello world!".replace('l', 'z', 2) # replace two occourances of "l" with "z"
+re.findall(r"(\w)\1{2}", "www") # match three of the same characters
+hinstance = ctypes.windll.shell32.ShellExecuteW(None, 'runas', sys.executable, sys.argv[0], None, 0) # run script with admin permissions
+ctypes.windll.shell32.IsUserAnAdmin() # check if user is an admin
+collection = [e if condition1(e) and condition2(e) else modify(e) for e in list]
+sys.path.append(".")
+importlib.reload(module) # reload module
+string = "".join(file.readlines()) # merge all lines from a file into a string
+lowerList = map(str.lower, inputList)
+dir() # returns all names in the current scope
+pdb.set_trace()
+condition_is_true if condition else condition_is_false
+(if_test_is_false, if_test_is_true)[test]
+some_func(fargs, *args, **kwargs)
+sorted(my_list, reverse=True)
+x11 = ctypes.DLL("libX11.so") # initialize Xlib bindings
+x11.XInitThreads() # use Xlib bindings
+datetime.datetime.now().strftime('%H:%M:%S:%f') # using %f with strftime() get microseconds
+os.listdir(path) # get a list of all files in a given directory
+list(itertools.chain(*nested_list)) # convert nested list into a unified list
+[int(i) for i in re.findall("\-?[\d]+", str(nested_list))] # convert nested list into a unified list
+"http://www.google.com".startswith(("http://", "https://")) # search for multiple prefixes in a string
+max(set(test), key=test.count) # find the most frequent value in a list
+test(**testDict) # unpack values of a dict
+testSet = {i * 2 for i in xrange(10)} # set comprehension
+list_a.reverse() # reverse the items in a list
+bytearray.fromhex('2ef0f1f2') # create a bytearray object from a hexadecimal string
+bytearray(b'\xf0\xf1\xf2').hex() # convert a bytearray to a hexadecimal string
+os.path.expanduser('~') # get the home directory
+enki.f() == Enki.f(enki) # two ways to call a class and its function
+abs(num) # compute the absolute value of a number
+random.sample(items, n) # select n random items
+x < y < 15 # chain comparison operators
+pydoc modules # check available python modules
+help('modules') # check available python modules
+difflib.unified_diff(text_A, text_B)
+turtle.pencolor("red")
+turtle.setposition(x, y)
+turtle.dot()
+random.choice([1, 2, 3])
+random.randrange(0, 101, 5) # generate a random integer from a range, with a step of the lower bound
+math.modf(4,4) # get a tuple containing the fractional and whole number parts of a number
+math.isnan(var) # check if var is not a number (Nan)
+math.isinf(var) # check if var is infinite (INF)
+io.open(file, mode='rb', encoding='utf-8')
+print("%r" % data) # print raw format
+a if True else b # conditional if/else
+"LEETSPEAK".translate(str.maketrans("ABCEGHILOSTZ", "@8(36#!10$72")) # convert a string to leet speak
+set(string.lowercase) <= set(s.lower()) # check if a string is a pangram
+set(string.ascii_lowercase).issubset(s.lower()) # check if a string is a pangram
+sys.path.append("path")
+os.path.isfile("path")
+os.path.isdir("path")
+os.path.exists("path")
+_ # stores the last printed expression on the interactive prompt
+{value: key for key, value in original.items()} # dict comprehension
+{w[0] for w in words} # set comprehension
+[j + k for j in s1 for k in s2] # list comprehension with nested for loops
+[(j, k) for j in s1 for k in s2]
+[x for i in range(2) for x in range(10) if i == x%2]
+[x for x in string if x.isdigit()]
+uid = os.getuid() # get the uid
+path_uid = os.stat('/path').st_uid # get the uid of path
+globals().update(var=value) # assign a variable to global
+list.__setitem__(index, value) # assign a variable to a mutable sequence or a map
+a[start:end:step] # start to end by step
+print("Hi", end="\r") # overwrite the previous print
+test = str.replace(test, '\n', '\r\n') # add carriage return to the end of a string
+print("%-20.20s" % value) # left aligned, minimum 20 letters, maximum 20 letters long string
+kernprof -l -v fib.py # line-by-line timing and execution frequency with a profiler
+window_id.get_full_property(ewmh.display.intern_atom('_NET_FRAME_EXTENTS'), Xatom.CARDINAL).value
+x = () # create an empty tuple
+square = lambda x: x**2 # call the method with square(5)
+re.findall('"((http|ftp)s?://.*?)"', html) # get all links from a website
+str_list = filter(None, str_list) # remove empty strings from a list of strings
+print("Print percent %% in sentence and not %s" % test)
+sys.stdout.flush()
+sys.stdout = open(file, "wt") # write stdout to file
+sys.exit(0) # set return code to "0"
+subprocess.check_output(["grep 'this is' /tmp/test.txt"], shell=True)
+subprocess.Popen(command_list) # execute subprocess in background
+os.getenv("HOME") # get the path of the user directory
+os.getpid() # obtain the pid of the python script itself
+print("hello", end="", flush=True) # print without newline unbuffered
+printf = sys.stdout.write # print without newline
+import cPickle as pickle
+'abc'.decode('utf-8') # str to unicode
+u'abc'.encode('utf-8') # unicode to str
 builder.add_from_file("file.glade")
 widget = builder.get_object("widget_id")
 sys.path # all directories that python will search for a specific module
@@ -8,7 +104,6 @@ chr(97) # get the letter for an ascii value
 x >= 2 and y != 0 and (x/y) > 2 # guard evaluation to avoid ZeroDivisionError
 json.dumps(vars(class_name), sort_keys=True, indent=4) # serialize a class to a json file
 time.strftime("%Y-%m-%d %H:%M") # print time in the format "Year-Month-Day Hour:Minute"
-sys.stdout = open(file, "wt") # write stdout to file
 str1 = ' '.join(list1) # make a string from a list
 export PYTHONSTARTUP=$HOME/.python/__init__.py
 glob.glob("c:/windows/*.bmp") # get a list of paths matching a Unix-style glob pattern
@@ -19,6 +114,7 @@ type("fancy string") is str # check for data type, returns True or False
 from platform import python_version; python_version() # get python version
 for key, value in dict.items() # iterate over dict keys and values
 for x1, x2 in zip(list1, list2, ...) # iterate over two lists in a flip flop way
+list = [int(i) for i in list] # change type of a whole list
 list = [randint(1, 100) for i in range(10)] # create a list with ten random values ranging from 1 to 100
 list = [0 for i in range(100)] # create a list with hundred 0 values
 print("\033c") # escape c to clear screen
@@ -33,6 +129,5 @@ vars()
 vars(class) # list all vars of a class
 globals() # list global variables
 locals() # list local variables
-pip3 install thonny
 turtle.speed(1.0) # set the drawing speed to "slow"
 turtle.done() # let the window stay open

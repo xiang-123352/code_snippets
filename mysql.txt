@@ -1,3 +1,6 @@
+SELECT column_names FROM table_name WHERE column_name IN (values);
+SHOW databases;
+USE database;
 SHOW variables WHERE variable_name = "datadir"; # show the path where the database is stored
 SHOW FIELDS FROM table_name; # show column name and type
 INSERT INTO table_name (column_name1, column_name2) VALUES (value1, value2); # work like pythons tuple assignment

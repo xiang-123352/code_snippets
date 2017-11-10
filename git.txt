@@ -80,6 +80,7 @@ git log -p <file> # generate the patches for each log entry
 git blame <file> # print out a short commit id, the author, timestamp for each changed line
 git commit -m "Initial commit"
 git commit --amend # edit the last commit message
+git rebase --interactive # edit all commit messages altogether
 git checkout <file> # reset a single file
 git checkout -- <file> # reset a single file which has the same name as a branch
 git checkout feature_1 -- path/to/file/iwant # checkout a single file from another commit or branch

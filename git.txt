@@ -7,6 +7,8 @@ git clone https://github.com/john-doe/my_repo_name.wiki.git # make wiki changes 
 git checkout -b gh-pages # branch for a basic GitHub page site
 git cherry-pick <commit>
 git remote rename origin enki
+git remote add origin <url>
+git remote remove origin
 git bisect run
 git help commit
 git rebase --onto new-source old-source my-branch # avoid problems if the new source branch has had its history rewritten

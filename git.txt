@@ -51,6 +51,7 @@ git reset # undo "git add"
 git reset <file> # undo "git add" for a file
 git reset --hard HEAD
 git reset --hard origin/master # force overwrite of untracked working tree files
+git reset HEAD~1 # undo last commit
 git init
 git init --bare /path/to/repo.git
 git add .

@@ -1,0 +1,554 @@
+<html>
+<head>
+<title>ploglib.c - reference</title>
+</head>
+<body bgcolor="#ffffff">
+
+<h1>Reference for <tt>ploglib.c</tt></h1>
+
+<ul>
+<li><b><a href="#einf">Introduction</a></b></li>
+<li><b><a href="#logformat">Log-formats</a></b></li>
+   <ul>
+   <li><b><a href="#logformat_t">The log-format-type</a></b></li>
+   <li><b><a href="#formatstring">The format-string</a></b></li>
+   <li><b><a href="#abbrev">Month and day-abbreviations</a></b></li>
+   <li><b><a href="#dfname">The default-filename</a></b></li>
+   <li><b><a href="#flags">Flags</a></b></li>
+   </ul>
+<li><b><a href="#accesses">Accesses</a></b></li>
+   <ul>
+   <li><b><a href="#access_t">The type access_t</a></b></li>
+   <li><b><a href="#speicher">Memory management</a></b></li>
+   <li><b><a href="#io">IO</a></b></li>
+   <li><b><a href="#adddfname">Adding a default filename</a></b></li>
+   <li><b><a href="#parse">Parsing of log lines</a></b></li>
+   </ul>
+<li><b><a href="#implementation">Notes about own implementations</a></b></li>
+   <ul>
+   <li><b><a href="#access_tt">Changes of the access_t</a></b></li>
+   <li><b><a href="#logformat_tt">Adding and removing of parsed
+          information</a></b></li>
+   <li><b><a href="#interna">Interna of the logformat-type</a></b></li>
+   </ul>
+<li><b><a href="#copyright">Copyright</a></b></li>
+</ul>
+
+<hr>
+<h2><a name="einf">Introduction</a></h2>
+
+<p><tt>ploglib.c</tt> is a library, which is able to parse log-files of
+HTTP-servers. This is done with the help of regular expressions, so the user
+should be know something about those, if he wants to use the library.</p>
+
+<p>The first thing necessary to parse a log-file, is to inform the library
+about the used log-format. This is done via a modified regular
+expression. This modified expression then is changed into a form usable for
+C, and the parsing can be started. The parser return variables of type <tt><a
+href="#access_t">access_t</a></tt>, in which all desired data is broken
+down.</p>
+
+<hr>
+<h2><a name="logformat">Log-formats</a></h2>
+
+<h3><a name="logformat_t">The log-format-type</a></h3>
+
+<p>Log-formats are represented in the library by the type</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   logformat_t
+</pre></tr></table>
+
+<p>There are the following functions to construct and to free variables of
+this type:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   logformat_t *new_logformat (const char *formatstring);
+   logformat_t *copy_logformat_t (logformat_t *lf);
+   void free_logformat_t (logformat_t *lf);
+</pre></tr></table>
+
+<p>How the <tt>formatstring</tt> given as parameter for
+<tt>new_logformat</tt> has to choosen, explains the next chapter.</p>
+
+<p>The function</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   int access_t_equal (access_t *a1, access_t *a2)
+</pre></tr></table>
+
+<p>compares two variables of this type. It returns, if they are equal, -1,
+otherwise 0.</p>
+
+
+<h3><a name="formatstring">The format-string</a></h3>
+
+<p>The <tt>formatstring</tt> given by the user is a regular expression, which
+may however contain the following elements:</p>
+
+<table border="1">
+<tr><th>Abbr.</th><th>Name</th><th align="left">Meaning</th></tr>
+
+<tr><td valign="top">%S</td>
+<td valign="top">requester</td>
+<td>The IP-Address of the requesting client in the form x.x.x.x
+(x=0...255).</td></tr>
+
+<tr><td valign="top">%C</td>
+<td valign="top">command</td>
+<td>The command given by the client. (e.g. GET or HEAD).</td></tr>
+
+<tr><td valign="top">%c</td>
+<td valign="top">return code</td>
+<td>The response code from the server (e.g. 200 for "ok" or 404 for "file not
+found").</td></tr>
+
+<tr><td valign="top">%r</td>
+<td valign="top">request</td>
+<td>the file requested by the client.</td></tr>
+
+<tr><td valign="top">%b</td>
+<td valign="top">bytes</td>
+<td>number of bytes delivered by the server.</td></tr>
+
+<tr><td valign="top">%d</td>
+<td valign="top">domain</td>
+<td>the domain (or more precisely: the hostname given by the client), in which
+the requested file is. This may be important, if the same server serves
+several domains.</td></tr>
+
+<tr><td valign="top">%f</td>
+<td valign="top">referrer</td>
+<td>If the client followed a link, the original file stands here.</td></tr>
+
+<tr><td valign="top">%B</td>
+<td valign="top">browser</td>
+<td>The identification of the used browser.</td></tr>
+
+<tr><td valign="top">%Y</td>
+<td valign="top">year</td>
+<td>4-digit year.</td></tr>
+
+<tr><td valign="top">%M</td>
+<td valign="top">month(numeric)</td>
+<td>month, 1- or 2-digits.</td></tr>
+
+<tr><td valign="top">%N</td>
+<td valign="top">month</td>
+<td>month, 3-letter abbreviation.</td></tr>
+
+<tr><td valign="top">%D</td>
+<td valign="top">day(numeric)</td>
+<td>Tday 1- or 2-digits.</td></tr>
+
+<tr><td valign="top">%E</td>
+<td valign="top">day</td>
+<td>day, 3-letter abbreviation.</td></tr>
+
+<tr><td valign="top">%h</td>
+<td valign="top">hour</td>
+<td>hour, 1- or 2-digits.</td></tr>
+
+<tr><td valign="top">%m</td>
+<td valign="top">minute</td>
+<td>minute, 1- or 2-digits.</td></tr>
+
+<tr><td valign="top">%s</td>
+<td valign="top">second</td>
+<td>second, 1- or 2-digits.</td></tr>
+
+</table>
+
+<p>Here a somewhat constructed example. The lines in the log-file of the
+server have the following form:</p>
+
+<table bgcolor="#dddddd" width="70%"><tr><td><pre>
+   61.103.208.80 - [18/Jun/2001:00:08:00] "GET /test/index.html HTTP/1.0" 200 989
+</pre></tr></table>
+
+<p>The string given to the function <tt>new_logformat</tt> to extract all
+informations of the above line should have the following form:</p>
+
+<table bgcolor="#dddddd" width="70%"><tr><td><pre>
+   ^%S - \[%D/%N/%Y:%h:%m:%s\] "%C %r .+" %c %b$
+</pre></tr></table>
+
+<p>Internally the following things happen: The function replaces the strings
+<tt>%S</tt>, <tt>%D</tt> and so on with regular expressions as <tt>(.*)</tt>
+or <tt>(.[0-9])</tt>. It remembers, on which position in the string which
+informations are, and saves all things in a varable of type
+<tt>logformat_t</tt>. The user should not care about these things. The only
+thing he should know, is, that the string given by himself must not contain
+subexpressions in round parantheses (), which result in substrings in regular
+expressions.</p>
+
+<h3><a name="abbrev">Month and day abbreviations</a></h3>
+
+<p>As can be seen in the table above, the library recognizes 3-letter
+abbreviations for months and days. These are not the abbreviations of the
+locale of the user, but the abbreviations of the local of the uid of the
+server. In almost all cases it should be the C-locale, and the abbreviations
+are the english standard-abbreviations. Those are set, when a new logformat
+is constructed with <tt>new_logformat</tt>.</p>
+
+<p>Nevertheless the user has the possibility to change those abbreviations
+manually for a log-format:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void change_month_abbrevs (logformat_t *lf, char **new_months);
+   void change_days_abbrevs (logformat_t *lf, char **new_days);
+</pre></tr></table>
+
+<p>The second parameter is an array of 12 respectively 7 strings. The
+abbreviations for the days start with 0 or sunday. The abbreviations for the
+month with 0 for january. The given values are copied into newly allocated
+memory. So the variables <tt>new_months</tt> and <tt>new_days</tt> may be
+freed after the call.</p>
+
+<p>A 3-letter abbreviation of a month or a day given, the corresponding
+number can be found out with the function</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   int find_day3_abbrev (logformat_t *lf, char *day);
+   int find_mon3_abbrev (logformat_t *lf, char *month);
+</pre></tr></table>
+
+<p>As above the day 0 is sunday. But now the january is the month 1, an
+december the month 12.</p>
+
+
+<h3><a name="dfname">The default-filename</a></h3>
+
+<p>On most servers there is a default filename, in most cases
+<tt>index.html</tt>, which is used, if the client requests a directory as
+URL. There is the possibility to inform the library, that it has to add this
+default-filename to request or referrer ending with a slash '/'. To do this,
+two things are necessary:</p>
+
+<p>First of all the default filename is to be set. This is done with the
+function</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void change_default_filename (logformat_t *lf, char *newdefault);
+</pre></tr></table>
+
+<p>If <tt>newdefault</tt> is NULL, no default filename is used.</p>
+
+<p>The the flag <tt>LF_FLAG_EXPAND_DEFAULT_FILES</tt> is to be set. (Look in
+the chapter about flags!)</p>
+
+<p>Remark, that the default filename is not added, if the request of the
+client doesn't end with a slash, because the library then has no possibility
+to know, whether it is a directory or a file. But directory request in server
+log files alway should end with a slash.</p>
+
+
+<h3><a name="flags">Flags</a></h3>
+
+<p>In the structure <tt>logformat_t</tt> there is an element called
+<tt>flags</tt>, which is a bitwise combination of the following constants:
+(in the moment there is just one)</p>
+
+<table border="1">
+<tr><td valign="top">LF_FLAG_EXPAND_DEFAULT_FILES</td>
+<td>If this flag ist set, and a default filename is set, the latter is added
+to all requests and all referrers ending with slash '/' while
+parsing.</td></tr>
+</table>
+
+
+<hr>
+<h2><a name="accesses">Accesses</a></h2>
+
+<h3><a name="access_t">The type access_t</a></h3>
+
+<p>Before parsing a line, there has to be a type to save the result. Here it
+is:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   typedef struct {
+      unsigned long int requester; /* IP-address of the requesting client */
+                                   /* in networkbyte-order */
+      char *command;               /* command (e.g. GET) */
+      int rcode;                   /* return-code of the server(e.g. 200) */
+      int bytes;                   /* number of delivered bytes */
+      char *request;               /* what file was requested */
+      char *domain;                /* what domain was requested */
+      char *referrer;              /* from where the  surver came */
+      char *browser;               /* which program he used */
+
+      /* date and time in numbers */
+      int dateY, dateM, dateD, timeH, timeM, timeS;
+   } access_t;
+</pre></tr></table>
+
+<p>The single entries correspond to the abbreviations in the table in the
+chapter about the <a href="#formatstring">format-string</a>. But the IP-address
+of the client ist a numerical in networkbyte-order an not a string. And the
+date and time-entries are numbers too.</p>
+
+
+<h3><a name="speicher">Memory management</a></h3>
+
+<p>To be able to work with <tt>access_t</tt>, some basic functions are
+necessary:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *new_empty_access_t ();
+   void free_access_t (access_t *a);
+   access_t *copy_access_t (access_t *a);
+</pre></tr></table>
+
+<p>This functions are selfexplaining - I think. The first function fills the
+variable with empty values, i.e. <tt>NULL</tt>-pointers for
+<tt>char*</tt>-entries, 0 for  requester, and -1 for all other numerical
+values.</p>
+
+
+<h3><a name="io">IO</a></h3>
+
+<p>There are only two poor auxiliary functions:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void fprint_access_t (FILE *f, access_t *a);
+   access_t *fscan_access_t (FILE *f);
+</pre></tr></table>
+
+<p>The first function prints the contents of the variable <tt>a</tt> without
+any further information or explanation, but exactly in the form, which can be
+read by the second function.</p>
+
+<p>Those functions are for testing and debugging and are to be taken with
+caution.</p>
+
+
+<h3><a name="adddfname">Adding a default filename</a></h3>
+
+<p>If the flag <tt>LF_FLAG_EXPAND_DEFAULT_FILES</tt> is set in a log-format,
+the default filename is added to all requests and referrers ending with a
+slash '/' while parsing, as it was explained above. The may also be done
+manually:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void add_default_files (access_t *a, logformat_t *lf);
+</pre></tr></table>
+
+<p>This functions adds the default filename of the logformat <tt>lf</tt> (if
+existent) to the request and the referrer of <tt>a</tt>, if ending with a
+slash. This happens independently of the flag be set or not.</p>
+
+
+<h3><a name="parse">Parsing of log lines</a></h3>
+
+<p>This central function of the library looks as follows:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *parse_log_line (char *line, logformat_t *lf);
+</pre></tr></table>
+
+<p>It tries to parse the line <tt>line</tt> with help of the logformat
+<tt>lf</tt>. If successful, it returns the result in a newly allocated
+<tt>access_t*</tt>. In case of an error <tt>NULL</tt> is returned.</p>
+
+<p>Of cause even in the case of a success it is possible of even probable,
+that not all elements of the <tt>access_t*</tt> returned are filled. In this
+case they still have the "empty" values set by <a href="#speicher">
+<tt>new_empty_access_t</tt></a>.</p>
+
+
+<hr>
+<h2><a name="implementation">Notes about own implementations</a></h2>
+
+<h3><a name="access_tt">Changes of the access_t</a></h3>
+
+<p>To make changes in this data type is very easy: The type definition can be
+change the the following functions have to be adapted:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *new_empty_access_t ();
+   void free_access_t (access_t *a);
+   access_t *copy_access_t (access_t *a);
+   int access_t_equal (access_t *a1, access_t *a2);
+   void fprint_access_t (FILE *f, access_t *a);
+   access_t *fscan_access_t (FILE *f);
+   void add_default_files (access_t *a, logformat_t *lf);
+</pre></tr></table>
+
+<p>The last of these functions has probably to be changed only in very rare
+cases.</p>
+
+
+<h3><a name="logformat_tt">Adding and removing of parsed information</a></h3>
+
+<p>If the access_t was changed, e.g. a new element was added, or an element
+was removed, normally it is desirable to be able to extract this added
+information of logfiles. This can be done as follows: In the file
+<tt>ploglib.c</tt> there is a global variable called <tt>subterm</tt>, which
+in the moment is defined as follows:</p>
+
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   tt_type_t subterm[] = {
+     {'S', "([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})"},  /* numerical IP of the client */
+     {'C', "([a-zA-Z]+)"}, /* command of the clinet */
+     {'c', "([0-9]+)"},    /* response code of server */
+     {'r', "(.*)"},        /* requested file */
+     {'b', "([0-9\\-]+)"}, /* number of delivered bytes */
+     {'d', "(.*)"},        /* requested domain */
+     {'f', "(.*)"},        /* referrer */
+     {'B', "(.*)"},        /* browser */
+
+     {'Y', "([0-9]{4})"},    /* 4-digit year */
+     {'M', "([0-9]{1,2})"},  /* month, 1- or 2-digits */
+     {'N', "([a-zA-Z]{3})"}, /* month, 3-letter abbrev. */
+     {'D', "([0-9]{1,2})"},  /* day, 1- or 2-digits */
+     {'E', "([a-zA-Z]{3})"}, /* day, 3-letter abbrev. */
+     {'h', "([0-9]{1,2})"},  /* hour, 1- or 2-digits */
+     {'m', "([0-9]{1,2})"},  /* minute, 1- or 2-digits */
+     {'s', "([0-9]{1,2})"},  /* second, 1- or 2-digits */
+     {'\0', NULL}
+   };
+</pre></tr></table>
+
+<p>The type <tt>tt_type_t</tt> only contains a char and a string. The
+variable <tt>subterm</tt> is a null-terminated array of this type. The letter
+are those letter, which have to be used in the <a href="#formatstring">
+format-string</a>. These are replaced by the corresponding regular
+expressions, the strings in the variable <tt>subterm</tt>, when log-format is
+constructed with the function <tt>new_logformat</tt>. Those regular
+expressions have to be close in parantheses, because when parsing the
+substring has to be taken out. In the definition above it is possible to see,
+that %S is replaced by a regular expression, which matches strings of the
+form x.x.x.x, where x contains 1-3 digits. To parse further information,
+first of all, this variable <tt>subterm</tt> is to be adapted.</p>
+
+<p>After this the parser itself -the function <tt>parse_log_line</tt>-, which
+makes the connection between the types <tt>logformat_t</tt> and
+<tt>access_t</tt>, is to be modified. In this function there is a big
+switch-command, which writes the correct information into an empty
+<tt>access_t</tt>. In the moment it start as follows:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+    switch (subterm[lf-&gt;series[i-1]].letter) {
+    case 'S': /* IP of the client */
+      res-&gt;requester=inet_addr(tmpstr);
+      free (tmpstr);
+      break;
+    case 'C': /* command */
+      res-&gt;command=tmpstr;
+      break;
+    case 'c': /* response code */
+      res-&gt;rcode = atoi(tmpstr);
+      free (tmpstr);
+      break;
+    case 'r': /* requested file */
+      res-&gt;request = tmpstr;
+      break;
+</pre></tr></table>
+
+<p>In the local variable <tt>tmpstr</tt> the substring of the logline,
+which has some information, is contained. This substring is newly
+allocated. If the string itself it not needed, e.g. because only an integer
+number is made of it as in the example above, it should be freed
+afterwards. The Variable <tt>res</tt> (for result) contains the
+<tt>access_t</tt>, which will be returned and which should contain the parsed
+information.</p>
+
+<p>To parse more or less information, this switch command has to be
+adapted.</p>
+
+
+<h3><a name="interna">Interna of the logformat-type</a></h3>
+
+<p>If one wants to make something more in all those functions, it may be
+necessary to change the type <tt>logformat_t</tt>:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   typedef struct {
+     char *user_format;        /* the string as given by the user */
+     regex_t pre_rex;          /* compiled regular expression */
+     int *series;              /* nullterminated arraygiving the meanings of
+                                  the single substrings of the regular   
+                                  expression. Corresponds to the number of the
+                                  variable subterm[] */
+     size_t nmatch_size;       /* number of substrings in the regular 
+                                  expression */
+     char mon3[12][4];         /* 3-letter abbrev. for month. 0=january */
+     char day3[ 7][4];         /* 3-letter abbrev. for day. 0=sunday */
+
+     int flags;
+     char *default_filename; 
+   } logformat_t;
+</pre></tr></table>
+
+<p><tt>user_format</tt> contains the string as given by the user for the
+function <tt>new_logformat</tt>, without any modifications. This function
+then makes the replacement given by the global variable <tt>subterm</tt>,
+compiles the regular expression produced this was, saves the compiles
+expression into the element <tt>pre_rex</tt> (for "precompiled regular
+expression").</p>
+
+<p>Then the number of subexpressions in the regular expression to take has to
+be saved (this is the number <tt>nmatch_size</tt>), and what meaning they
+have. This is done by the element <tt>series</tt>: The first subexpression
+(here represented by <tt>series[0]</tt> corresponds to the information
+<tt>subterm[series[0]]</tt>. So if in the example above
+<tt>series[4]==1</tt>, then the fifth subexpression of the regular expression
+would contain the command of the client, because <tt>subterm[1]</tt> stands
+exactly for this.</p>
+
+<p>The elments <tt>mon3</tt> and <tt>day3</tt> contain the 3-letter
+abbreviations of months and days. The elemente <tt>default_filename</tt> and
+<tt>flags</tt> are selfexplaining, I think.</p>
+
+<hr>
+<h2><a name="copyright">Copyright</a></h2>
+
+<p><b>Copyright (C) 2001 Michael Becker</b></p>
+
+<p>This library is under the BSD-licence:</p>
+
+<blockquote>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</li>
+
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</li>
+
+<li>My name may not be used to endorse or promote products derived from this
+software without specific prior written permission.</li>
+</ul>
+
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+</blockquote>
+
+<p>In other words: This libray may be copied freely. It my be user for
+commercial or for free programs. In redistributions of source-code or
+binary-code this copyright has to be included.</p>
+
+<p>Furthermore the author confirms, that he produced this library to the best
+of his knowledge and belief. But he doesn't give any warranties and doesn't
+takes responsibilities for whatever.</p>
+
+<p>Michael Becker <a href="mailto:michael.www@ijon.de">michael.www@ijon.de
+</a>, 22.8.2001 (translated 28.12.2001)</p>
+
+</body>
+</html>

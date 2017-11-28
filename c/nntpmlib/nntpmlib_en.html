@@ -1,0 +1,764 @@
+<html>
+<head>
+<title>nntpmlib.c - reference</title>
+</head>
+<body>
+
+<h1>Reference for <tt>nntpmlib.c</tt></h1>
+
+<ul>
+<li><b><a href="#einl">Introduction</a></b></li>
+  <ul>
+  <li><b><a href="#nntp">The nntp-protocol</a></b></li>
+  </ul>
+<li><b><a href="#benutzung">Basics for using this library</a></b></li>
+  <ul>
+  <li><b><a href="#logging">Logging and error messages</a></b></li>
+  <li><b><a href="#connect">Making and closing connections</a></b></li>
+  <li><b><a href="#rueckgabe">Reading the answer of the server</a></b></li>
+  </ul>
+<li><b><a href="#gr">Groups</a></b></li>
+  <ul>
+  <li><b><a href="#group_t">The data type for groups</a></b></li>
+  <li><b><a href="#gruppen">Requesting group lists</a></b></li>
+  <li><b><a href="#grset">Setting the actual group</a></b></li>
+  </ul>
+<li><b><a href="#art">Articles</a></b></li>
+  <ul>
+  <li><b><a href="#at">The data type for articles</a></b></li>
+  <li><b><a href="#xover">Requesting article lists</a></b></li>
+  <li><b><a href="#next">Next and previous article</a></b></li>
+  <li><b><a href="#get">Requesting articles</a></b></li>
+  <li><b><a href="#parse">Parsing of article headers</a></b></li>
+  <li><b><a href="#post">Posting of articles</a></b></li>
+  </ul>
+<li><b><a href="#sonstige">Other commands</a></b></li>
+  <ul>
+  <li><b><a href="#help">Requesting the commands of a server</a></b></li>
+  <li><b><a href="#readermode">Setting reader- or slave-mode</a></b></li>
+  </ul>
+<li><b><a href="#implement">Implementation of own commands</a></b></li>
+  <ul>
+  <li><b><a href="#senden">Sending commands</a></b></li>
+  <li><b><a href="#antwort">Reading the servers response</a></b></li>
+  </ul>
+<li><b><a href="#changelog">Changelog</a></b></li>
+<li><b><a href="#bugs">known bugs</a></b></li>
+<li><b><a href="#copyright">Copyright</a></b></li>
+</ul>
+
+<hr>
+<h2><a name="einl">Introduction</a></h2>
+
+<p>The <tt>nntpmlib</tt> is a C-library, which implements parts of the
+NNTP-protocol and the common NNTP-extensions. To not produce a big overhead
+the functions are very close to the protocol: Most functions correspond to
+exactly one command of the NNTP-protocol. Besides there are some auxiliary
+functions for parsing the responses of the server and things like this.</p>
+
+<h3><a name="nntp">The nntp-protocol</a></h3>
+
+<p>The nntp-protocol is textual network-protocol based on TCP. NNTP-servers
+usually listen on port 119. A complete list of NNTP-commands can be obtained
+from the RFC977. The following command exist according to this RFC:</p>
+
+<ul>
+<li><tt>article [MessageID|Number]</tt></li>
+<li><tt>body [MessageID|Number]</tt></li>
+<li><tt>group newsgroup</tt></li>
+<li><tt>head [MessageID|Number]</tt></li>
+<li><tt>help</tt></li>
+<li><tt>ihave</tt></li>
+<li><tt>last</tt></li>
+<li><tt>list [active|newsgroups] [group_pattern]</tt></li>
+<li><tt>newgroups yymmdd hhmmss [GMT] [&lt;distributions&gt;]</tt></li>
+<li><tt>newnews newsgroups date time [GMT] [&lt;distribution&gt;]</tt></li>
+<li><tt>next</tt></li>
+<li><tt>post</tt></li>
+<li><tt>quit</tt></li>
+<li><tt>slave</tt></li>
+<li><tt>stat [MessageID|Number]</tt></li>
+</ul>
+
+<p>This set of commands was insufficient in practice. So RFC2980 specifies so
+called "common NNTP extensions". These are many other commands, which I can't
+enumerate here. For example there is the <tt>XOVER</tt>-command for getting
+article-lists in a more convenient way.</p>
+
+<p>There are nearly no news-servers, which understand all those commands, and
+even supported commands are frequently implemented incomplete or differing
+from the RFC. (I.e. some options can not be used, and unusual response codes
+are to be expected.) Furthermore some news servers understand some further
+commands, which one can get with the <tt>help</tt>-command.</p>
+
+<p>This library too implements only a very small part of all possible
+commands. I wrote functions for those commands, which were most important for
+me personally, and which are im my opinion the most frequently understood. Of
+cause the selection ist totally arbitrary. In the section about <a
+href="#implement">the implementation of own commands</a> one can learn about
+how to extend the library.</p>
+
+<p>To understand some of the following functions, it is necessary to know,
+that a nntp-server manages pointers to an "actual group" and an "actual
+article" for every connection from a client. When e.g. the
+<tt>article</tt>-command is sent whithout further arguments, the server
+sends the "actual article". The commands <tt>next</tt>, <tt>last</tt> and
+<tt>group</tt> are used for changing these pointers.</p>
+
+<p>In the moment the library doesn't manage those two pointers itself. So the
+application has to do it itself - if necessary.</p>
+
+<p>Furthermore one has to know, that each article in usenet has a unique
+message-ID. In each group and on each server every article gets an
+article-number. Whereas the message-ID ist globally valid, the number is only
+valid in one group and for one server. In most cases the servers simply
+numerate the articles recieved in increasing order. Older articles are
+eventually removed.</p>
+
+<hr>
+<h2><a name="benutzung">Basics for using this library</a></h2>
+
+<h3><a name="logging">Logging and error messages</a></h3>
+
+<p>Many functions of this library take two function-pointers as
+arguments:</p>
+
+<pre>
+   void (*log_func)(const char*),
+   void (*error_func)(const char*),
+</pre>
+
+<p>If <tt>log_func</tt> is different from <tt>NULL</tt>, all status-messages
+are passed to this function. If <tt>error_func</tt> is different from
+<tt>NULL</tt>, error messages are passed to this function.</p>
+
+<p>Those two function are only for output. Nearly all functions have return
+values, which indicate whether an error occured or not. For all functions
+returning an integer, a return value of 0 means (if not remarked otherwise),
+that it was successful, another number, that there was an error.</p>
+
+<p>If one wants to use error or log messages for things other than output,
+one has to copy the strings, because the invoking functions free the memory
+after calling <tt>log_func</tt> or <tt>error_func</tt>.</p>
+
+
+<h3><a name="connect">Making and closing connections</a></h3>
+
+<p>For this purpose there are the two functions</p>
+
+<pre>
+   nntp_server *nntpserver_connect (const char *servername, 
+                                    unsigned short int port,
+                                    void (*log_func)(const char*),
+                                    void (*error_func)(const char*));
+   void nntpserver_close (nntp_server *ns,
+                          void (*log_func)(const char*),
+                          void (*error_func)(const char*));
+</pre>
+
+<p>The type <tt>nntp_server</tt> is declared as follows:</p>
+
+<pre>
+   typedef struct {
+     FILE *fin, *fout;
+   } nntp_server;
+</pre>
+
+<p>These to elements are for reading from the socket and for writing onto the
+socket.</p>
+
+<p>The function <tt>nntp_connect</tt> tries to make a TCP-connection to the
+server named in <tt>servername</tt> to the passed port. The servername may be
+an IP-address or a name. In case of a success, the function returns a pointer
+to a new variable of type <tt>nntp_server</tt>. Otherwise it returns NULL.</p>
+
+<p>The function <tt>nntp_close</tt> closes the connection and frees the
+memory allocated by the nntp_server*.</p>
+
+
+<h3><a name="rueckgabe">Reading the answer of the server</a></h3>
+
+<p>Some functions cause the server to send many lines of text. These lines
+are not read by the functions itself, but have to be read by the
+application. There are two functions, which help:</p>
+
+<pre>
+   char *get_line_from_server (nntp_server *ns, int *fin);
+   char **get_lines_from_server (nntp_server *ns, int approx_lines, int *no_lines);
+</pre>
+
+<p>The first function reads one line of text from the server and returns it in
+a new allocated string. The LF- and CR-chars, which terminate every line, are
+then already removed. If there are no more lines, the function return
+<tt>NULL</tt> and sets (if <tt>fin!=NULL</tt>) <tt>*fin=1</tt>. Otherwise
+<tt>*fin=0</tt>.</p>
+
+<p>If an error occured during reading, the function also return
+<tt>NULL</tt>, but <tt>*fin</tt> stays 0. (So the integer <tt>*fin</tt>, if
+existent, signifies a regular termination of the reading process, or a
+reading error. In the latter case there is not much, what the application can
+do.)</p>
+
+<p>The second function reads all lines from the server and saves them in a
+null-terminated array of newly allocated <tt>char*</tt>. In
+<tt>approx_lines</tt> the expected number of lines should be given. Every
+time the memory allocated is not sufficient, the function enlarges it at
+50%. If <tt>approx_lines==0</tt> a default-value is taken. (So
+<tt>approx_lines</tt> is only necessary for higher performance.) In
+<tt>no_lines</tt> (if <tt>!=NULL</tt>) the number of lines read is
+returned.</p>
+
+
+<h2><a name="gr">Groups</a></h2>
+
+<h3><a name="group_t">The data type for groups</a></h3>
+
+<p>To hold a group -perhaps with supplementary information- in the memory,
+there is the following data type:</p>
+
+<pre>
+   typedef struct {
+     char *name;
+     long int first, last;
+     int flags;
+   } group_t;
+</pre>
+
+<p><tt>name</tt> is the name of the group, <tt>first</tt> and <tt>last</tt>
+the numbers of the first and the last article in this group on this
+server. But it is not garanteed, that there is an article for every number
+between these two. <tt>flags</tt> contains up to this moment only one
+flag:</p>
+
+<pre>
+   #define POSTING_ALLOWED 1
+</pre>
+
+<p>For managing groups there are the following auxiliary functions:</p>
+
+<pre>
+   group_t *new_group_t ();
+   void free_group_t (group_t *g);
+   void printf_group_t (group_t *g);
+</pre>
+
+<p>The first function allocates memeory and initializes it with nulls. The
+second function frees the allocated memory (including the
+<tt>g-&gt;name</tt>).</p>
+
+<p>The third function prints the information onto the standard output. It
+only served debugging.</p>
+
+
+<h3><a name="gruppen">Requesting group lists</a></h3>
+
+<p>If connected to a server, one wants to know, which groups are
+available:</p>
+
+<pre>
+   int nntp_list_groups (nntp_server *ns,
+                         void (*log_func)(char*),
+                         void (*error_func)(char*))
+   int nntp_newgroups (nntp_server *ns,
+	               const char *datetime_string, int gmt,
+                       const char *distribution,
+                       void (*log_func)(char*),
+                       void (*error_func)(char*))
+   group_t *parse_list_line (char *line)
+</pre>
+
+<p>The first function sends a <tt>LIST</tt>-command to the server. The server
+should respond with a list of all its groups, every group in an own line and
+with some supplementary information, which can be parsed with help of the
+last of the three functions. The single lines have to be read by the
+application itself, as has been mentioned above.</p>
+
+<p>With the help of the function <tt>nntp_newgroups</tt> it is possible to
+request all groups belonging to certain usenet hierarchies, which are newer
+than <tt>datetime_string</tt>. But of cause only, if the command is correctly
+implemented by the server. <tt>datetime_string</tt> must(!) have the format
+"YYMMDD hhmmss" (without the quotes). It is supposed, that the time of the
+server is used, except when <tt>gmt!=0</tt>. In this case it is supposed,
+that the time is GMT.</p>
+
+<p>The optional Argument <tt>distribution</tt> may also be <tt>NULL</tt>. If
+not, it should contain a string as e.g. "<tt>&lt;alt.fan,de,comp&gt;</tt>"
+(without quotes): a comma-seperated and bracketed list of hierarchies, in
+which groups shall be searched. (In our case <tt>de</tt>, <tt>comp</tt> and
+<tt>alt.fan</tt>-groups are searched.)</p>
+
+<p>The last function takes a line as returned by the server after one of the
+two functions above, parses it, and writes the result into a newly allocated
+variable of type <tt>group_t*</tt>.</p>
+
+
+<h3><a name="grset">Setting the actual group</a></h3>
+
+<p>The actual group can be set with the function</p>
+
+<pre>
+   int nntp_group (nntp_server *ns, const char *group,
+                   int *n, int *f, int *l,
+                   void (*log_func)(char*),
+                   void (*error_func)(char*));
+</pre>
+
+<p>In the variables <tt>*n</tt>, <tt>*f</tt> und <tt>*l</tt> the approximate
+number of articles, the number of the first article and the number of the
+last article is returned. If those informations are not needed, <tt>NULL</tt>
+can be passed to the function.</p>
+
+
+<h2><a name="art">Articles</a></h2>
+
+<h3><a name="at">The data type for articles</a></h3>
+
+<p>To manage the most important informations of an article, there is the data
+type <tt>article_t</tt>:</p>
+
+<pre>
+   typedef struct {
+     char *subject;
+     char *from;
+     char *id;
+     char *newsgroups;
+     char *date;
+     char *references;
+     char *fu2;
+     char *reply_to;
+     int lines;
+     long no;
+     long bytes;
+   } article_t;
+</pre>
+
+<p>Important are in particular the message-ID <tt>id</tt>, which always is
+bracketed (with &lt;&gt;). (E.g. it can be of the form
+<tt>&lt;983hj$it$bbmb@news.irgendwo.de&gt;</tt>.) And the article-number
+<tt>no</tt>.</p>
+
+<p>For allocating, removing and copying variables of this type there are the
+functions</p>
+
+<pre>
+   article_t *new_article_t ();
+   void free_article_t (article_t *a);
+   article_t *copy_article_t (const article_t *a);
+   void printf_article_t (article_t *a);
+</pre>
+
+<p><tt>new_article_t</tt> allocates memory for a new <tt>article_t</tt>, sets
+all values to 0, and returns a pointer to it. <tt>free_article_t</tt> tries
+to free all memory allocated by the <tt>char*</tt>, which are
+<tt>!=NULL</tt>, and frees the memory allocated by the structure
+itself. <tt>copy_article_t</tt> allocates memory for a new <tt>aticle_t</tt>
+and copies the data. All string are also copied with <tt>strdup</tt>.</p>
+
+<p><tt>printf_article_t</tt> prints all information for an article onto the
+standard output. It served mainly for debugging.</p>
+
+<p>For inserting information about an article into the structure there are
+the functions</p>
+
+<pre>
+   int insert_value_into_article_t (article_t *a, 
+                                    const char *name, const char *value);
+   int parse_article_header_line (article_t *a, const char *line);
+</pre>
+
+<p>The first function is selfexplaining (I hope). E.g.</p>
+
+<pre>
+   insert_value_into_article_t (a, "from:", "myname@irgendwo.de");
+</pre>
+
+<p>In this case a copy of the second string is inserted at the right
+place. The parameter <tt>name</tt> is case-insenstive, but the colon is
+important.</p>
+
+<p>The second function takes a line, as sent by the server to the client, and
+tries to extract some information about the article and insert it into the
+<tt>article_t</tt>.</p>
+
+<p>Both functions return 0, if some information could be inserted, -1
+otherwise. The latter case may e.g. occur, if the information contained in
+<tt>name</tt> and <tt>value</tt> or in the header-line <tt>line</tt> is not
+contained in the <tt>article_t</tt>-structure.</p>
+
+<p>To change the <tt>article_t</tt>-type, it is sufficient to change the
+declaration of the type and those functions. (This shouldn't be a problem.) I
+choosed a rather small selection of information for reasons of
+performance.</p>
+
+
+<h3><a name="xover">Requesting article lists</a></h3>
+
+<p>To get an overview over all articles in a group there are the
+functions</p>
+
+<pre>
+   int nntp_xover (nntp_server *ns, int min_no, int max_no,
+                   void (*log_func)(char*),
+                   void (*error_func)(char*));
+   article_t *parse_xover_line (char *line, const char **format);
+</pre>
+
+<p>The first function sends the <tt>XOVER</tt>-command to the server: Each
+response lines of the server contains informations about one article. With
+help of the parameters <tt>min_no</tt> and <tt>max_no</tt> an article-region
+can be specified. In detail the numbers have the following meaning:</p>
+
+<table align="center" border="1">
+<tr><td><tt>min_no</tt></td><td><tt>max_no</tt></td><td></td></tr>
+<tr><td>-1</td>    <td>-1</td><td>no region given</td></tr>
+<tr><td colspan="2"><tt>min_no</tt>==<tt>max_no</tt>&gt;=0</td><td>only this
+article</td></tr>
+<tr><td>&gt;=0</td><td>-1</td><td>all articles from <tt>min_no</tt></td></tr>
+<tr><td>&gt;=0</td><td>&gt;=0</td><td>from <tt>min_no</tt> to
+<tt>max_no</tt></td></tr>
+</table>
+
+<p>The function <tt>parse_xover_line</tt> takes a response line as delivered
+after such a <tt>XOVER</tt>-command, parses it, and writes the result into a
+newly allocated <tt>article_t</tt>. <tt>format</tt> is a null terminated
+array of strings, giving the format of those lines. If <tt>NULL</tt> is
+given, the following default is taken:</p>
+
+<pre>
+   "subject:", "from:", "date:", "message-id:", "references:", "bytes:", "lines:"
+</pre>
+
+<p>Servers may deliver more information. In this case the format has to be
+requested with the (not implemented) command <tt>LIST OVERVIEW.FMT</tt></p>
+
+
+<h3><a name="next">Next and previous article</a></h3>
+
+<pre>
+   int nntp_next (nntp_server *ns, int *n, char **a, int mode,
+                  void (*log_func)(char*),
+                  void (*error_func)(char*));
+</pre>
+
+<p>serves for setting the pointer "actual article" to the next or the
+previous article, depending which of the two values</p>
+
+<pre>
+   SET_TO_NEXT
+   SET_TO_LAST
+</pre>
+
+<p>the parameter <tt>mode</tt> has. In case of success in <tt>n</tt> (if
+<tt>!=NULL</tt>) the number of the (new) actual article is returned, and in
+<tt>a</tt> (if <tt>!=NULL</tt>) its article-id.</p>
+
+
+<h3><a name="get">Requesting articles</a></h3>
+
+<p>Now one of the most important function: The function, which requests
+articles from the server.</p>
+
+<pre>
+   int nntp_get_article (nntp_server *ns, article_t *ar,
+                         int by_mode, int get_what,
+                         void (*log_func)(char*),
+                         void (*error_func)(char*));
+</pre>
+
+<p>If the request was successful, the application has to read the article
+itself - perhaps with the help of <tt>get_line_from_server</tt>.</p>
+
+<p>The parameter <tt>by_mode</tt> has one the values</p>
+
+<pre>
+   BY_MESSAGEID
+   BY_MESSAGENO
+   BY_NONE
+</pre>
+
+<p>It specifies, whether the article with the article-id set in <tt>ar</tt>,
+or the article with the article-number set in <tt>ar</tt>, or the actual
+article should be requested. In the last case <tt>ar</tt> can be NULL. In any
+case the paramter <tt>ar</tt> is not changed by the function.</p>
+
+<p>The parameter <tt>get_what</tt> has one of the values</p>
+
+<pre>
+   GET_HEAD
+   GET_BODY
+   GET_ALL
+   GET_STAT
+</pre>
+
+<p>and specifies, which part of the article should be requested: Only the
+article header, only the article body (without header), both (in this case
+seperated by a blank line), or nothing. This last case <tt>GET_STAT</tt> may
+e.g. be used for testing, whether a certain article exists. As far as I know
+the "actual article" is set one article forward, if
+<tt>by_mode==BY_MESSAGENO</tt> is used.</p>
+
+
+
+<h3><a name="parse">Parsing of article headers</a></h3>
+
+<p>If an article header or a whole article was requested with the above
+function <tt>get_article</tt>, the header lines can be read and parsed with
+help of the function</p>
+
+<pre>
+   article_t *nntp_read_header_lines (nntp_server *ns);
+</pre>
+
+<p>The result is returned in a new <tt>article_t</tt>. Because of the
+article-header not containing the article-number (this is of cause not
+possible, beacause the number is server-specific), the result cannot contain
+it. If the number is needed it is to be set manually.</p>
+
+<p>Not all elements of the <tt>article_t</tt> structure are obligatory for
+the article header. So it is always possible, that some of the
+<tt>char*</tt>-elements have NULL-values.</p>
+
+<p>The function reads the response lines of the server, parses them, und
+throws them away. In the case, that the whole article was requested, the
+function stops reading when reaching the blank line. The article body then
+has to be read by the application. In the case that only the article header
+was requested, the function reads the whole response.</p>
+
+
+<h3><a name="post">Posting of articles</a></h3>
+
+<pre>
+   int nntp_post (nntp_server *ns, const char **text,
+                  void (*log_func)(char*),
+                  void (*error_func)(char*));
+</pre>
+
+<p>With the help of this function a new article can be posted to the
+server. <tt>text</tt> has to contain a NULL-terminated array of the lines to
+post. (Every <tt>test[i]</tt> has to conatin one line or not.) But the
+appliation has to ensure for itself, that the text if well formated according
+to RFC0850. In particula this means:</p>
+
+<ul>
+<li>no special characters</li>
+<li>Every line ends with a <tt>&lt;CR_LF&gt;&lt;CR_LF&gt;</tt>
+(i.e. <tt>"\r\n"</tt>).</li>
+<li>The article starts with a header, which is seperated by a blank line from
+the rest of the article. (More modern servers only need a <tt>From</tt>,
+<tt>Subject</tt> and <tt>Newsgroups</tt> and are able to fill in the
+rest.)</li>
+</ul>
+
+<p>The terminating line, which consists only of a point, is sent by the
+function itself. If the posting was successful, 0 is returned. -1 means, that
+the article couldn't be sent. Probably the server forbids this. -2 means,
+that sending was tried, but the server rejected the article - probably
+beacause of an formatting error.</p>
+
+
+<hr>
+<h2><a name="sonstige">Other commands</a></h2>
+
+<h3><a name="help">Requesting the commands of a server</a></h3>
+
+<p>A list of all commands understood by the server can be requested with the
+function</p>
+
+<pre>
+   int nntp_help (nntp_server *ns, 
+                  void (*log_func)(char*), void (*error_func)(char*));
+</pre>
+
+<p>The server will answer with a list of its commands including their
+syntax. Every command in one line. Those lines have to be read and
+interpreted by the application itself. (E.g. with help of
+<tt>get_line_from_server</tt>.)</p>
+
+
+
+<h3><a name="readermode">Setting reader- or slave-mode</a></h3>
+
+<p>Some news servers behave differently depending on the client being a
+news-reader or another news-server. For example other news-servers may get a
+higher priority, because they serve several persons. Or for a news-reader
+quicker algorithms for searching single articles may be used.</p>
+
+<p>It is possible to inform the server whether the client is a news-reader
+or a news-server:</p>
+
+<pre>
+   int nntp_set_mode_reader (nntp_server *ns, int mode, int *posting_allowed,
+	                     void (*log_func)(char*), void (*error_func)(char*));
+</pre>
+
+<p>The variable <tt>mode</tt> must have one of the two values
+<tt>NNTP_MODE_READER</tt> (we are a news-reader) or <tt>NNTP_MODE_SLAVE</tt>
+(we are a news-server).</p>
+
+<p>In the case <tt>mode==NNTP_MODE_READER</tt> the variable
+<tt>posting_allowed</tt> will be set to 0 or 1 (if it is
+<tt>!=NULL</tt>).</p>
+
+<p>This command should not have any influence on whether the other commands
+work or not. In large groups it may accelerate the work. If a server gives an
+error message, because it doesn't understand this command, it is of cause
+simply obsolete.</p>
+
+
+<hr>
+<h2><a name="implement">Implementation of own commands</a></h2>
+
+<p>For writing to and reading from the socket there are two variables of
+type <tt>FILE*</tt>. So the implementation of own commands is very simple:
+Write the command with <rr>fprintf</rr> onto the socket (don't forget the
+<tt>fflush</tt> afterwards!), and then read the response with <tt>fgets</tt>
+or something like this. The following functions may help a bit:</p>
+
+<h3><a name="senden">Sending commands</a></h3>
+
+<p>The following function is very practical:</p>
+
+<pre>
+   int nntp_send_command (nntp_server *ns, char *command,
+                          char **response, int *rcode,
+                          int *ok_codes, int *err_codes,
+                          void (*log_func)(char*),
+                          void (*error_func)(char*));
+</pre>
+
+<p>It sends the command <tt>command</tt> to the server. This string contains
+the NNTP-commnd including all options or parameters. It must not end with
+<tt>\r\n</tt>, which is added by the function.</p>
+
+<p>The server will now send a response line, beginning with a numerical
+response code. If <tt>response!=NULL</tt>, then <tt>*response</tt> will
+(newly allocated) contain this line. If <tt>rcode!=NULL</tt>, then
+<tt>*rcode</tt> will contain the numerical response code.</p>
+
+<p><tt>ok_codes</tt> is a null terminated array containing those
+response-codes, which signify a success. <tt>err_codes</tt> is a null
+terminated array of response-codes, which can be sent by the server in case
+of an failure. The general response 400 and &gt;=500  should not be contained
+in it, because they are tested indepentently. In the case, that the response
+code is not in <tt>ok_codes</tt>, the <tt>error_func</tt> (if
+<tt>!=NULL</tt>) is called. If the response is neither a general response,
+nor in <tt>ok_codes</tt>, nor in <tt>err_codes</tt>, an additional line
+"illegal response from server" is given to <tt>error_func</tt>.</p>
+
+<p>For some commands further text follows the response line. This text has to
+be read by the application.</p>
+
+<p>Here a simple example: A possible implementation of the
+<tt>NEXT</tt>-command:</p>
+
+<pre>
+  int  ok_codes[]={223, 0};
+  int err_codes[]={412, 420, 421, 422, 0};
+  int err;
+  char *response;
+
+  err = 
+    nntp_send_command ("next", &response, NULL, ok_codes, err_codes, NULL, NULL);
+</pre>
+
+<p>For reasons of conciseness there is no error processing and no parsing of
+the response line in this example.</p>
+
+
+<h3><a name="antwort">Reading the servers response</a></h3>
+
+<p>Normally the function <tt>nntp_send_command</tt> reads the servers
+response. If it is necessary to this manually, e.g. because the server sends
+two response lines, as it is the case for the <tt>POST</tt>-command, the
+following function helps:</p>
+
+<pre>
+  int read_server_response (nntp_server *ns, char **response, int *rcode,
+                            int *ok_codes, int *err_codes,
+                            void (*log_func)(char*),
+                            void (*error_func)(char*));
+</pre>
+
+<p>The meaning of the parameters is exactly like for
+<tt>nntp_send_command</tt>. Indeed the latter simply uses this function.</p>
+
+<hr>
+<h2><a name="changelog">Changelog</a></h2>
+
+<dl>
+<dt>April 2001</dt>
+<dd>first executable Version</dd>
+
+<dt>9./10.6.2001</dt>
+<dd>Implemented <tt>POST</tt>, <tt>NEXT</tt> and <tt>LAST</tt>-commands.<br>
+Wrote the function <tt>parse_header_lines</tt>.<br>
+Wrote documentation.</dd>
+
+<dt>17.6.2001</dt>
+<dd>Written some new commands: HELP, MODE READER, SLAVE</dd>
+
+<dt>19.1.2002</dt>
+<dd>Fixed segmentation fault in <tt>get_lines_from_server</tt>. Corrected
+documentation for <tt>nntp_connect</tt>.</dd>
+</dl>
+
+<hr>
+<h1><a name="bugs">known bugs</a></h1>
+
+<ul>
+<li>If the value already existed, the function
+<tt>insert_value_in_article_t</tt> only sets a new pointer, but doesn't free
+the memory allocated by the old value.</li>
+</ul>
+
+<hr>
+<h2><a name="copyright">Copyright</a></h2>
+
+<p><b>Copyright (C) 2001 Michael Becker</b>. All rights reserved.</p>
+
+<p>This library may be distributed under the BSD-licence:</p>
+
+<blockquote>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</li>
+
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</li>
+
+<li>My name may not be used to endorse or promote products derived from this
+software without specific prior written permission.</li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+</blockquote>
+
+<p>In short: This software may be copies freely. It may be used for
+commercial of free programs, as long as it is remarked, that this software is
+under this licence.</p>
+
+<p>The author asserts, that he wrote the library to the best of his
+knowledge, but he doesn't take responsibility or give garantees for
+whatever.</p>
+
+<p>Michael Becker <a href="mailto:michael.www@ijon.de">michael.www@ijon.de
+</a>, 10.6.2001 (translated 21.1.2002)</p>
+
+
+</body>
+</html>

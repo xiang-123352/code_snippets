@@ -1,0 +1,156 @@
+1. Quick start
+2. Operations
+  2a. Further remarks about operations
+3. The data type of numericals
+4. Additional auxilliary functions
+5. Copyright
+6. Changelog
+
+----------------------------------------------------------------------------
+
+1. Quick start
+
+This library parses a string containing a mathematical expression, and
+constructs a tree, representing the logical structure of the expression.
+The nodes of the tree are of the type 
+
+  node_t*
+
+The parsing function is
+
+  node_t *fpar_parserw (char *s);
+
+It takes a string and returns a pointer the the root node of the tree. In 
+case of an error, it returns NULL.
+
+In the actual setting the library works with numericals of type double. 
+For calculating the value of the expression there is the function
+
+  void calc_value (node_t *n);
+
+After calling it, the result can be read as
+
+  n->value
+
+Before parsing an expression, the lexer and the parser have to be
+initialized. This ist done by the function
+
+  get_tokens ();
+
+which sets some global variables.
+
+
+2. Operations
+
+The operations recognized by the parser (as addition, multiplication,
+brackets, sinus etc..) are in the global variable "op[]", namely in order of
+the lowest to the highest priority. The entry for the addition e.g. is
+
+op[i] = { "#+#", left, base_add }
+
+The string "#+#" defines the syntax, which is valid for the addition. The "#"
+stands for an arbitrary subterm.
+
+"left" means, that the operation is left associative, i.e.
+  a+b+c == (a+b)+c  and not  a+(b+c)
+For operations starting with a certain token and not with a subterm, left or
+right associativity should play no role.
+
+"base_add" is the name of the function carrying out the addition
+numerically. This function has to be declared as
+   void base_add (node_t *n)
+(here in the files basefunc.h and basefunc.c). In this case the function 
+would simply add the values of the to sub-nodes and write the result 
+into n->value:
+  n->value = n->childs[0]->value + n->childs[1]->value;
+
+
+2a) Further remarks about operations
+
+Additional operations may be inserted during runtime. After changing the "op"
+variable, the function "get_tokens" has to be called again.
+
+The variable op is a NULL terminated array.
+
+Operations may contain an arbitrary, but fixed number of subterms. But 
+operations with more than two subterms weren't tested sorrowly by me. The
+"childs"-entry in node_t is a NULL terminated array.
+
+Variables (in the mathematical sense of the word) can be realized as 
+operations without subterms. A variable number of variables may be 
+realized as function x(i) (i=1...n).
+
+In general it should be better to avoid operations with identical
+delimiters. (E.g. one should not define a comma operator "#,#" of higher
+priority and a derivation operator "[#,#]" of lower priority. I don't know
+what happens in this case. Different operations starting with a token and 
+not with a subterm, must not start with the same token. (E.g. it is not
+possible to define two operations "[#,#]" and "[#,#,#]".)
+
+Brackets are realized as identity operation with high priority "(#)".
+
+
+
+3. The data type of numericals
+
+If one wants to use the library not with double, but with int or other data
+types (complex, matrices...), the following changes are to be made:
+
+a) change the type "scalar_t" in fpar.h.
+b) replace the function strtod in the function "pfar_lexer" in fpar.c by
+   another function converting a string into a scalar_t and with
+   approximately the same syntax as strtod. (This may be a reasonable work
+   for matrices.)
+c) The "calculation"-functions in basefunc.c are to be adapted. If there is
+   no nan-value defined for the new scalar_t, the valid flag in the node_t
+   structure may be used.
+d) If the new scalar_t is a pointer, then in the function free_node_tree, in
+   which the memory occupied by a tree is freed, the memory for the scalar_t
+   has to be freed.
+e) The output in the function "tree_output" in fpar.c has to be changed in
+   the case of (n->type==NUM_TOK).
+
+
+
+
+4. Additional auxilliary functions
+
+Beside the function for parsing expressions and for calculating the value of
+a tree, there a two additional little auxilliary functions:
+
+  void free_node_tree (node_t *n);
+  void tree_output (node_t *n, int currpos);
+
+4a. free_node_tree
+
+This function frees the memory occupied by a tree, which was produced by
+fpar_parserw.
+
+4b. tree_output
+
+This function is mainly for debugging. It prints the tree, as produced by
+fpar_parserw, onto stdout. The variable currpos is for internal usage. It
+should be passed 0. (In fact it is the left offset of the output.)
+
+Furthermore in the file fpar.c there is the macro TREEOUT_WIDTH, which says,
+how big are the single columns of the output.
+
+
+
+
+5. Copyright
+
+This library is under the BDS licence.
+   http://www.opensource.org/licenses/bsd-license.html
+I.e. it may be changed and be used in free or commercial programs.
+
+Michael Becker, 25.11.2002
+michael.www@ijon.de
+
+
+6 Changelog
+
+25.11.2002 translated comments and reference to english
+20. 1.2003 fixed a bug in get_tokens (thanks to Stanislaw Szymczyk)
+ 7. 1.2004 fixed a bug in fpar_parser (thanks to Matthias Peters)
+

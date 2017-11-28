@@ -1,0 +1,183 @@
+<html>
+<head>
+<title>rconfig.c - Referenz</title>
+</head>
+<body>
+
+<h1>Referenz zu <tt>rconfig.c</tt></h1>
+
+<ul>
+<li><b><a href="#einf">Einführung</a></b></li>
+<li><b><a href="#format">Das Format der Konfigurationsdateien</a></b></li>
+<li><b><a href="#laden">Lesen und Schreiben von Konfigurationsdateien</a></b></li>
+<li><b><a href="#confname">Zusammensetzen des Namens der Konfigurationsdatei</a></b></li>
+<li><b><a href="#changelog">Changelog</a></b></li>
+<li><b><a href="#copyright">Copyright</a></b></li>
+</ul>
+
+<hr>
+<h2><a name="einf">Einführung</a></h2>
+
+<p><tt>rconfig.c</tt> ist eine extrem schlanke, aber auch recht
+minimalistische Bibliothek zum Lesen und Schreiben von
+Konfigurationsdateien. Sie entstand, weil ich keine Lust hatte, eine 200KB
+große Datei für so eine läppische Aufgabe einzubinden.</p>
+
+<hr>
+<h2><a name="format">Das Format der Konfigurationsdateien</a></h2>
+
+<p>Die einzelnen Zeilen der Konfigurationsdatei haben folgende Form:</p>
+
+<pre>
+  OPTIONS_NAME = irgendein Text oder andere Zeichen
+</pre>
+
+<p>Der Optionsname, ebenso wie sein Wert kann aus irgendwelchen Zeichen,
+selbst Leerzeichen oder tabs bstehen. Beide können aber nicht mit Leerzeichen
+oder tabs beginnen oder enden (s.u.). Ansonsten ist folgendes zu beachten:</p>
+
+<ol>
+ <li>Alles, was hinter einem # kommt, wird ignoriert.</li>
+ <li>In jeder Zeile wird ein = gesucht (dem ersten, welches vorkommt). Kommt
+    kein = vor, wird die Zeile  ignoriert.</li>
+ <li>Die Zeile wird in alles vor dem = und alles nach dem = aufgeteilt.
+    Führende und endende blanks und tabs dieser beiden Teilstrings werden
+    entfernt.</li>
+ <li>Es wird geschaut, ob eine Option mit dem angegebenen Namen vorhanden
+    ist. Wenn ja, wird ihr Wert auf den zweiten string gesetzt. Wenn nein
+    wird eine Fehlermeldung generiert und weitergemacht.</li>
+  <li>Zeilen koennen z.Z. nicht mit \ fortgesetzt werden.</li>
+  <li>Zeilen duerfen nicht laenger als 1024 Zeichen sein.</li>
+  <li>Es werden keinerlei Sonderzeichen maskiert. Insbesondere können
+    Optionsnamen kein Gleichheitszeichen enthalten.</li>
+</ol>
+
+<hr>
+<h2><a name="laden">Lesen und Schreiben von Konfigurationsdateien</a></h2>
+
+<p>Dies geschieht mit den beiden Funktionen</p>
+
+<pre>
+  char *read_config_file  (const char *fname, char **opt_name, char **opt_val);
+  char *write_config_file (const char *fname, char **opt_name, char **opt_val,
+                           const char *starttext);
+</pre>
+
+<p>Beiden Funktionen wird ein nullterminierter array mit den Options-Namen
+<tt>opt_name</tt> übergeben. Der array <tt>opt_val</tt> enthält die
+dazugehörigen Options-Werte, welche immer nur char* sein können. Beide
+Funktionen geben, wenn alles geklappt hat, einen Nullzeiger zurück. Ansonsten
+geben sie einen Zeiger auf einen dynamisch allokierten String mit einer
+Fehlermeldung zurück.</p>
+
+<p><tt>read_config_file</tt> parst die Datei <tt>fname</tt>. Wird eine Zeile
+gefunden, in der eine Option gesetzt wird, so wird der entsprechende
+Options-Value gesetzt. Ist dieser kein Nullzeiger, so wird der Speicherplatz
+des alten Wertes nicht(!) freigegeben, und er anschließend neu gesetzt. (Die
+nicht Freigabe des Speicherplatzes habe ich gemacht, damit man die opt_vals
+mit konstanten strings vorbelegen kann. Wenn jemand sie mit variablen strings
+vorbelegen möchte, muß er den Speicherplatz von Hand wieder freigeben.)</p>
+
+<p><tt>write_config_file</tt> öffnet ein Datei mit dem angegebenen Namen und
+schreibt als erstes mal den <tt>starttext</tt> so wie er ist, hinein. Für das
+eventuelle Auskommentieren des Textes mit <tt>#</tt> ist der Anwender selber
+verantwortlich. Ansonsten schreibt die Funktion für jede Option, deren Wert
+verschieden von NULL ist, eine Zeile in die Datei.</p>
+
+
+<hr>
+<h2><a name="confname">Zusammensetzen des Namens der Konfigurationsdatei</a></h2>
+
+<p>Es gibt in dieser Bibliothek auch eine Funktion, die einem dabei helfen
+soll, den Namen der Konfigurationsdatei zu bilden:</p>
+
+<pre>
+char *make_conf_filename (const char *name, const char *default_name, 
+                          const char *default_path);
+</pre>
+
+<p>Die Funktion gibt in jedem Fall einen string in einem neu allokierten
+Speicherbereich zurück. Die alten strings werden unverändert gelassen.</p>
+
+<ol>
+<li>Ist <tt>name==NULL</tt>, so wird der <tt>default_name</tt> genommen.</li>
+<li>~ am Anfang wird zum home-directory des Benutzers expandiert.</li>
+<li>Ist es kein absoluter Pfad (beginnend mit /), so wird
+<tt>default_path</tt> davorkopiert. <tt>default_path</tt> darf mit /
+aufhoeren oder nicht. 
+</ol>
+
+<p>Beispiele:</p>
+
+<table><tr><td>
+<tt>make_conf_filename (".config",".default","~");</tt></td><td>ergibt</td>
+<td><tt>/home/username/.config</tt></td></tr>
+<tr><td><tt>make_conf_filename (NULL,"~/test/.default",NULL);</tt></td>
+<td>ergibt</td><td><tt>/home/username/test/.default</tt></td></tr>
+</table>
+
+
+<hr>
+<h2><a name="changelog">Changelog</a></h2>
+
+<dl>
+<dt>September 2000</dt>
+<dd>Datei erstellt.</dd>
+
+<dt>21.8.2001</dt>
+<dd>Kleinere Änderungen. Neue Lizenz (BSD statt LGPL)</dd>
+</dl>
+
+
+<hr>
+<h2><a name="copyright">Copyright</a></h2>
+
+<p><b>Copyright (C) 2000 Michael Becker</b></p>
+
+
+<p>Diese library steht unter der BSD-Lizenz:</p>
+
+<blockquote>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</li>
+
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</li>
+
+<li>My name may not be used to endorse or promote products derived from this
+software without specific prior written permission.</li>
+</ul>
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+</blockquote>
+
+<p>Zu Deutsch: Diese Software darf frei kopiert werden. Sie darf für
+kommerzielle sowie für freie Programme verwendet werden. In Redistributionen
+als Quellcode oder als Binärcode muß dieses Copyright enthalten sein.</p>
+
+<p>Weiterhin bestätigt der Autor hiermit, daß er die library nach bestem
+Wissen und Gewissen erstellt hat. Er übernimmt jedoch keinerlei Verantwortung
+oder Garantien für was auch immer.</p>
+
+
+<p>Michael Becker <a href="mailto:michael.www@ijon.de">michael.www@ijon.de
+</a>, 21.8.2001</p>
+
+</body>
+</html>

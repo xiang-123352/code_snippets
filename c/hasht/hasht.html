@@ -1,0 +1,295 @@
+<html>
+<head>
+<title>hasht.c - Referenz</title>
+</head>
+<body>
+
+<h1>Referenz zu <tt>hasht.c</tt></h1>
+
+<ul>
+<li><b><a href="#einf">Einführung</a></b>
+  <ul>
+  <li><b><a href="#allg">Allgemeines zu hashtables</a></b>
+  <li><b><a href="#hashfunktion">Über die Hashfunktion</a></b>
+  <li><b><a href="#interna">Interna der Bibliothek</a></b>
+  </ul>
+<li><b><a href="#benutzung">Die Benutzung der Bibliothek</a></b>
+  <ul>
+  <li><b><a href="#anlegen">Anlegen und Löschen von hashtables</a></b>
+  <li><b><a href="#einfuegen">Einfügen und Löschen von Einträgen</a></b>
+  <li><b><a href="#finden">Finden von Einträgen</a></b>
+  <li><b><a href="#anzahl">Größe einer hashtable feststellen</a></b>
+  <li><b><a href="#umwandlung">Umwandeln von hashtables und Listen
+  ineinander, Kopieren von hashtables</a></b>
+  </ul>
+<li><b><a href="#changelog">Changelog</a></b>
+<li><b><a href="#copyright">Copyright</a></b></li>
+</ul>
+
+<hr>
+
+<h2><a name="einf">Einführung</a></h2>
+<h3><a name="allg">Allgemeines zu hashtables</a></h3>
+
+<p>Bei hashtables handelt es sich um Datenstrukturen, die zum schnellen
+Finden, Einordnen und Löschen von Daten dienen. Bei einer guten Wahl der
+hash-Funktion (s.u.) dauert ein Suchvorgang bei n vorhandenen Einträgen nur
+O(1), im Gegensatz dazu bei normalen Listen O(n).</p>
+
+<p>Die Funktionsweise ist wie folgt: Aus jedem Eintrag wird zunächst mittels
+der sog. <em>Hash-Funktion</em> eine ganze Zahl berechnet, welche in einem
+bestimmten, endlichen Intervall liegt. Die Hashtable ist nichts anderes als
+ein Feld, welches als Index die möglichen Werte der Hash-Funktion hat. Jedes
+Feld-Element ist eine Liste, in der alle zu diesem Hash-Wert gehörigen
+Einträge stehen.</p>
+
+<p>Will man beispielsweise zufällige ganze Zahlen einsortieren, so könnte man
+als Hash-Funktion die Funktion "<em>modulo 10</em>" nehmen. Die Zahlen -7,
+-1, 0, 4, 23, 24, 25, 72, 324 wären in der hashtable dann wie folgt
+angeordnet:</p>
+
+<pre>
+    ---
+   | 0 |  -->   0  -->  300
+    ---
+   | 1 |
+    ---
+   | 2 |  -->  72
+    ---
+   | 3 |  -->  -7  -->  23
+    ---
+   | 4 |  -->   4  -->   24  -->  324
+    ---
+   | 5 |  -->  25
+    ---
+   | 6 |
+    ---
+   | 7 |
+    ---
+   | 8 |
+    ---
+   | 9 |  -->  -1
+    ---
+</pre>
+
+<p>Ob die Listen geordnet sind oder nicht, spielt keine Rolle für die
+Performanz. In dieser Bibliothek handelt es sich um geordnete Listen. Der
+Nachteil ist, daß man der hashtable auch noch eine Vergleichs-Funktion für
+die Werte übergeben muß.</p>
+
+<h3><a name="hashfunktion">Über die Hash-Funktion</a></h3>
+
+<p>Damit eine hashtable optimal funktioniert (d.h. einen optimalen Kompromiß
+zwischen Speicherplatzverbrauch und Performanz implementiert), muß die Anzahl
+der möglichen Werte der Hash-Funktion größenordnungsmäßig mit der Anzahl der
+geplanten Einträge übereinstimmen. Außedem müssen die Werte, die die
+Hash-Funktion liefert, gleichmäßig über das Intervall verteilt sein.</p>
+
+<p>(Beispielsweise sind, wenn man Menschen einsortieren will, ihr Geburtsjahr
+(zweistellig), oder der Anfangsbuchstabe ihres Nachnamens ungünstige
+Hash-Funktionen, da sie überhaupt nicht gleichförmig verteilt sind.)</p>
+
+<h3><a name="interna">Interna der Bibliothek</a></h3>
+
+<p>Die Bibliothek benutzt die Listen-Bibliothek <tt>lists.h</tt>, um ihre
+Listen zu verwalten. Eine hashtable ist gegeben durch den Typ
+<tt>hashtable_t</tt>, wobei man in der Praxis meist mit <tt>hashtable_t*</tt>
+zu tun haben wird:</p>
+
+<pre>
+   typedef struct {
+     list_t **val;
+     int (*cmp_func)(void*, void*);
+     long (*hash_func)(void*);
+     long hash_min, hash_max;
+   } hashtable_t;
+</pre>
+
+<p>Die Bedeutung der einzelnen Elemente dieses strucs ist wie folgt:</p>
+
+<dl>
+<dt><tt>val</tt>
+<dd>ist das Feld aus Einträgen vom Typ <tt>list_t*</tt> wie oben
+besprochen. <tt>val[0]</tt> enthält die Einträge mit dem kleinstmöglichen
+Hash-Wert.
+
+<dt><tt>cmp_func</tt>
+<dd>Diese Funktion, die beim Anlegen einer neuen hashtable übergeben werden
+muß, dient zum Sortieren von Einträgen. Sie soll einen negativen Wert
+zurückliefern, wenn der erste Eintrag vor dem zweiten kommt, einen positiven,
+wenn es umgekehrt ist, und Null, wenn die beiden Einträge denselben Inhalt
+haben. Sie dient zum Sortieren der Listen, und um Gleichheit beim Suchen von
+Einträgen festzustellen. Aus dem letzten Grund ist es wichtig, daß sie
+vernünftig implementiert ist, auch wenn man keinen Wert auf sortierte Listen
+legt.<br>
+Läßt sich für die Daten, die man in die hashtable eintragen will, partout
+keine Ordnung finden, so reicht es hier auch, eine Funktion anzugeben, die
+im Falle der Gleichheit 0, ansonsten aber immer -1 zurückgibt.
+
+
+<dt><tt>hash_func</tt>
+<dd>Dies ist die Hash-Funktion. Sie muß ebenfalls nur beim Anlegen einer
+neuen hashtable angegeben werden.
+
+<dt><tt>hash_min</tt> und <tt>hash_max</tt>
+<dd>Dies sind der minimale und der maximale Rückgabewert der
+Hash-Funktion. Auch sie müssen nur beim Anlegen einer hashtable angegeben
+werden.
+</dl>
+
+<h2><a name="benutzung">Die Benutzung der Bibliothek</a></h2>
+
+<h3><a name="anlegen">Anlegen und Löschen von hashtables</a></h3>
+
+<p>Bevor man eine hashtable benutzen kann, muß man sie initialisieren. Dabei
+wird für die Verwaltung der Struktur Speicherplatz belegt, und es wird
+festgelegt, welche Hash-Funktion und welche Vergleichsfunktion verwendet
+werden soll. Wird versucht, auf eine nicht initialisierte hashtable
+zuzugreifen, so gibt es einen Speicherzugriffsfehler.</p>
+
+<pre>
+   hashtable_t *new_hashtable (int (*cmp_func)(void*, void*),
+              long (*hash_func)(void*), long hash_min, long hash_max);
+   void clear_hashtable (hashtable_t *h, void (*free_func)(void*));
+</pre>
+
+<p>Die Funktion <tt>new_hashtable</tt> gibt einen Zeiger auf die neue
+hashtable zurück.</p>
+
+<p>Wird eine hashtable nicht mehr gebraucht, so kann man sie mit der Funktion
+<tt>clear_hashtable</tt> löschen lassen. Ist <tt>free_func</tt> verschieden
+von NULL, so wird diese Funktion für jeden Eintrag in der hashtable
+aufgerufen. Sie dient dazu, ev. durch die Einträge belegten Speicherplatz
+freizugeben.</p>
+
+
+<h3><a name="einfuegen">Einfügen und Löschen von Einträgen</a></h3>
+
+<p>Hierzu dienen die Funktionen</p>
+
+<pre>
+   int insert_hash_element (hashtable_t *h, void *val);
+   int remove_hash_entry   (hashtable_t *h, void *val, void (*free_func)(void*));
+   int remove_hash_value   (hashtable_t *h, void *val, void (*free_func)(void*));
+</pre>
+
+<p>Die Funktion <tt>insert_hash_element</tt> fügt den Eintrag <tt>val</tt> in
+die hashtable <tt>h</tt> ein. Sie gibt im Erfolgsfall 0 zurück, ansonsten
+-1. (Dies kann aber im Augenblick nur auftreten, wenn die Hash-Funktion einen
+Wert außerhalb der angegebenen Grenzen zurückgibt.)</p>
+
+<p>Die beiden anderen Funktionen dienen zum Entfernen eines Eintrags aus der
+hashtable <tt>h</tt>. Vor dem Entfernen wird, sofern verschieden von NULL,
+die Funktion <tt>free_func</tt> aufgerufen. Diese dient dazu, ev. durch den
+Eintrag belegten Speicherplatz wieder freizugeben. Beide Funktionen geben im
+Erfolgsfall 0 zurück, und -1, falls kein zu löschender Eintrag gefunden
+wurde.</p>
+
+<p>Der Unterschied zwischen diesen beiden Funktionen ist folgender: Der
+Funktion <tt>remove_hash_entry</tt> muß ein tatsächlich in der hashtable
+vorkommender Zeiger <tt>val</tt> übergeben werden. Dieser wird dann
+entfernt. (Sie sucht also nach einem Eintrag <tt>v</tt> mit <tt>v==val</tt>.)
+Die Funktion <tt>remove_hash_value</tt> sucht in der hashtable einen Eintrag
+<tt>v</tt> mit demselben Inhalt, also mit <tt>cmp_func(v,val)==0</tt>, und
+entfernt diesen dann.</p>
+
+
+<h3><a name="finden">Finden von Einträgen</a></h3>
+
+<pre>
+   void *find_hash_element (hashtable_t *h, void *val);
+</pre>
+
+<p>überprüft, ob es schon einen Eintrag <tt>v</tt> in der hashtable gibt, so
+daß <tt>cmp_func(v,val)==0</tt> ist. Falls ein solcher existiert, wird ein
+Zeiger darauf zurückgegeben. Ansonsten wird ein Nullzeiger zurückgegeben.</p>
+
+
+<h3><a name="anzahl">Größe einer hashtable feststellen</a></h3>
+
+<pre>
+   long hashtable_size (hashtable_t *h);
+</pre>
+
+<p>Diese Funktion gibt die Gesamtanzahl der Einträge in der übergebenen
+hashtable zurück.</p>
+
+
+<h3><a name="umwandlung">Umwandeln von hashtables und Listen
+ineinander, Kopieren von hashtables</a></h3>
+
+<p>Zum Umwandeln von hashtables in andere Datenstrukturen gibt es die
+folgenden Funktionen:</p>
+
+<pre>
+   void insert_list_into_hashtable (hashtable_t *h, list_t *l, 
+                       void* (*copy_func)(void*));
+   void insert_hashtable_into_list (list_t *l, hashtable_t *h, 
+                       void* (*copy_func)(void*), int sort);
+   void insert_hashtable_into_hashtable (hashtable_t *dst, hashtable_t *src, 
+                       void* (*copy_func)(void*));
+</pre>
+
+<p>Bei allen drei Funktionen werden die Einträge der Quellstruktur (dem
+zweiten Argument) in die Zielstruktur (das erste Argument) eingefügt. Die
+Zielstruktur muß dabei in allen Fällen bereits initialisiert sein. Ob es
+bereits weitere Einträge enthält, oder ob es leer ist, spielt keine
+Rolle. Die Quellstruktir wird anschließend nicht(!) gelöscht, sondern besteht
+weiterhin unverändert fort.</p>
+
+<p>Ist <tt>copy_func</tt> verschieden von NULL, so werden die Einträge mit
+Hilfe dieser Funktion kopiert, bevor sie in die Zielstruktur eingetragen
+werden. Ist sie gleich NULL, so werden die Zeiger so wie sie sind in die
+Zielstruktur eingefügt.</p>
+
+<p>Der Parameter <tt>sort</tt> in der Funktion
+<tt>insert_hashtable_into_list</tt> gibt an, ob in eine sortierte oder
+unsortierte Liste eingefügt werden soll. Ist <tt>sort!=0</tt>, so wird die
+Liste sortiert.</p>
+
+
+<h2><a name="changelog">Changelog</a></h2>
+
+<dl>
+<dt>September 2000
+<dd>Bibliothek erstellt.
+
+<dt>9.10.2000
+<dd>Einige Funktionen hinzugefügt. Diese Dokumentation erstellt.
+</dl>
+
+<h2><a name="copyright">Copyright</a></h2>
+
+<p><b>Copyright (C) 2000 Michael Becker</b></p>
+
+<p>This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.</p>
+
+<p>This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.</p>
+
+<p>You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA</p>
+
+<p>Zu Deutsch: Diese library ist frei. Sie darf kostenlos oder gegen
+Bezahlung weitergegeben werden, solange dieser Copyright-Vermerk mitgegeben
+wird, und der Empfänger dieselbe Möglichkeit hat. Diese library darf
+verändert werden, und sie darf für freie oder kommerzielle Programme
+verwendet werden. Es ist jedoch nicht erlaubt, eine von dieser library
+abgeleitete library, welche primär denselben Zweck erfüllt, unter eine andere
+Lizenz als die Lesser General Public License zu stellen.</p>
+
+<p>Weiterhin bestätigt der Autor hiermit, daß er die library nach bestem
+Wissen und Gewissen erstellt hat. Er übernimmt jedoch keinerlei Verantwortung
+oder Garantien für was auch immer.</p>
+
+<p>Michael Becker <a href="mailto:michael.www@ijon.de">michael.www@ijon.de
+</a>, 9.10.2000</p>
+
+</body>
+</html>

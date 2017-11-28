@@ -1,0 +1,570 @@
+<html>
+<head>
+<title>ploglib.c - Referenz</title>
+</head>
+<body bgcolor="#ffffff">
+
+<h1>Referenz zu <tt>ploglib.c</tt></h1>
+
+<ul>
+<li><b><a href="#einf">Einführung</a></b></li>
+<li><b><a href="#logformat">Log-Formate</a></b></li>
+   <ul>
+   <li><b><a href="#logformat_t">Der Log-Format-Typ</a></b></li>
+   <li><b><a href="#formatstring">Der Format-String</a></b></li>
+   <li><b><a href="#abbrev">Monats- und Tagesabkürzungen</a></b></li>
+   <li><b><a href="#dfname">Der Default-Filename</a></b></li>
+   <li><b><a href="#flags">Flags</a></b></li>
+   </ul>
+<li><b><a href="#accesses">Accesses</a></b></li>
+   <ul>
+   <li><b><a href="#access_t">Der Typ access_t</a></b></li>
+   <li><b><a href="#speicher">Speicherverwaltungsfunktionen</a></b></li>
+   <li><b><a href="#io">Ein- und Ausgabe</a></b></li>
+   <li><b><a href="#adddfname">Default-Filename hinzufügen</a></b></li>
+   <li><b><a href="#parse">Parsen einer Log-Zeile</a></b></li>
+   </ul>
+<li><b><a href="#implementation">Hinweise zu eigenen 
+   Implemenationen</a></b></li>
+   <ul>
+   <li><b><a href="#access_tt">Änderung des access_t</a></b></li>
+   <li><b><a href="#logformat_tt">Hinzunahme oder Entfernen von geparsten
+      Informationen</a></b></li>
+   <li><b><a href="#interna">Interna des logformat-Typs</a></b></li>
+   </ul>
+<li><b><a href="#copyright">Copyright</a></b></li>
+</ul>
+
+<hr>
+<h2><a name="einf">Einführung</a></h2>
+
+<p><tt>ploglib.c</tt> ist eine Bibliothek, die dazu dienen soll, Log-Dateien
+von HTTP-Servern zu parsen. Da dies mit Hilfe von regulären Ausdrücken
+geschieht, sollte man sich mit diesen auskennen, wenn man die Bibliothek
+benutzen will.</p>
+
+<p>Um eine Log-Datei zu parsen, muß man der Bibliothek zunächst das vom
+Server verwendet Log-Format in Form eines abgewandelten regulaeren Ausdrucks
+mitteilen. Dieser wird dann in eine für C-Programme auswertbare Form
+umgewandelt, und man kann anfangen, die einzelnen Zeilen zu parsen. Der
+Parser gibt dann Variablen vom Typ <tt><a href="#access_t">access_t</a></tt>
+zurück, in denen alle gewünschten Daten sauber aufgeschlüsselt stehen.</p>
+
+<hr>
+<h2><a name="logformat">Log-Formate</a></h2>
+
+<h3><a name="logformat_t">Der Log-Format-Typ</a></h3>
+
+<p>Log-Formate werden in der Bibliothek durch einen Typ</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   logformat_t
+</pre></tr></table>
+
+<p>repräsentiert. Zum Anlegen und freigeben von Variablen dieses Typs gibt es
+die Funktionen</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   logformat_t *new_logformat (const char *formatstring);
+   logformat_t *copy_logformat_t (logformat_t *lf);
+   void free_logformat_t (logformat_t *lf);
+</pre></tr></table>
+
+<p>Wie der bei der Anlage einer Variable mit <tt>new_logformat</tt> zu
+übergebene <tt>formatstring</tt> auszusehen hat, wird im nächsten Abschnitt
+besprochen.</p>
+
+<p>Die Funktion</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   int access_t_equal (access_t *a1, access_t *a2)
+</pre></tr></table>
+
+<p>vergleicht zwei Variablen von diesem Typ. Sie gibt, falls diese gleich
+sind, -1 zurück, falls sie sich in irgendeinem Punkt unterscheiden, 0.</p>
+
+
+<h3><a name="formatstring">Der Format-String</a></h3>
+
+<p>Der vom Benutzer übergebene <tt>formatstring</tt> ist ein regulärer
+Ausdruck, der allerdings zusätzlich folgende Elemente enthalten darf:</p>
+
+<table border="1">
+<tr><th>Abk.</th><th>Name</th><th align="left">Bedeutung</th></tr>
+
+<tr><td valign="top">%S</td>
+<td valign="top">requester</td>
+<td>Die IP-Adresse des anfragenden Clients in der Form x.x.x.x
+(x=0...255).</td></tr>
+
+<tr><td valign="top">%C</td>
+<td valign="top">command</td>
+<td>Das Kommando, das der Client an den Server geschickt hat. (Beispielsweise
+GET oder HEAD).</td></tr>
+
+<tr><td valign="top">%c</td>
+<td valign="top">return code</td>
+<td>Der Antwort-Code des Servers (z.B. 200 für "ok" oder 404 für "file not
+found").</td></tr>
+
+<tr><td valign="top">%r</td>
+<td valign="top">request</td>
+<td>Die vom Client angeforderte Datei.</td></tr>
+
+<tr><td valign="top">%b</td>
+<td valign="top">bytes</td>
+<td>Anzahl der vom Server zurückgelieferten Bytes.</td></tr>
+
+<tr><td valign="top">%d</td>
+<td valign="top">domain</td>
+<td>Die Domain (genauer: der vom Client angegebene Hostname), von der die
+Datei angefordert wird. Dies kann dann wichtig sein, wenn ein Server
+verschiedene Domains bearbeitet.</td></tr>
+
+<tr><td valign="top">%f</td>
+<td valign="top">referrer</td>
+<td>Falls der Client einem Link gefolgt ist, steht die Ursprungsseite hier
+drin.</td></tr>
+
+<tr><td valign="top">%B</td>
+<td valign="top">browser</td>
+<td>Wie der vom Client benutzte Browser sich identifiziert.</td></tr>
+
+<tr><td valign="top">%Y</td>
+<td valign="top">year</td>
+<td>vierziffrige Jahresangabe.</td></tr>
+
+<tr><td valign="top">%M</td>
+<td valign="top">month(numeric)</td>
+<td>Monat, 1- oder 2-ziffrig.</td></tr>
+
+<tr><td valign="top">%N</td>
+<td valign="top">month</td>
+<td>Monat, dreibuchstabige Abkürzung.</td></tr>
+
+<tr><td valign="top">%D</td>
+<td valign="top">day(numeric)</td>
+<td>Tag, 1- oder 2-ziffrig.</td></tr>
+
+<tr><td valign="top">%E</td>
+<td valign="top">day</td>
+<td>Tag, dreibuchstabige Abkürzung.</td></tr>
+
+<tr><td valign="top">%h</td>
+<td valign="top">hour</td>
+<td>Stunde, 1- oder 2-ziffrig.</td></tr>
+
+<tr><td valign="top">%m</td>
+<td valign="top">minute</td>
+<td>Minute, 1- oder 2-ziffrig.</td></tr>
+
+<tr><td valign="top">%s</td>
+<td valign="top">second</td>
+<td>Sekunde, 1- oder 2-ziffrig.</td></tr>
+
+</table>
+
+<p>Hier mal ein (zugegebenermaßen konstruiertes) Beispiel. Die Zeilen in den
+Log-Dateien des Servers sollen wie folgt aussehen:</p>
+
+
+<table bgcolor="#dddddd" width="70%"><tr><td><pre>
+   61.103.208.80 - [18/Jun/2001:00:08:00] "GET /test/index.html HTTP/1.0" 200 989
+</pre></tr></table>
+
+<p>Die an die Funktion <tt>new_logformat</tt> übergebene Zeichenkette, mit
+der man alle in dieser Zeilen enthaltenen Informationen extrahieren kann,
+lautet</p>
+
+<table bgcolor="#dddddd" width="70%"><tr><td><pre>
+   ^%S - \[%D/%N/%Y:%h:%m:%s\] "%C %r .+" %c %b$
+</pre></tr></table>
+
+<p>Intern geschieht dabei folgendes: Die Funktion ersetzt die Zeichenketten
+<tt>%S</tt>, <t>%D</t> usw. durch reguläre Ausdrücke wie <tt>(.*)</tt> oder
+<tt>(.[0-9])</tt>. Weiterhin merkt sie sich, an welcher Stelle der
+Zeichenkette welche Informationen stehen und speichert dies alles in der
+Variablen vom Typ <tt>logformat_t</tt> ab. Der Benutzer braucht sich um diese
+Sachen nicht weiter kümmern. Das einzige, was er wissen sollte, ist, daß die
+übergebene Zeichenkette keine Teil-Ausdrücke in runden Klammern enthalten
+darf, die bei regulären Ausdrücken Substrings herauslösen.</p>
+
+
+<h3><a name="abbrev">Monats- und Tagesabkürzungen</a></h3>
+
+<p>Wie man obiger Tabelle entnimmt, erkennt die Bibliothek dreibuchstabige
+Monats- und Tages-Abkürzungen. Man beachte, daß dies nicht die Abkürzungen
+aus der locale des Benutzers sein werden, sondern aus der locale der uid des
+Servers, von dem die Log-Dateien stammen. Dies dürfte fast immer die C-locale
+sein, und die Abkürzungen die englischen Standard-Abkürzungen. Diese werden
+auch gesetzt, wenn man mit <tt>new_logformat</tt> ein neues Log-Format
+anlegt.</p>
+
+<p>Dennoch hat der Benutzer die Möglichkeiten, die für ein Log-Format
+benutzten Abkürzungen manuell zu ändern:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void change_month_abbrevs (logformat_t *lf, char **new_months);
+   void change_days_abbrevs (logformat_t *lf, char **new_days);
+</pre></tr></table>
+
+<p>Übergeben wird ein array aus 12 bzw. 7 Zeichenketten. Die Abkürzungen für
+die Tage beginnen dabei mit 0 für Sonntag. Die Monatsabkürzungen mit 0 für
+Januar. Die übergebenen Werte werden in einen neuen Speicherbereich
+kopiert. Die Variablen <tt>new_month</tt> und <tt>new_days</tt> können, falls
+gewünscht, also nach dem Aufruf wieder freigegeben werden.</p>
+
+<p>Hat man eine dreibuchstabige Monats- oder Tages-Abkürzung, so kann man die
+zugehörige Nummer mittel der Funktionen</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   int find_day3_abbrev (logformat_t *lf, char *day);
+   int find_mon3_abbrev (logformat_t *lf, char *month);
+</pre></tr></table>
+
+<p>feststellen. Wie eben ist der Tag 0 der Sonntag. Der Januar ist der Monat
+Nr.1, der Dezember der Monat Nr.12.</p>
+
+
+<h3><a name="dfname">Der Default-Filename</a></h3>
+
+<p>Auf den meisten Servern gibt es einen Default-Dateinamen, meist
+<tt>index.html</tt>, der ausgeliefert wird, wenn ein Client ein Verzeichnis
+als URL angibt. Man hat die Möglichkeit, der Bibliothek mitzuteilen, daß sie
+an requests oder referrer, die mit einem slash '/' enden, diesen Dateinamen
+dranhängen soll. Hierzu muß man zwei Dinge tun:</p>
+
+<p>Erstens muß man den Default-Dateinamen setzen, und zwar mit der
+Funktion</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void change_default_filename (logformat_t *lf, char *newdefault);
+</pre></tr></table>
+
+<p>Wenn <tt>newdefault</tt> NULL ist, wird kein Default-Dateiname
+benutzt.</p>
+
+<p>Zweitens muß man das Flag <tt>LF_FLAG_EXPAND_DEFAULT_FILES</tt>
+setzen. (S. im Abschnitt über Flags!)</p>
+
+<p>Man beachte, daß der Default-Filename nicht angehänt wird, wenn die
+Anfrage des Client nicht mit einem slash endet, weil die Bibliothek dann
+keine Möglichkeit hat, festzustellen, ob es sich um ein Verzeichnis oder eine
+Datei handelt. Eigentlich sollten in den Server-Logbüchern
+Verzeichniszugriffe allerdings immer mit einem slash enden.</p>
+
+<h3><a name="flags">Flags</a></h3>
+
+<p>In der Struktur <tt>logformat_t</tt> gibt es ein Element namens
+<tt>flags</tt>, welches eine bitweise Kombination von folgenden Konstanten
+ist: (vorerst gibt es nur eine)</p>
+
+<table border="1">
+<tr><td valign="top">LF_FLAG_EXPAND_DEFAULT_FILES</td>
+<td>Ist dieses Flag gesetzt, und ein Default-Dateiname gesetzt, so wird
+dieser während des Parsens einer Zeile jedem request und jedem referrer, der
+mit einem slash '/' endet, angehängt.</td></tr>
+</table>
+
+
+<hr>
+<h2><a name="accesses">Accesses</a></h2>
+
+<h3><a name="access_t">Der Typ access_t</a></h3>
+
+<p>Bevor man eine Zeile parsen kann, muß man erst mal einen Typ haben, in dem
+man das Ergebnis abspeichern kann. Hier ist er:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   typedef struct {
+      unsigned long int requester; /* IP-Adresse des anfragenden Rechners */
+                                   /* in networkbyte-order */
+      char *command;               /* Kommando (z.B. GET) */
+      int rcode;                   /* return-code des Servers (meist 200) */
+      int bytes;                   /* Anzahl der zurueckgelieferten Bytes */
+      char *request;               /* welche Datei abgerufen wurde */
+      char *domain;                /* welche Domain angefordert wurde */
+      char *referrer;              /* von wo der surfer kam. (ev. NULL) */
+      char *browser;               /* welches Programm angefordert hat */
+
+      /* Datum und Uhrzeit als Zahlen*/
+      int dateY, dateM, dateD, timeH, timeM, timeS;
+   } access_t;
+</pre></tr></table>
+
+<p>Die einzelnen Einträge entsprechen den Abkürzungen in der Tabelle im
+Abschnitt über den <a href="#formatstring">Format-String</a>. Die IP-Adresse
+des Clients liegt allerdings hier als numerische Zahl in networkbyte-order
+vor. Datums- und Zeitangaben sind ebenfalls stets Zahlen.</p>
+
+
+<h3><a name="speicher">Speicherverwaltungsfunktionen</a></h3>
+
+<p>Um mit dem <tt>access_t</tt> arbeiten zu können, braucht man zunächst
+einmal einige grundlegende Funktionen:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *new_empty_access_t ();
+   void free_access_t (access_t *a);
+   access_t *copy_access_t (access_t *a);
+</pre></tr></table>
+
+<p>Diese Funktionen sind denke ich selbsterklärend. Die erste Funktion füllt
+die Variable mit leeren Werten, d.h. <tt>NULL</tt>-Zeigern für
+<tt>char*</tt>-Elemente, 0 für den requester, und -1 für alle anderen
+numerischen Werte.</p>
+
+
+<h3><a name="io">Ein- und Ausgabe</a></b></h3>
+
+<p>Hierzu gibt es nur zwei magere Hilfsfunktionen:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void fprint_access_t (FILE *f, access_t *a);
+   access_t *fscan_access_t (FILE *f);
+</pre></tr></table>
+
+<p>Die erste Funktion gibt den Inhalt der Variablen <tt>a</tt> ohne weitere
+Erklärung aus, aber genau in der Form, in der sie von der zweiten Funktion
+wieder eingelesen werden kann.</p>
+
+<p>Diese Funktionen sind eher zum Testen und debuggen gedacht und sind mit
+Vorsicht zu genießen.</p>
+
+
+<h3><a name="adddfname">Default-Filename hinzufügen</a></h3>
+
+<p>Ist in einem Log-Format das Flag <tt>LF_FLAG_EXPAND_DEFAULT_FILES</tt>
+gesetzt, so wird, wie oben erklärt, während des Parsens einer Log-Zeile an
+alle requests und refferrer, die mit einem slash "/" enden, der
+default-filename drangehängt, sofern ein solcher existiert. Dies kann man
+auch manuell machen: Die Funktion</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   void add_default_files (access_t *a, logformat_t *lf);
+</pre></tr></table>
+
+<p>macht genau dies: Sie fügt den Default-Filename des Log-Formates
+<tt>lf</tt> (sofern dieser existiert) an den request und den refferrer von
+<tt>a</tt> an, sofern diese mit einem slash enden. Dies wird unabhängig davon
+gemacht, ob das oben erwähnte Flag gesetzt ist oder nicht.</p>
+
+
+<h3><a name="parse">Parsen einer Log-Zeile</a></h3>
+
+<p>Diese zentrale Funktion der Bibliothek sieht wie folgt aus:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *parse_log_line (char *line, logformat_t *lf);
+</pre></tr></table>
+
+<p>Es wird versucht, die Zeile <tt>line</tt> mit Hilfe des Log-Formates
+<tt>lf</tt> zu parsen. War dies erfolgreich, so wird das Ergebnis in einem
+neu allokierten <tt>access_t*</tt> zurückgegeben. Bei einem Fehler wird
+<tt>NULL</tt> zurückgegeben.</p>
+
+<p>Es ist natürlich selbst im Erfolgsfall möglich, oder sogar wahrscheinlich,
+daß nicht alle Elemente des zurückgegebenen <tt>access_t*</tt> gesetzt
+sind. In diesem Fall haben sie immer noch die von <a
+href="#speicher"><tt>new_empty_access_t</tt></a> gesetzten "leeren"
+Werte.</p>
+
+
+<hr>
+<h2><a name="implementation">Hinweise zu eigenen Implementationen</a></h2>
+
+<h3><a name="access_tt">Änderungen des access_t</a></h3>
+
+<p>Änderungen in diesem Datentyp vorzunehmen, ist ganz einfach: Man ändert
+einfach die Typ-Definition und die Funktionen</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   access_t *new_empty_access_t ();
+   void free_access_t (access_t *a);
+   access_t *copy_access_t (access_t *a);
+   int access_t_equal (access_t *a1, access_t *a2);
+   void fprint_access_t (FILE *f, access_t *a);
+   access_t *fscan_access_t (FILE *f);
+   void add_default_files (access_t *a, logformat_t *lf);
+</pre></tr></table>
+
+<p>Hierbei muß die letzte Funktion wahrscheinlich nur in den seltensten
+Fällen angefaßt werden.</p>
+
+
+<h3><a name="logformat_tt">Hinzunahme oder Entfernen von geparsten
+      Informationen</a></h3>
+
+<p>Hat man den access_t geändert, beispielsweise ein Element hinzugefügt oder
+eines entfernt, möchte man wohl in der Regel auch, daß diese Informationen
+aus Log-Dateien herausgezogen werden können. Dies geschieht wie folgt: In der
+Datei <tt>ploglib.c</tt> gibt es eine globale Variable namens
+<tt>subterm</tt>, die im Augenblick so definiert ist:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   tt_type_t subterm[] = {
+     {'S', "([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})"},  /* numerische IP des Clients */
+     {'C', "([a-zA-Z]+)"}, /* Kommando des Clients */
+     {'c', "([0-9]+)"},    /* Antwortcode des Servers */
+     {'r', "(.*)"},        /* angeforderte Datei */
+     {'b', "([0-9\\-]+)"}, /* Anzahl der zurueckgelieferten Bytes */
+     {'d', "(.*)"},        /* angeforderte Domain */
+     {'f', "(.*)"},        /* referrer */
+     {'B', "(.*)"},        /* Browser */
+
+     {'Y', "([0-9]{4})"},    /* 4-ziffriges Jahr */
+     {'M', "([0-9]{1,2})"},  /* Monat, 1- oder 2-ziffrig */
+     {'N', "([a-zA-Z]{3})"}, /* Monat, 3-buchstabige Abk. */
+     {'D', "([0-9]{1,2})"},  /* Tag, 1- oder 2-ziffrig */
+     {'E', "([a-zA-Z]{3})"}, /* Tag, 3-buchstabige Abk. */
+     {'h', "([0-9]{1,2})"},  /* Stunde, 1- oder 2-ziffrig */
+     {'m', "([0-9]{1,2})"},  /* Minute, 1- oder 2-ziffrig */
+     {'s', "([0-9]{1,2})"},  /* Sekunde, 1- oder 2-ziffrig */
+     {'\0', NULL}
+   };
+</pre></tr></table>
+
+<p>Der Typ <tt>tt_type_t</tt> besteht aus einem char, und einem String. Bei
+der Variablen <tt>subterm</tt> handelt es sich um einen nullterminierten
+array davon. Die Buchstaben entsprechen den Buchstaben, die man im <a
+href="#formatstring"> Format-String</a> angibt. Diese werden bei der Anlage
+eines neuen Log-Formates durch die entsprechenden regulären Ausdrücke, die
+dahinter stehen, und die jeweils in runde Klammern eingefaßt sein müssen, da
+der Substring herausgelöst werden soll, ersetzt. Man kann in obiger
+Definition beispielsweise sehen, daß %S ersetzt wird durch einen regulären
+Ausdruck, der auf Zeichenketten der Form x.x.x.x, wobei x aus 1 bis 3 Ziffern
+besteht, paßt. Will man weitere Informatione parsen, so muß man zunächst
+einmal diese Variable erweitern.</p>
+
+<p>Anschließend muß man noch den eigentlichen Parser, die Funktion
+<tt>parse_log_line</tt> anpassen, die die Verbindung zwischen den Typen
+<tt>logformat_t</tt> und <tt>access_t</tt> darstellt. In dieser befindet sich
+eine große switch-Anweisung, die die richtigen Informationen in einen neuen
+<tt>access_t</tt> schreibt. Sie fängt im Augenblick wie folgt an:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+    switch (subterm[lf->series[i-1]].letter) {
+    case 'S': /* IP des Clients */
+      res->requester=inet_addr(tmpstr);
+      free (tmpstr);
+      break;
+    case 'C': /* Kommando */
+      res->command=tmpstr;
+      break;
+    case 'c': /* Antwortcode */
+      res->rcode = atoi(tmpstr);
+      free (tmpstr);
+      break;
+    case 'r': /* angeforderte Datei */
+      res->request = tmpstr;
+      break;
+</pre></tr></table>
+
+<p>In der lokalen Variable <tt>tmpstr</tt> ist der herausgelöste Teil-String
+der Zeile enthalten, der die Information enthält. Dieser ist neu
+allokiert. Wird der String selber nicht gebraucht, beispielsweise weil wie
+oben lediglich eine Integer-Zahl daraus gemacht wird, sollte man ihn wieder
+freigeben. Die Variabel <tt>res</tt> (für result) enthält den
+<tt>access_t</tt>, der von der Funktion am Ende zurückgegeben wird, und der
+die geparsten Informationen enthalten soll.</p>
+
+<p>Will man weniger oder mehr Informationen parsen, so muß man diese
+switch-Anweisung ebenfalls ändern.</p>
+
+
+<h3><a name="interna">Interna des logformat-Typs</a></h3>
+
+<p>Will man noch mehr in den Funktionen rumbasteln, ist es u.U. notwendig,
+den Typ <tt>logformat_t</tt> zu ändern:</p>
+
+<table bgcolor="#ffffbb" width="70%"><tr><td><pre>
+   typedef struct {
+     char *user_format;        /* der string, wie ihn Benutzer angegeben hat*/
+     regex_t pre_rex;          /* kompilierter regulaerer Ausdruck */
+     int *series;              /* nullterminierter array, der angibt, welche
+                                  Bedeutung die einzelnen substrings des 
+                                  regulaeren Ausdrucks haben. Bezieht sich auf
+                                  die Nummer des Variablen subterm[] */
+     size_t nmatch_size;       /* Anzahl der Substrings im regulaeren 
+                                  Ausdruck*/
+     char mon3[12][4];         /* dreibuchstabige Monatsabk. 0=Januar */
+     char day3[ 7][4];         /* dreibuchstabige Tagesabk. 0=Sonntag */
+
+     int flags;
+     char *default_filename; 
+   } logformat_t;
+</pre></tr></table>
+
+<p><tt>user_format</tt> enthält die Zeichenkette, so wie ihn der Anwender an
+die Funktion <tt>new_logformat</tt> übergeben hat, und zwar ohne jegliche
+Änderungen. Die Funktion nimmt dann die durch die globale Variable
+<tt>subterm</tt> gegebenen Ersetzungen vor, übersetzt den entstandenen
+regulären Ausdruck, und speichert den übersetzten Ausdruck dann im Element
+<tt>pre_rex</tt> ab (für "precompiled regular expression").</p>
+
+<p>Weiterhin muß noch festgehalten werden, wie viele herauszulösenden
+Unterausdrücke der reguläre Ausdruck enthält (es sind <tt>nmatch_size</tt>)
+und welche Bedeutung diese haben. Hierzu dient das Element <tt>series</tt>:
+Der erste Unterausdruck (hier repräsentiert durch <tt>series[0]</tt>, bezieht
+sich auf die Information <tt>subterm[series[0]]</tt>. Wäre im obigen Beispiel
+also <tt>series[4]==1</tt>, so wäre der fünfte herausgelöste Unterausdruck
+das Kommando des Clients, denn <tt>subterm[1]</tt> steht eben hierfür.</p>
+
+<p>Die Elemente <tt>mon3</tt> und <tt>day3</tt> enthalten die
+dreibuchstabigen Monats- und Tagesabkürzungen. Die Elemente
+<tt>default_filename</tt> und <tt>flags</tt> sind glaube ich
+selbsterklärend.</p>
+
+<hr>
+<h2><a name="copyright">Copyright</a></h2>
+
+<p><b>Copyright (C) 2001 Michael Becker</b></p>
+
+
+<p>Diese library steht unter der BSD-Lizenz:</p>
+
+<blockquote>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
+
+<ul>
+<li>Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.</li>
+
+<li>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</li>
+
+<li>My name may not be used to endorse or promote products derived from this
+software without specific prior written permission.</li>
+</ul>
+
+
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+</blockquote>
+
+<p>Zu Deutsch: Diese Software darf frei kopiert werden. Sie darf für
+kommerzielle sowie für freie Programme verwendet werden. In Redistributionen
+als Quellcode oder als Binärcode muß dieses Copyright enthalten sein.</p>
+
+<p>Weiterhin bestätigt der Autor hiermit, daß er die library nach bestem
+Wissen und Gewissen erstellt hat. Er übernimmt jedoch keinerlei Verantwortung
+oder Garantien für was auch immer.</p>
+
+
+<p>Michael Becker <a href="mailto:michael.www@ijon.de">michael.www@ijon.de
+</a>, 22.8.2001</p>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+ftpmlib.c reference
+
+Introduction
+  The FTP protocol  
+General remarks  
+  Return values  
+  Logging and error messages
+Description of the functions
+  Connecting, closing connections, and login
+  Working with directories
+  Working with files
+  Passive and active FTP
+  Binary and ASCII mode
+Interna  
+  The data type ftp_server
+  Implementation of own commands without data channel
+  Impelemntation of own commands with data channel
+Various
+  Thread Safety
+  Timeouts
+Changelog
+Copyright  
+
+------------------------------------------------------------------------------
+
+Introduction
+
+The ftpmlib (ftp-minimal-library) is a small C library, which implements only
+a small part of the FTP protocol. I confined myself to the most frequent
+function of FTP: The login on a server, the exchange of files, and the
+creating, changing or removing of directories.
+
+The FTP protocol itself is much more mighty: There are several transmission
+modes, which can be used e.g. to resume cancelled transmissions. All those
+things are not implemented in this library. The aim was to present an API as
+simple as possible.
+
+
+The FTP protocol
+
+The FTP protocol is defined in many RFCs. The most recent and most detailed
+it the RFC959. Many FTP servers allow additional, server specific
+commands. The most important of those perhaps is the CHMOD command, which can
+be used on UNIX systems to change the permissions of a file. This library
+only implements RFC conformal commands, and even not all of them.
+
+If one wants to implement own commands, one should know a bit of how FTP
+works. The data transfer during FTP runs through two different TCP
+connections. The first connection, the so called command channel, stays open
+the whole session and is used for the exchange of commands or status messages
+between the client and the server. This connection is created by the client
+and normally uses port 21 on the server.
+
+If data has to be transferred, a second TCP connection is opened, the so
+called data channel. If the FTP is "active", this connection is initiated by
+the server, if it is "passive", it is initiated by the client. In both cases
+server and client have to negotiate, to wich port the data channel has to be
+opened. This is done usually with the commands PORT (during active FTP) and
+PASV (during passive FTP). The participant, who receives the connection, has
+to assure, that he listens on the port negotiated.
+
+Using this library, the user should not have to care about these technical
+details. But it is good to have this at the back of one's head e.g. to be
+able to interpret error messages.
+
+
+General remarks
+
+Return values
+
+The return values of all functions show, whether they were successful or
+not:
+
+Function, which return a pointer, return NULL in case of an error. Functions,
+which return an integer, return 0 in case of success, and some other value in
+case of an error. When interpreting this number, it has to be differentiated
+between functions, which had something to do with the creation of a TCP
+connection, and functions, which only used an existing TCP connection:
+
+Functions, which have something to do with the creation of a new TCP
+   connection (these are ftpserver_connect and all function, which need a
+   data channel. This will be remarked in the description of the functions.)
+   will return the following:
+
+   Code  Function, at which the error occured
+   ------------------------------------------
+     -1  gethostbyname
+     -2  socket
+     -3  connect
+     -4  fdopen
+     -5  dup
+     -6  bind
+     -7  listen
+     -8  accept
+     -9  error on the layer of the FTP protocol. Look into the
+         err_msg or log_msg
+    -10  getsockname
+    -11  fopen
+    -12  timeout during connect
+    -13  timeout during accept
+    -14  timeout during reading
+    -15  timeout sending data
+
+   In any case the should be an error message added to err_msg (if
+   !=NULL). The only exception is the closing of a data channel. If an error
+   occures here, no error message is produced.
+
+All other functions -those, which don't have to do anything with the creation
+of a TCP connection- return the response code of the FTP server in case of an
+error.
+
+Of course it is important, that an open FTP connection is necessary to send a
+FTP command. If one tries to write into a non existent FTP connection, a
+segementation fault will happen.
+
+
+Logging and error messages
+
+To all functions pointer on two strings are passed:
+
+  char **log_msg;
+  char **err_msg;
+
+If log_msg!=NULL, all things, which are sent to the server over the command
+channel, and all his responses, are added to *log_msg in new allocated
+memory. So in the beginning *log_msg may be NULL or a valid string. (This
+will produce a lot of output and is mainly for debugging.)
+
+If err_msg!=NULL, all response lines of the server are added to *err_msg,
+when an error occured. When the server gives responses, which are illegal
+according to the RFC, some short messages as "illegal response from server"
+are added. The new string will be new allocated. In the beginning, *err_msg
+may be NULL, or a valid string. Furthermore all system error messages are
+added, if they errors occur during system calls.
+
+(Beware: If you don't pass NULL, you must not pass a const char*, let's say
+"" or "Errors: ", for err_msg oder log_msg, because if something is added,
+new memory is allocated and the old memery is freed, what gives a
+segmentation fault in this case.)
+
+The messages returned already contain a newline.
+
+
+Description of the functions
+
+Connecting, closing connections, and login
+
+To do this, there are the functions
+
+
+   ftp_server *ftpserver_connect (const char *servername, 
+                                  unsigned short int port,
+                                  char **log_msg, char **err_msg);
+   int ftpserver_close (ftp_server *fs, char **log_msg, char **err_msg);
+
+   int ftp_logon (ftp_server *fs, const char *username, const char *password,
+                  const char *account, char **log_msg, char **err_msg);
+
+ftpserver_connect tries to establish a connection to the server with the name
+servername to the port port. If 0 is given as port, the SERVER_DEFAULT_PORT
+(usually 21) is used. The function returns a new allocated structure of type
+ftp_server*. In case of an error, NULL is returned.
+
+An open connection can be closed with ftpserver_close.
+
+ftp_logon tries to login the user username with the password password and the
+account account. The most servers don't use the account, so that this
+parameter can normally be set to NULL. For some FTP servers and users the may
+be even no password necessary. (But attention: If one passes password==NULL,
+and the server wants to have password,  I don't know what happens, either it
+results in an error, or in a segementation fault.)
+
+A typical FTP connection is created approcimately as follows:
+
+  ftp_server *fs;
+
+  fs=ftpserver_connect ("ftp.somewhere.de", 0, NULL, NULL);
+  ftp_logon (fs, "joe", "mysecret", NULL, NULL, NULL);
+
+  ftpserver_close (fs, NULL, NULL);
+
+
+Working with directories
+
+For this there are the function
+
+   int ftp_change_dir (ftp_server *fs, int up, const char *path,
+                       char **log_msg, char **err_msg);
+
+   int ftp_remove_dir (ftp_server *fs, const char *path,
+                       char **log_msg, char **err_msg);
+
+   char *mk_working_dir (ftp_server *fs,
+                         int makedir, const char *path,
+                         char **log_msg, char **err_msg);
+
+   int ftp_list (ftp_server *fs, const char *dir, int names_only, 
+                 char ***lines,
+                 char **log_msg, char **err_msg);
+
+
+ftp_change_dir changes into the directory path. Path may be an absolute or a
+relative path. It is in any case goot to test the result, because many
+servers are somewhat peculiar in this respect. If up is different from 0, it
+is changed with CDUP in to the directory above the actual working directory,
+and path may be NULL. This command has not to be implemented on all
+servers. The same effect can be reached with path=="..".
+
+What the function ftp_remove_dir makes, is clear. Only empty directories can
+be removed.
+
+With mk_working_dir a new directory can be created (makedir!=0), or the
+actual working directory can be queried (makedir==0). In the latter case path
+may be NULL. In both cases a pointer to a new allocated string with the name
+of the new res. the actual directory is returned. Or NULL in case of an
+error.
+
+With ftp_list one can read the content of the directory path, or of the
+working directory, if path is NULL. (path=="" is not a valid path name). The
+lines returned by the server are given back in a new allocated NULL
+terminated array of strings. If namesonly!=0, only the file names withour
+further information are returned. Otherwise the server gives some information
+for every file. In the latter case the response may be difficult to interpret
+by a program.
+
+The following part of a program prints the content of the working directory
+to stdout.
+
+  int i=0;
+  char **lines;
+
+  ftp_list (fs, NULL, 1, &lines, NULL, NULL);
+  while (lines[i]) printf ("%s", lines[i++]);
+
+This command needs a data channel. Ergo the return code is different from the
+two other function of this chapter.
+
+
+Working with files
+
+  int ftp_get_file (ftp_server *fs, 
+                    const char *local_name, const char *remote_name,
+                    char **log_msg, char **err_msg);
+
+  int ftp_put_file (ftp_server *fs, 
+                    const char *local_name, const char *remote_name,
+                    char **log_msg, char **err_msg);
+
+  int ftp_delete_file (ftp_server *fs, const char *remote_name,
+                       char **log_msg, char **err_msg);
+
+  int ftp_rename_file (ftp_server *fs, 
+                       const char *from_name, const char *to_name,
+                       char **log_msg, char **err_msg);
+
+The first function transfers the file remote_name from the server the the
+client host and saved it unter the name local_name. In the second function
+conversly. Both functions need a data channel. If relative path names are
+used, the working directories have to be set appropriately.
+
+What the latter two function do, is clear. They don't need a data channel.
+
+
+Passive and active FTP
+
+  void ftp_toggle_passive (ftp_server *fs, int passiveon);
+
+With this function the passive mode can be switched on (passiveon!=0) or off
+(passiveon==0). Only flags in the ftp_server structure are set. So no error
+can occur. The difference between passive and active FTP gets noticable, if a
+command is used, which needs a data channel. In this case the addresses and
+port are negotiate with PASV in the passive case, and with PORT in the active
+case. But the user doesn't have to know this.
+
+
+Binary and ASCII mode
+
+The transmission mode can be set with the function
+
+   int ftp_set_transfer_type (ftp_server *fs, int ttype,
+                              char **log_msg,
+                              char **err_msg);
+
+ttype is one of
+
+  TTYPE_1_ASCII
+  TTYPE_1_IMAGE
+  TTYPE_1_EBCDIC
+  TTYPW_1_LOCAL
+
+TTYPE_1_LOCAL is not implemented and results in an error message. The modes
+TTYPE_1_ASCII and TTYPE_1_EBCDIC weren't tested by me, so I don't know
+whether they work.
+
+The function returns 0 in case of succes, -1 if the user passed an illegal
+ttype, or the response code of the server in case of an error.
+
+
+Interna
+
+Tha data type ftp_server
+
+is defined as follows:
+
+  typedef struct {
+    FILE *ccin, *ccout;       /* command channel, input and output        */
+    int fdcin, fdcout;        /* sockets for the command channel          */
+    FILE *dcin, *dcout;       /* data channel                             */
+    int fddin, fddout;        /* sockets for the data channel             */
+    int active_socket;        /* socket for data-channel                  */
+    unsigned short int scport;   /* server port for command channel       */
+    unsigned short int cdport, sdport;/* client- and server-port data channel*/
+    unsigned long int dadr;   /* server address for data channel          */
+    int mode;                 /* active or passive                        */
+    int ttype;                /* transmission type: ascii, image, ebcdic. */
+    int tmode;              /* transmission mode: stream, block, compressed */
+    int timeout;              /* timeout in seconds */
+  } ftp_server;
+
+If the data channel isn't open, dcin and dcout should both be NULL. 
+active_socket should only be !=0, if the data channel during active ftp
+is open. For the data channel, fddin and fddout are always the sockets on the
+host, independent of the direction of the data transfer. So one of those two
+sockets isn't used.
+
+Into the port variables for the data channel the port negotiated with PORT
+or PASV are saved. All port data is in hostbyte order.
+
+The address, which the server requires after a PASV command, is saved in
+dadr in networkbyte order.
+
+mode is one of
+
+  MODE_ACTIVE
+  MODE_PASSIVE
+
+ttype is the transfer mode. The lower two bits have one of the 4 values
+
+  TTYPE_1_ASCII
+  TTYPE_1_IMAGE
+  TTYPE_1_EBCDIC
+  TTYPE_1_LOCAL
+
+The higher bits one of the following values (consequently divisible by 4)
+
+  TTYPE_2_NONPRINT
+  TTYPE_2_TELNET
+  TTYPE_2_ASA
+
+tmode is one of
+
+  TMODE_STREAM
+  TMODE_BLOCK
+  TMODE_COMPRESSED
+
+In the moment, only TMODE_STREAM is supprted. And the default for ttype is
+TTYPE_1_ASCII | TTYPE_2_NONPRINT.
+
+timeout is the timeout for blocking system calls in seconds, or
+0. (Cmp. section about timeouts!)
+
+
+Implementation of commands without data channel
+
+Own FTP commands can rather simply be implemented with the help of this
+function:
+
+  int ftp_send_command (ftp_server *fs, const char *command,
+                        int *ok_returns, int *err_returns,
+                        int *return_code, char **return_line,
+                        char **log_msg, char **err_msg);
+
+The function sends the command command, which has to end with a return and a
+newline, to the server and interprets his response.
+
+ok_returns has to contain a 0 terminated array of integers with all response
+codes of the server, which let conclude a success. err_returns contains a 0
+terminated array of all error codes, the server may send. The function
+checks, whether the response code of the server is in one of these arrays and
+dependant of it adds messages to log_msg or err_msg.
+
+In case of success, the function returns 0, in case of an error -1.
+
+In return_code (if !=NULL) the response code of the server is returned. In
+return_line (if !=NULL) a new allocated string with the first response line
+of the server is returned. (These two are sometimes necessary, if they have
+to be interpreted further.)
+
+For reading the response of the server the following function can be used:
+
+  int ftp_get_response (ftp_server *fs, char **return_line,
+                        char **log_msg, char **err_msg);
+
+This function doesn't do any error checks, but simply returns the response
+code as integer. In return_line (if !=NULL) the first response line of the
+server is returend in a new allocated string.
+
+E.g. the CDUP command could be implemented as follows:
+
+  int ftp_cdup (ftp_server *fs,
+                char **log_msg, char **err_msg)
+  {
+    int rcode;
+    int cdup_ok_codes[2] = {200, 0},
+        cdup_err_codes[7]= {421, 500, 501, 502, 530, 550, 0};
+
+    if (ftp_send_command (fs, "CDUP\r\n", cdup_ok_codes, cdup_err_codes,
+                           &rcode, NULL, log_func, error_func))
+      return rcode;
+    return 0;
+  }
+
+
+Implementation of commands with data channel
+
+This is a bit more complicated. First a port and an address has to be
+negotiated with the server. Dependent of the state of active or passive, this
+should be done with PORT or PASV. The functions for this are:
+
+  int ftp_pasv (ftp_server *fs,
+                char **log_msg, char **err_msg);
+  int ftp_port (ftp_server *fs, char *hostadr,
+                char **log_msg, char **err_msg);
+
+The ftp_pasv function interprets the response from the server and saves the
+important data into the elements sdport (server-data-port) and dadr
+(data-address) of the ftp_server-structure.
+
+ftp_port gives the hostadr and the port fs->cdport (client-data-port), on
+which the client listens, to the server. If hostadr==NULL, the own host
+address it taken. The client-data-port fs->cdport is obligatory.
+
+To make things easier for the programmer, there is a function, which does
+all this and then opens a TCP connection res. waits until a TCP connection
+was opened by the server:
+
+  int ftp_make_data_connection (ftp_server *fs, const char *command,
+                                int *return_code, char **return_line,
+                                char **log_msg, char **err_msg);
+
+A call of this function makes all these things, and, if all works well, one
+can read from fs->dcin and write to fs->dcout afterwards. For technical
+reasons it is necessary, that this function sends the command itself, for
+which the data channel is needed. The response code and the first response
+line can be returned in return_code and return_line (if !=NULL, as
+above). The return value of this function is similar to the return value of
+the other function, which need a data channel.
+
+But if one wants to do this by hand, approximately the following order is to
+be kept:
+
+active FTP                    passive FTP
+
+bind
+PORT                          PASV
+listen
+RETR, STOR, LIST...           RETR, STOR, LIST...
+accept                        connect
+
+PORT and listen during active FTP may be exchanged.
+
+If all things are done, the data channel can be closed with
+
+  int ftp_close_data_connection (ftp_server *fs, 
+                char **log_msg, char **err_msg)
+
+Thie function waits for a confirmation of the server on the command channel,
+that the data channel was closed.
+
+A typical implementation of a command, which needs a data channel, may make
+the following steps:
+
+  concatenate the command string
+  call ftp_make_data_connection
+  read or write to the data channel, until ready
+  call ftp_close_data_connection
+
+Sometimes a transfer can be interrupted with the Abort-command. But this is
+not implemented in this library with only one thread.
+
+Of course during reading and writing from the data channel, the user has to
+set the timeouts himself.
+
+
+Various
+
+Thread Safety
+
+The library should be thread-safe, if _REENTRANT is defined. With one little
+exception: The global timeout. But this is not really a problem. (S. next
+section!)
+
+Timeouts
+
+It is possible to set a timeout for all blocking system calls: Change the
+global variable
+
+  int ftpmlib_global_timeout;
+
+The meaning is as follows:
+   n>0 : timeout of n seconds.
+   0   : no timeout.
+  -1   : default timeout (FTPMLIB_DEFAULT_TIMEOUT. Cmp. ftpmlib.h!)
+
+When a new ftp_server-structure is initialized, e.g. when connecting to a ftp
+server, the actual value of this variable is stored in the structure. So
+later changes of the global variable only affect new connections. For
+changing the timeout of an existing connection change the timeout-element of
+the ftp_server-structure. For this element, no negative values are allowed.
+
+The timeout has a slightly different meaning for the single
+commands. E.g. during reading a server response or the response after a
+LIST command, the transmission is stopped, if in timeout seconds no line was
+received. During a GET (PUT) the transmission is stopped, if in timeout
+seconds no byte was received (transmitted).
+
+
+Changelog
+
+until 29.10.2000
+  first working version. Started writing documentation
+
+31.10.2000
+  system errors too are given to the error_func.
+
+13.12.2002
+  changed comments and documentation to english, documentation from html
+  to ascii format. error-messages are now returned in a string (err_msg).
+
+29.12.2002
+  added reentrant version of gethostbyname.
+  added timeouts.
+  version 1.2
+
+4.7.2004
+  active ftp left data data sockets open. bug found and fixed by
+  Daniel Haensse <haensse@swissembedded.com>
+
+  server responses with more than two lines weren't read in ftp_get_response.
+  version 1.3
+
+Copyright
+
+Copyright (C) 2000 Michael Becker
+
+This library is under the BSD licence. It can be used for free for
+free or for commercial programs. It may be changed arbitrily.
+ 
+Furthermore the author confirms, that he has created this library to the best
+of his knowledge and belief. But he takes no responsiblity or garantee for
+whatever.
+
+
+Michael Becker (http://www.ijon.de/comp/libs/index.html)
+email momentarily: michael.w01@ijon.de
+29.10.2000
+
+
+
+

@@ -104,6 +104,7 @@ chr(97) # get the letter for an ascii value
 x >= 2 and y != 0 and (x/y) > 2 # guard evaluation to avoid ZeroDivisionError
 json.dumps(vars(class_name), sort_keys=True, indent=4) # serialize a class to a json file
 time.strftime("%Y-%m-%d %H:%M") # print time in the format "Year-Month-Day Hour:Minute"
+sys.stdout = open(file, "wt") # write stdout to file
 str1 = ' '.join(list1) # make a string from a list
 export PYTHONSTARTUP=$HOME/.python/__init__.py
 glob.glob("c:/windows/*.bmp") # get a list of paths matching a Unix-style glob pattern

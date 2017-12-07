@@ -1,0 +1,2 @@
+if(text[0] == '\0') {} // check if a character array is empty
+if (strcmp(text, "") == 0) // check if a character array is empty

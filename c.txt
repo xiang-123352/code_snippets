@@ -1,2 +1,3 @@
-if(text[0] == '\0') {} // check if a character array is empty
-if (strcmp(text, "") == 0) // check if a character array is empty
+if(text[0] == '\0') {} // check if a char array is empty
+if (strcmp(text, "") == 0) // check if a char array is empty
+int num = strtol(s, NULL, 10); // convert string to long int

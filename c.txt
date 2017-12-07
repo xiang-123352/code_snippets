@@ -1,4 +1,4 @@
 sprintf(string, "%d", 42); // convert int to string
+int num = strtol(s, NULL, 10); // convert string to long int
 if(text[0] == '\0') {} // check if a char array is empty
 if (strcmp(text, "") == 0) // check if a char array is empty
-int num = strtol(s, NULL, 10); // convert string to long int

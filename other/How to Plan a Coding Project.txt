@@ -1,0 +1,5 @@
+1. decide what to make, 
+2. design the end result, 
+3. plan your code, 
+4. identify extra things you need to set up, 
+5. formulate a schedule

@@ -11,5 +11,8 @@ String s = String.toUpper("dog"); // convert a string to upper case
 String s = String.toLower("DOG"); // convert a string to lower case
 myAgeInt.equals(hisAgeInt);
 System.out.println("Hello World!");
+System.out.format("the %s jumped over the %s, %d times", "cow", "moon", 2);
+System.err.format("the %s jumped over the %s, %d times", "cow", "moon", 2);
+String result = String.format("the %s jumped over the %s, %d times", "cow", "moon", 2);
 import java.io.*; // import a package
 package java.lang; // specify a java file belongs to a certain package

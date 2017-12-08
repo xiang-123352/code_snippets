@@ -1,0 +1,15 @@
+Summary: [Verb] [Fragment] [Ticket #]
+
+Details: [Why]
+
+Verbs:
+
+Add
+Fix
+Up
+Remove
+Switch
+Improve
+Update
+Rename
+

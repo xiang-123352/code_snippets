@@ -1,4 +1,4 @@
-memcpy(pointer, destination, source);
+memcpy(destination, source, bytes);
 free(x);
 x = malloc(sizeof(int));
 sprintf(string, "%d", 42); // convert int to string

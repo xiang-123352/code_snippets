@@ -1,3 +1,4 @@
+typedef oldname newname;
 a[i] == *(a + i);  // these two statements are the same thing
 memcpy(destination, source, bytes);
 free(x);

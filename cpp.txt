@@ -1,0 +1,1 @@
+int *p = static_cast<int*> (malloc (100 * sizeof *p));

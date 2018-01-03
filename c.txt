@@ -1,4 +1,7 @@
-struct TemperatureNode node = {0};
+int i = 123;
+int *p = &i; // pointer to i
+int **pp = &p; // pointer to p
+struct TemperatureNode node = {0}; // set all struct fields to 0
 fread(arr, sizeof(int), 10, ptr);
 struct *car = malloc(sizeof(struct car));
 typedef oldname newname;

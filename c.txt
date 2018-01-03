@@ -1,3 +1,4 @@
+struct TemperatureNode node = {0};
 fread(arr, sizeof(int), 10, ptr);
 struct *car = malloc(sizeof(struct car));
 typedef oldname newname;

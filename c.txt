@@ -1,3 +1,4 @@
+while (/* some condition */) {} // python "pass" equivalent are "{}"
 int i = 123;
 int *p = &i; // pointer to i
 int **pp = &p; // pointer to p

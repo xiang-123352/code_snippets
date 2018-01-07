@@ -1,4 +1,4 @@
-void (*fp) ( int ); // pointer to a function
+void (*fp) ( int ); 
 while (/* some condition */) {} // python "pass" equivalent are "{}"
 int i = 123;
 int *p = &i; // pointer to i

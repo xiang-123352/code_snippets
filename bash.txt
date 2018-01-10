@@ -1,3 +1,4 @@
+xmllint --format ugly.xml # prettify (indent) xml files
 sed 'N; /\n,/s/"\? *\n//; P; D' title_csv # regular expression over multiple lines
 gcc -S file.c # convert a c language file to assembly
 nbd-client -d /dev/nbd0'

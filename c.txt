@@ -1,5 +1,5 @@
 void (*fp) (int); // pointer to a function
-while (/* some condition */) {} // python "pass" equivalent are "{}"
+while (/* some condition */) {} // python "pass" equivalent is "{}"
 int i = 123;
 int *p = &i; // pointer to i
 int **pp = &p; // pointer to p

@@ -1,3 +1,4 @@
+pdfbooklet source.pdf destination.pdf
 defaults write com.apple.screencapture type jpg # change default screenshot file type
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1 # set update frequency
 defaults write com.apple.desktopservices DSDontWriteNetworkStores true

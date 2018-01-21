@@ -1,3 +1,4 @@
+SELECT table_name1.column, table_name2.column FROM table_name1 JOIN table_name2 ON table_name1.column = table_name2.column
 SELECT column_names FROM table_name WHERE column_name IN (values);
 SHOW databases;
 USE database;

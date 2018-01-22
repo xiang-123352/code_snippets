@@ -7,7 +7,6 @@ echo "#EXTM3U" > $PLAYLIST
 
 while read LINE
 do
-
   name=$(echo $LINE | awk -v FS=":" '{print $1}')
   programm=$(echo $LINE | awk -v FS=":" '{print $10}')
   frequency=$(echo $LINE | awk -v FS=":" '{print $2 "000"}')
@@ -21,5 +20,4 @@ do
   echo "#EXTVLCOPT:dvb-modulation=$modulation" >> $PLAYLIST
   echo "#EXTVLCOPT:program=$programm" >> $PLAYLIST
   echo "dvb://" >> $PLAYLIST
-
 done<$SOURCEFILE

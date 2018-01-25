@@ -1,3 +1,4 @@
+3 ** 4 # equals pow(3, 4)
 lambda x: exec("raise Exception")
 os.path.dirname(__file__) # get the path of the file that is currently executed
 os.getcwd() # get working directory

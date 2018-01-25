@@ -1,3 +1,4 @@
+log.dir(document);
 "abc".repeat(3); // "abcabcabc"
 var mydiv = document.getElementById("myDiv");
 var aTag = document.createElement('a');

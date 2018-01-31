@@ -1,6 +1,6 @@
 i = 0; while(string[i++]); // jump to the end of the string
 void (*fp) (int); // pointer to a function
-while (/* some condition */) {} // python "pass" equivalent is "{}"
+while (/* some condition */) {} // "{}" is like "pass" in python
 int i = 123;
 int *p = &i; // pointer to i
 int **pp = &p; // pointer to p

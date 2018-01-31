@@ -1,4 +1,4 @@
-while(s[i++]); // jump to the end of the string
+i = 0; while(string[i++]); // jump to the end of the string
 void (*fp) (int); // pointer to a function
 while (/* some condition */) {} // python "pass" equivalent is "{}"
 int i = 123;

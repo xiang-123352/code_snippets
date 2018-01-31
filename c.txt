@@ -1,3 +1,4 @@
+int a[]; // equivalent to "int *a"
 i = 0; while(string[i++]); // jump to the end of the string
 void (*fp) (int); // pointer to a function
 while (/* some condition */) {} // "{}" is like "pass" in python

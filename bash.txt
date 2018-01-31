@@ -1,3 +1,6 @@
+hdparm -tT /dev/sda # measure hard disk data transfer speed
+hdparm -I /dev/sda|grep -i speed # see sata link speed options
+dmesg|grep -i sata|grep 'link up' # see sata link speed used
 sed -i.bak 's/^M$//' file.txt # strip out "^M" characters from text file
 xmllint --format ugly.xml # prettify (indent) xml files
 sed 'N; /\n,/s/"\? *\n//; P; D' title_csv # regular expression over multiple lines

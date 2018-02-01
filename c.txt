@@ -1,4 +1,5 @@
 int a[]; // equivalent to "int *a"
+int *p = a; // equivalent to "int *p = &a[0]"
 while(*string++); // jump to the end of the string
 i = 0; while(string[i++]); // jump to the end of the string
 void (*fp) (int); // pointer to a function

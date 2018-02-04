@@ -1,3 +1,4 @@
+perfmon /res ; monitor network activity
 start <program> <file> ; open file with program
 start <file> ; open file with default program
 expand -d file.cab ; show filelist in source

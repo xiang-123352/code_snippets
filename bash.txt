@@ -1,3 +1,5 @@
+xset led 3 # turn on keyboard backlight
+xset led off # turn off keyboard backlight 
 hdparm -tT /dev/sda # measure hard disk data transfer speed
 hdparm -I /dev/sda|grep -i speed # see sata link speed options
 dmesg|grep -i sata|grep 'link up' # see sata link speed used

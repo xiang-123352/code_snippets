@@ -283,7 +283,6 @@ xinput --set-prop "SynPS/2 Synaptics TouchPad" "Device Enabled" 0 # disable touc
 synclient TouchpadOff=1 # disable touchpad
 synclient TouchpadOff=0 # enable touchpad
 extlinux-install /dev/sda2 # install extlinux
-udevadm control --reload-rules # reload udev rules without restarting
 findmnt # find mounted file systems
 cat /etc/debian_version # get debian version
 passwd -u $USER # unlock user account
@@ -384,6 +383,8 @@ xrandr|awk '/.*?\connected/{print $1}' # show the port the monitor is connected 
 xrandr -q # show available resolution
 xrandr -s 0 # reset X to its normal resolution after running a game in fullscreen
 blockdev --rereadpt /dev/sda # re-read partitiontable
+udevadm control --reload # reload udev rules without restarting
+udevadm trigger --action=add
 udevadm trigger # trigger udev
 udevtrigger # trigger udev
 ethtool -s eth0 wol d # disable WOL

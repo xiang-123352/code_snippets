@@ -1,3 +1,4 @@
+ddccontrol -p # alter settings equivalent to the hardware buttons on the monitor
 xset led 3 # turn on keyboard backlight
 xset led off # turn off keyboard backlight 
 hdparm -tT /dev/sda # measure hard disk data transfer speed

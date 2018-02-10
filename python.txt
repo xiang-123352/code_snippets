@@ -1,3 +1,4 @@
+self.menu_item.set_visible(False) # hide gtk menu item
 lines = subprocess.check_output("mount -v").splitlines()
 3 ** 4 # equals pow(3, 4)
 lambda x: exec("raise Exception")

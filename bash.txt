@@ -1,3 +1,4 @@
+upower -i /org/freedesktop/UPower/devices/battery_BAT0
 aticonfig --pplib-cmd="get version"
 aticonfig --pplib-cmd="notify psrc dc" # low power consumption mode
 aticonfig --pplib-cmd="notify psrc ac" # high power consumption mode

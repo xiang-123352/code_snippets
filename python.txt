@@ -1,3 +1,4 @@
+os.makedirs("./a/b/c", exist_ok=True) # create directories similiar to "mkdir -p"
 os.path.expanduser('~')
 self.menu_item.set_visible(False) # hide gtk menu item
 lines = subprocess.check_output("mount -v").splitlines()

@@ -1,4 +1,4 @@
-pip3 list # list installed packages
+pip list # list installed packages
 python3 -m venv # create virtual environment
 upower -i /org/freedesktop/UPower/devices/battery_BAT0
 aticonfig --pplib-cmd="get version"

@@ -1,3 +1,4 @@
+gsettings set org.mate.interface gtk-enable-animations false
 pip list # list installed packages
 python3 -m venv # create virtual environment
 upower -i /org/freedesktop/UPower/devices/battery_BAT0

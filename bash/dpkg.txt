@@ -1,3 +1,4 @@
+mk-build-deps -i # generate build-deps package
 apt-cache depends $PACKAGE
 apt-get -s install $PACKAGE # simulate package installation
 dpkg-deb -I $PACKAGE # show package info

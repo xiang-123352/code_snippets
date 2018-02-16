@@ -1,3 +1,4 @@
+apt-cache depends $PACKAGE
 apt-get -s install $PACKAGE # simulate package installation
 dpkg-deb -I $PACKAGE # show package info
 dpkg-deb -c $PACKAGE # list package content

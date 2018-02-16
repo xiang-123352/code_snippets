@@ -1,3 +1,4 @@
+php -S localhost:8000
 mp3splt -c music.cue music.mp3
 strace -p $PID -f -e trace=network -s 10000 # monitor an existing process with a known pid
 gsettings set org.mate.interface gtk-enable-animations false

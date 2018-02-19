@@ -1,3 +1,4 @@
+git stash -u # stash untracked changes
 git clean -n # show what files would be removed
 git tag -a v1.0.0 -m "release version 1.0.0" # create github release
 git push --tags

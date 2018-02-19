@@ -194,7 +194,7 @@ echo -ne "\033[13]">/dev/tty1 # unblank a screen
 echo -ne "\033[9;0]">/dev/tty1 # set blank timeout to 0 minutes
 setterm -blank 0 # set blank timeout to 0 minutes
 openvt -f -c 1 $COMMAND # force run command on tty1
-chvt 1 # change to virtual terminal 1
+chvt 7 # change to virtual terminal 7 (usually the gui runs there)
 cat /dev/vcs1 # show what is on tty1
 iw wlan0 get power_save # check wifi power saving
 iw wlan0 set power_save off # disable wifi power saving

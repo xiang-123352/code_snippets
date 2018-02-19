@@ -1,3 +1,4 @@
+git clean -n # show what files would be removed
 git tag -a v1.0.0 -m "release version 1.0.0" # create github release
 git push --tags
 git stash <branch> <new_branch> # apply the stashed changes to a new branch before merging them into the old one

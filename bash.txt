@@ -1,5 +1,5 @@
 octogit login # store your github authentication data
-octogit create <reponame> 'description' # create the repository both locally and on github
+octogit create <repo> 'description' # create the repository both locally and on github
 octogit issues # see all the related issues in the current repository
 octogit issues <number> # see a specific issue with summary
 octogit issues <number> close # close an issue

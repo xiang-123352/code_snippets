@@ -1,3 +1,8 @@
+octogit login # store your github authentication data
+octogit create <reponame> 'description' # create the repository both locally and on github
+octogit issues # see all the related issues in the current repository
+octogit issues <number> # see a specific issue with summary
+octogit issues <number> close # close an issue
 DISPLAY=":0" XAUTHORITY="$HOME/.Xauthority" vlc # start vlc from virtual console
 php -S localhost:8000
 mp3splt -c music.cue music.mp3

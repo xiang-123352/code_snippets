@@ -1,3 +1,5 @@
+chmod --reference=<source> <destination> # copy permissions from one file to another
+chown --reference=<source> <destination> # copy ownership from one file to another
 octogit login # store your github authentication data
 octogit create <repo> 'description' # create the repository both locally and on github
 octogit issues # see all the related issues in the current repository

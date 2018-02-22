@@ -1,3 +1,4 @@
+xrandr --output LVDS1 --mode 1024x600 --panning 1280x768 --scaling 1.28x1.28
 chmod --reference=<source> <destination> # copy permissions from one file to another
 chown --reference=<source> <destination> # copy ownership from one file to another
 octogit login # store your github authentication data

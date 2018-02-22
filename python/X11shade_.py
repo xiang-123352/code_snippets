@@ -68,8 +68,6 @@ class X11Shade:
         data = [0, self._SHADED, 0, 0, 0]
         send_event(self.root, win, data, self._STATE, X.SubstructureRedirectMask)
 
-# -------------------------------------------------------------------- #
-
 action = '1'
 if len(sys.argv) == 2:
     action = sys.argv[1]
@@ -81,5 +79,3 @@ if action not in ['0', '1']:
 action = int(action)
 
 X11Shade().run(action)
-
-# -------------------------------------------------------------------- #

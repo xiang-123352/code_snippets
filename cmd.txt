@@ -1,3 +1,6 @@
+vboxmanage setextradata <vmname> "VBoxInternal/PDM/HaltOnReset" 1
+vboxmanage modifyhd HardDisks/Windows_XP.vdi --type immutable
+vboxmanage modifyhd Machines/Windows_XP_VPN/Snapshots/<image> --autoreset false
 dmg2img mac.dmg maciso.iso
 perfmon /res ; monitor network activity
 start <program> <file> ; open file with program

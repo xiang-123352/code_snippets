@@ -4,11 +4,6 @@ GTK2_RC_FILES=/path/to/theme/gtkrc <command> # run an application with a differe
 xrandr --output LVDS1 --mode 1024x600 --panning 1280x768 --scaling 1.28x1.28
 chmod --reference=<source> <destination> # copy permissions from one file to another
 chown --reference=<source> <destination> # copy ownership from one file to another
-octogit login # store your github authentication data
-octogit create <repo> 'description' # create the repository both locally and on github
-octogit issues # see all the related issues in the current repository
-octogit issues <number> # see a specific issue with summary
-octogit issues <number> close # close an issue
 DISPLAY=":0" XAUTHORITY="$HOME/.Xauthority" vlc # start vlc from virtual console
 php -S localhost:8000
 mp3splt -c music.cue music.mp3

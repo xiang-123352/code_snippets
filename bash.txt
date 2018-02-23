@@ -1,3 +1,4 @@
+./configure -C # autoconf caching
 fakeroot make-kpkg --initrd --revision=10.00.custom kernel_image
 GTK2_RC_FILES=/path/to/theme/gtkrc <command> # run an application with a different gtk theme
 xrandr --output LVDS1 --mode 1024x600 --panning 1280x768 --scaling 1.28x1.28

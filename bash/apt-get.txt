@@ -1,3 +1,4 @@
+fakeroot make-kpkg --initrd --revision=10.00.custom kernel_image
 mk-build-deps -i # generate build-deps package
 apt-cache depends $PACKAGE
 apt-get -s install $PACKAGE # simulate package installation

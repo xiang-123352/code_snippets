@@ -1,3 +1,8 @@
+octogit login # store your github authentication data
+octogit create <repo> 'description' # create the repository both locally and on github
+octogit issues # see all the related issues in the current repository
+octogit issues <number> # see a specific issue with summary
+octogit issues <number> close # close an issue
 git stash -u # stash untracked changes
 git clean -n # show what files would be removed
 git tag -a v1.0.0 -m "release version 1.0.0" # create github release

@@ -1,3 +1,5 @@
+python -m http.server # python 3.x
+python -m SimpleHTTPServer # python 2.x
 ./configure -C # autoconf caching
 GTK2_RC_FILES=/path/to/theme/gtkrc <command> # run an application with a different gtk theme
 xrandr --output LVDS1 --mode 1024x600 --panning 1280x768 --scaling 1.28x1.28

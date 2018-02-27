@@ -1,3 +1,4 @@
+d = ChainMap(command_line, os.environ, defaults)
 timestamp = time.time()
 datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
 os.makedirs("./a/b/c", exist_ok=True) # create directories similiar to "mkdir -p"

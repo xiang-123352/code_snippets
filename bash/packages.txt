@@ -1,3 +1,4 @@
+manpages: funny-manpages
 linux: linux-source kernel-package bin86 fakeroot libncurses5-dev
 ubufox: sudo apt-get remove --purge xul-ext-ubufox
 anchor-cms: sudo apt-get install php-gd php-mcrypt php-curl php-sqlite3 php-mysql

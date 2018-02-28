@@ -40,7 +40,7 @@ dpkg-query -W -f '${binary:Package}\n' # show installed packages
 dpkg-query -W -f '${Installed-Size}\t${Package}\n'|sort -n # list installed deb packages by size
 apt-mark showmanual # print a list of manually installed packages
 apt-get install gimp-plugin-registry # install gimp resynthesizer plugin
-apt-get install linux-source-3.2 # install kernel source (Debian)
+apt-get install linux-source-3.2 # install debian kernel source
 apt-get install linux-headers-$(uname -r)
 apt-get install xvba-va-driver libva-glx1 vainfo # install amd gpu acceleration framework
 apt-cache madison $PACKAGE

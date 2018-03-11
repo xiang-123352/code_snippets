@@ -1,3 +1,4 @@
+imdisk -a -s 536870912 -m Z: -o rem -p "fs:ntfs /q /y" ; create a virtual usb-stick with 512MB size
 ipconfig /flushdns ; clear the local cache
 dnscmd /clearcache ; clear the local cache
 netdiag /v /l /test:dns ; dns test with verbose output saved to netdiag.log

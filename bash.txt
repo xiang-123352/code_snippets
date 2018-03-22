@@ -1,3 +1,4 @@
+lsusb -t
 python -m http.server # python 3.x webserver
 python -m SimpleHTTPServer # python 2.x webserver
 ./configure -C # autoconf caching

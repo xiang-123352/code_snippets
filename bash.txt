@@ -1,5 +1,5 @@
 type $COMMAND # display information about command type
-whatis $COMMAND # display one-line manual page descriptions
+whatis $COMMAND # display one-line manpage description
 lsusb -t # list usb device hierarchy as a tree
 python -m http.server # python 3.x webserver
 python -m SimpleHTTPServer # python 2.x webserver

@@ -1,3 +1,4 @@
+rm ~/Library/Safari/History.db* # delete safari history
 trimforce disable # speed up boot on old macbooks
 pdfbooklet source.pdf destination.pdf
 defaults write com.apple.screencapture type jpg # change default screenshot file type

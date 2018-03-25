@@ -1,3 +1,4 @@
+tune2fs -l /dev/<device>|grep "Default mount options"
 type $COMMAND # display information about command type
 whatis $COMMAND # display one-line manpage description
 lsusb -t # list usb device hierarchy as a tree

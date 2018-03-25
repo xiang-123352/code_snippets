@@ -1,4 +1,3 @@
-git remote show origin # getting remote code without overriding local files
 octogit login # store your github authentication data
 octogit create <repo> 'description' # create the repository both locally and on github
 octogit issues # see all the related issues in the current repository
@@ -16,6 +15,7 @@ git checkout -b gh-pages # branch for a basic GitHub page site
 git cherry-pick <commit>
 git remote rename origin enki
 git remote add origin <url>
+git remote show origin # getting remote code without overriding local files
 git remote remove origin
 git bisect run
 git help commit

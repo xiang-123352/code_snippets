@@ -1,3 +1,4 @@
+setxkbmap -types local -print
 shred -vuzn 0 <file> # overwrite and remove file
 getcap /usr/bin/ping # check the default capabilities of the ping executable
 fc-list # list installed fonts

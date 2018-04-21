@@ -1,3 +1,4 @@
+ffmpeg -f image2 -framerate 1 -i image%d.jpg video.gif # create an animated gif from a set of jpeg images
 ls -v # list files numerically sorted
 pinout # see a handy gpio pinout diagram
 setxkbmap -types local -print

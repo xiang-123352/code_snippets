@@ -1,3 +1,4 @@
+ls -v # list files numerically sorted
 pinout # see a handy gpio pinout diagram
 setxkbmap -types local -print
 shred -vuzn 0 <file> # overwrite and remove file

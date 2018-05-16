@@ -1,3 +1,4 @@
+mount -t ntfs-3g -o remove_hiberfile /dev/sda5 /media/92441EC8441EAF4B 
 from pylab import * # import the whole numpy-scipy-matplotlib stack
 ffmpeg -f image2 -framerate 1 -i image%d.jpg video.gif # create an animated gif from a set of jpeg images
 ls -v # list files numerically sorted

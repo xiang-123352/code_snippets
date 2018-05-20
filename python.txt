@@ -1,3 +1,4 @@
+pkgutil.iter_modules() # show a list of all loadable modules
 d = ChainMap(command_line, os.environ, defaults)
 timestamp = time.time()
 datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')

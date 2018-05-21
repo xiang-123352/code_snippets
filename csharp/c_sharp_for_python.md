@@ -83,84 +83,106 @@
   }
   ```
 
-   or even Java style:
+  or even Java style:
 
-        class Thing {
-            void foo() {
-                if (a) {
-                    bar();
-                    baz();
-                } else {
-                    otherThing();
-                }
-            }
-        }
+  ```csharp
+  class Thing {
+      void foo() {
+          if (a) {
+              bar();
+              baz();
+          } else {
+              otherThing();
+          }
+      }
+  }
+  ```
 
-   All of these styles can be set in Visual Studio in Tools -> Options -> Text Editor -> C# -> Formatting -> New Lines
+  All of these styles can be set in Visual Studio in Tools -> Options -> Text Editor -> C# -> Formatting -> New Lines
 
 - Statements are ended with semicolons. A statement can therefore span multiple lines without any problem.
   This can be useful in some cases:
 
-        someVariable += SomeReallyLongFunctionName(longParameterOne,
-                                                   longParameterTwo);
+  ```csharp
+  someVariable += SomeReallyLongFunctionName(longParameterOne,
+                                             longParameterTwo);
+  ```
 
 - C# is a strongly-typed language. Unlike Python, variables must be explicitly declared before they are used,
   and you must specify their type when you declare them. Declarations take the form
 
-        <type> <variable name>;
+  ```
+  <type> <variable name>;
+  ```
 
   or, to declare and initialize them in one statement,
 
-        <type> <variable name> = <value>;
+  ```
+  <type> <variable name> = <value>;
+  ```
 
   This type cannot be changed. For example, if you declare an integer with
 
-        int i = 42;
+  ```csharp
+  int i = 42;
+  ```
 
   you cannot later assign a string value, such as
 
-        i = "I'm a string now!";
+  ```csharp
+  i = "I'm a string now!";
+  ```
 
   Thankfully, when you declare and initialize a variable in the same statement, the compiler can determine the type
   from the right hand side of the assignment if you use the keyword `var`. For example,
 
-        int port = 42;
-        TcpListener listener = new TcpListener(port);
+  ```csharp
+  int port = 42;
+  TcpListener listener = new TcpListener(port);
+  ```
 
   can be shortened to
 
-        var port = 42;
-        var listener = new TcpListener(port);
+  ```csharp
+  var port = 42;
+  var listener = new TcpListener(port);
+  ```
 
   This may seem more natural to someone with experience in "weak-typed" languages like Python.
 
 - Because of this strong typing, data structures (such as lists, queues, trees, etc.) must be told what type they will
   be containing using the following syntax:
 
-        var intList = new List<int>(); // Declares a list of ints
-        var dict = new Dictionary<int, string>(); // Declares a dictionary that maps ints to strings
-        // and so on...
+  ```csharp
+  var intList = new List<int>(); // Declares a list of ints
+  var dict = new Dictionary<int, string>(); // Declares a dictionary that maps ints to strings
+  // and so on...
+  ```
 
 - For similar reasons, data structures cannot contain a mix of unrelated types. You cannot have a `List` that contains
   some mix of strings and integers for example. You can, of course, make a list of some base class and add instances
   of derived classes. Assuming `Cat` and `Dog` are derived from the `Animal` class, the following code is valid:
 
-        var petList = new List<Animal>();
-        petList.add(new Cat());
-        petList.add(new Dog());
+  ```csharp
+  var petList = new List<Animal>();
+  petList.add(new Cat());
+  petList.add(new Dog());
+  ```
 
   If you are looking to contain a mix of types for a specific purpose, see the section below on user-defined types.
 
 - Arrays are fixed-size (you cannot append to them, use `List` for such cases) and take the following syntax:
 
-        var firstTen = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; // An array of the first ten positive integers
+  ```csharp
+  var firstTen = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; // An array of the first ten positive integers
 
-        // .Length will retrieve an array's length, similar to len() in Python
-        if (firstTen.Length != 10)
-            throw new Exception("Reality is not working properly."); // Throws an exception (see below)
+  // .Length will retrieve an array's length, similar to len() in Python
+  if (firstTen.Length != 10)
+      throw new Exception("Reality is not working properly."); // Throws an exception (see below)
 
-        // Create an array of 20 integers, initialized to their default value, i.e., 0
-        var empty = new int[20];
+  // Create an array of 20 integers, initialized to their default value, i.e., 0
+  var empty = new int[20];
+  ```
 
 ### Control Flow:
 
@@ -180,19 +202,23 @@
 
 - Exception handling:
 
-        try:
-            ...
-        except SomeError as e:
-            ...
+  ```python
+  try:
+      ...
+  except SomeError as e:
+      ...
+  ```
 
   becomes
 
-        try {
-            ...
-        }
-        catch (SomeError e) {
-            ...
-        }
+  ```csharp
+  try {
+      ...
+  }
+  catch (SomeError e) {
+      ...
+  }
+  ```
 
 - Throwing exceptions: `raise Exception("It broke")` becomes `throw new Exception("It broke");`.
 
@@ -214,32 +240,36 @@
 
   In Python:
 
-        class MyClass(BaseClass): # Inherit BaseClass
+  ```python
+  class MyClass(BaseClass): # Inherit BaseClass
 
-             def __init__(self, foo):
-                # Initialize the class with the help of the argument foo
+       def __init__(self, foo):
+          # Initialize the class with the help of the argument foo
 
-             # Other contents
+       # Other contents
 
-        # Elsewhere...
-        # Instantiate an instance of MyClass
-        instance = MyClass(42)
+  # Elsewhere...
+  # Instantiate an instance of MyClass
+  instance = MyClass(42)
+  ```
 
   In C#:
 
-        class MyClass : BaseClass { // Inherit BaseClass
+  ```csharp
+  class MyClass : BaseClass { // Inherit BaseClass
 
-            public MyClass(int foo)
-            {
-                // Initialize the class with the help of the argument foo
-            }
+      public MyClass(int foo)
+      {
+          // Initialize the class with the help of the argument foo
+      }
 
-            // Other contents
-        }
+      // Other contents
+  }
 
-        // Elsewhere...
-        // Instantiate an instance of MyClass
-        var instance = new MyClass(42);
+  // Elsewhere...
+  // Instantiate an instance of MyClass
+  var instance = new MyClass(42);
+  ```
 
 - In Python, member [methods](http://stackoverflow.com/q/70528/713961)
   and [variables](http://stackoverflow.com/q/1641219/713961) can be made "private" to the class using an `_` prefix,
@@ -262,35 +292,41 @@
   which allow you to replace instances where you would use `getX` and `setX` style functions with a field that
   looks like a variable but calls the proper "getter" and "setter" methods when the value is accessed or modified:
 
-        private int foo; // Backing member variable
-        public int Foo // Properties are usually capitalized camel case
-        {
-            get // Called when Foo is accessed
-            {
-                // Any logic or updating of related state here
-                // ...
+  ```csharp
+  private int foo; // Backing member variable
+  public int Foo // Properties are usually capitalized camel case
+  {
+      get // Called when Foo is accessed
+      {
+          // Any logic or updating of related state here
+          // ...
 
-                return foo;
-            }
-            Set // Called when Foo is changed
-            {
-                // Any logic or updating of related state here
-                // ...
+          return foo;
+      }
+      Set // Called when Foo is changed
+      {
+          // Any logic or updating of related state here
+          // ...
 
-                foo = value;
-            }
-        }
+          foo = value;
+      }
+  }
+  ```
 
   If your `get` and `set` methods do nothing but use the backing variable,
   C# can auto-implement the property and backing variable:
 
-        public int Foo { get; set; }
+  ```csharp
+  public int Foo { get; set; }
+  ```
 
   This is preferred over public member variables, as you can later modify the property if you need it to do more
   without changing any code that uses the property. The getter and setter can also be given different access levels:
 
-        // A property that can only be modified inside the class that contains it:
-        public int Foo { get; private set; }
+  ```csharp
+  // A property that can only be modified inside the class that contains it:
+  public int Foo { get; private set; }
+  ```
 
 - While Python variables [use reference-like bahavior](http://stackoverflow.com/q/6158907/713961),
   C# has _value types_ as well as reference types. Value types act as individual copies of whatever data they contain,
@@ -298,36 +334,38 @@
   The programmer may also create their own value types using the `struct` keyword.
   A trivial example of all of this is below:
 
-        // This code is not meant to be useful,
-        // but just to explain the difference between value and reference types.
+  ```csharp
+  // This code is not meant to be useful,
+  // but just to explain the difference between value and reference types.
 
-        class RefType {
-            public int contents;
+  class RefType {
+      public int contents;
 
-            // Trivial constructor to allow us to initialize contents
-            public RefType(int c) { contents = c; }
-        }
+      // Trivial constructor to allow us to initialize contents
+      public RefType(int c) { contents = c; }
+  }
 
-        struct ValType {
-            public int contents;
+  struct ValType {
+      public int contents;
 
-            // Trivial constructor to allow us to initialize contents
-            public ValType(int c) { contents = c; }
-        }
+      // Trivial constructor to allow us to initialize contents
+      public ValType(int c) { contents = c; }
+  }
 
-        // Elsewhere...
-        ValType val1 = new ValType(42);
-        ValType val2 = val1;
-        val2.contents = 20;
-        // val1.contents is 42 and val2.contents is 20
-        // since value types act as individual copies of whatever data they contain.
+  // Elsewhere...
+  ValType val1 = new ValType(42);
+  ValType val2 = val1;
+  val2.contents = 20;
+  // val1.contents is 42 and val2.contents is 20
+  // since value types act as individual copies of whatever data they contain.
 
-        RefType ref1 = new RefType(30);
-        RefType ref2 = ref1;
-        ref2.contnets = 1;
-        // ref1.contents is 1 and ref2.contents is 1 because both references point at the same object.
+  RefType ref1 = new RefType(30);
+  RefType ref2 = ref1;
+  ref2.contnets = 1;
+  // ref1.contents is 1 and ref2.contents is 1 because both references point at the same object.
 
-        ref2 = null; // References can refer to nothing. null is the C# equivalent of "None" in Python.
+  ref2 = null; // References can refer to nothing. null is the C# equivalent of "None" in Python.
+  ```
 
   If this doesn't help, there are [many](http://www.albahari.com/valuevsreftypes.aspx)
   [online](http://yoda.arachsys.com/csharp/references.html)
@@ -345,25 +383,29 @@ C# also provide the [`using` statement](http://msdn.microsoft.com/en-us/library/
 which works similarly to [Python's `with`](http://docs.python.org/2/reference/compound_stmts.html#with) statement.
 The following two blocks of are equivalent:
 
-    using (Font font1 = new Font("Arial", 10.0f))
-    {
-        byte charset = font1.GdiCharSet;
-    }
+```csharp
+using (Font font1 = new Font("Arial", 10.0f))
+{
+    byte charset = font1.GdiCharSet;
+}
+```
 
 is equivalent to
 
+```csharp
+{
+    Font font1 = new Font("Arial", 10.0f);
+    try
     {
-        Font font1 = new Font("Arial", 10.0f);
-        try
-        {
-            byte charset = font1.GdiCharSet;
-        }
-        finally
-        {
-            if (font1 != null)
-              ((IDisposable)font1).Dispose();
-        }
+        byte charset = font1.GdiCharSet;
     }
+    finally
+    {
+        if (font1 != null)
+          ((IDisposable)font1).Dispose();
+    }
+}
+```
 
 ## Synchronization
 
@@ -375,21 +417,23 @@ is equivalent to
   built in on the language level. Any reference type (i.e. class) can be used as a re-entrant lock using the `lock`
   keyword:
 
-        class Account {
-            decimal balance;
-            private Object thisLock = new Object();
+  ```csharp
+  class Account {
+      decimal balance;
+      private Object thisLock = new Object();
 
-            public void Withdraw(decimal amount)
-            {
-                // Everything in this block is a critical section protected by thisLock
-                lock (thisLock) {
-                    if (amount > balance) {
-                        throw new Exception("Insufficient funds");
-                    }
-                        balance -= amount;
-                }
-            }
-        }
+      public void Withdraw(decimal amount)
+      {
+          // Everything in this block is a critical section protected by thisLock
+          lock (thisLock) {
+              if (amount > balance) {
+                  throw new Exception("Insufficient funds");
+              }
+                  balance -= amount;
+          }
+      }
+  }
+  ```
 
   See [the MSDN page](http://msdn.microsoft.com/en-us/library/c5kehkcz.aspx) for recommended guidelines.
 

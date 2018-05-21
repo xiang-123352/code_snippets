@@ -9,9 +9,11 @@
 - C# uses braces (`{` and `}`) instead of indentation to organize code into blocks.
   If a block is a single line, the braces can be omitted. For example,
 
-        if (foo) {
-            bar();
-        }
+  ```csharp
+  if (foo) {
+      bar();
+  }
+  ```
 
   can be shortened to
 

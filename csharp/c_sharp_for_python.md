@@ -17,27 +17,33 @@
 
   can be shortened to
 
-        if (foo)
-            bar();
+  ```csharp
+  if (foo)
+      bar();
+  ```
 
   However, avoid
 
-        if (foo) {
-            bar();
-            baz();
-        }
-        else // matching if uses braces, but this does not
-            somethingCompletelyDifferent();
+  ```csharp
+  if (foo) {
+      bar();
+      baz();
+  }
+  else // matching if uses braces, but this does not
+      somethingCompletelyDifferent();
+  ```
 
   preferring
 
-        if (foo) {
-            bar();
-            baz();
-        }
-        else { // matching if uses braces, so we do here even though it's one line
-            somethingCompletelyDifferent();
-        }
+  ```csharp
+  if (foo) {
+      bar();
+      baz();
+  }
+  else { // matching if uses braces, so we do here even though it's one line
+      somethingCompletelyDifferent();
+  }
+  ```
 
 - Brace style is contested. The default C# style is to have braces on their own line for everything:
 

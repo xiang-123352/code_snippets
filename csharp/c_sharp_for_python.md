@@ -129,7 +129,7 @@
         var dict = new Dictionary<int, string>(); // Declares a dictionary that maps ints to strings
         // and so on...
 
-- For similar reasons, data structures cannot contain a mix of unrelated types. You cannot have a `List` that contians
+- For similar reasons, data structures cannot contain a mix of unrelated types. You cannot have a `List` that contains
   some mix of strings and integers for example. You can, of course, make a list of some base class and add instances
   of derived classes. Assuming `Cat` and `Dog` are derived from the `Animal` class, the following code is valid:
 
@@ -152,7 +152,7 @@
 
 ### Control Flow:
 
-- `if x = 0:` becomes `if (x == 0)`. Note that in C#, `==` is the comparison operator.
+- `if x == 0:` becomes `if (x == 0)`. Note that in C#, `==` is the comparison operator.
    A single equals is used for assignment, and the compiler will not allow it inside a conditional like `if`.
 
 - `++i` is shorthand for `i = i + 1`. Placing `++` before or after the variable (e.g. `i++`)
@@ -230,7 +230,7 @@
         var instance = new MyClass(42);
 
 - In Python, member [methods](http://stackoverflow.com/q/70528/713961)
-  and [variables](http://stackoverflow.com/q/1641219/713961) can be made "private" to the class using an `__` prefix,
+  and [variables](http://stackoverflow.com/q/1641219/713961) can be made "private" to the class using an `_` prefix,
   but this just mangles their names. Nothing keeps the programmer from actually using them outside the class,
   who is trusted to not do this. C# has less faith in humanity and, as a consequence, provides the following
   accessibility levels:

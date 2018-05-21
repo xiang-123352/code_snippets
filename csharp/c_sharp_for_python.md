@@ -377,7 +377,7 @@
 Since C# is a [garbage collected](http://msdn.microsoft.com/en-us/library/ms973837.aspx) language,
 memory will be automatically managed by the .NET runtime. Other resources, however, such as file handles,
 network sockets, etc. must be closed manually by the programmer. This is handled by the
-[IDisposable interface](http://msdn.microsoft.com/en-us/library/system.idisposable(v=vs.110\).aspx).
+[IDisposable interface](https://msdn.microsoft.com/en-us/library/system.idisposable(v=vs.110).aspx).
 Classes that implement this interface have a `Dispose` method, which can be called to close resources.
 C# also provide the [`using` statement](http://msdn.microsoft.com/en-us/library/yh598w02.aspx),
 which works similarly to [Python's `with`](http://docs.python.org/2/reference/compound_stmts.html#with) statement.

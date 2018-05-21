@@ -47,37 +47,41 @@
 
 - Brace style is contested. The default C# style is to have braces on their own line for everything:
 
-        class Thing
-        {
-            void foo()
-            {
-                if (a)
-                {
-                    bar();
-                    baz();
-                }
-                else
-                {
-                    otherThing();
-                }
-            }
-        }
+  ```csharp
+  class Thing
+  {
+      void foo()
+      {
+          if (a)
+          {
+              bar();
+              baz();
+          }
+          else
+          {
+              otherThing();
+          }
+      }
+  }
+  ```
 
-   The author is of the opinion that this wastes vertical screen space and that it is easier to code when you can see
-   more on your screen, and prefers [Stroustrup Style](http://en.wikipedia.org/wiki/Indent_style#Variant:_Stroustrup):
+  The author is of the opinion that this wastes vertical screen space and that it is easier to code when you can see
+  more on your screen, and prefers [Stroustrup Style](http://en.wikipedia.org/wiki/Indent_style#Variant:_Stroustrup):
 
-        class Thing {
-            void foo()
-            {
-                if (a) {
-                    bar();
-                    baz();
-                }
-                else {
-                    otherThing();
-                }
-            }
-        }
+  ```csharp
+  class Thing {
+      void foo()
+      {
+          if (a) {
+              bar();
+              baz();
+          }
+          else {
+              otherThing();
+          }
+      }
+  }
+  ```
 
    or even Java style:
 

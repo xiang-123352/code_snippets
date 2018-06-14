@@ -30,6 +30,8 @@ git checkout -b develop origin/develop
 git branch -d the_local_branch # delete a local branch
 git branch -m <newname> # rename the current branch, you can do:
 git branch -m <oldname> <newname> # rename a branch
+git ls-files
+git ls-tree -r <branch> --names-only
 git push -f --mirror # rename the branch on the remote
 git push origin :the_remote_branch # remove a remote branch
 git config credential.helper 'cache --timeout=900' # remember the password for 15 minutes

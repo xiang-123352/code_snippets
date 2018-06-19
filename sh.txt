@@ -1,3 +1,4 @@
+setpci -s 02:0.0 40.b=b3 41.b=a1 42.b=c2 # enable jmicron jmb363 sata/pata dual mode
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 rm ~/Library/Safari/History.db* # delete safari history
 trimforce disable # speed up boot on old macbooks

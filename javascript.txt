@@ -1,3 +1,5 @@
+"Splitting String, Into Tokens in JavaScript.".match(/\S+/g); extract all non-whitespace tokens
+"I've found 4 ducks on 11th street.".match(/\d+/g); // extract all digit tokens
 log.dir(document);
 "abc".repeat(3); // "abcabcabc"
 var mydiv = document.getElementById("myDiv");

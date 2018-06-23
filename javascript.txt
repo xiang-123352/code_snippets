@@ -1,3 +1,4 @@
+var pathArray = window.location.pathname.split( '/' );
 element.style.width = null; // reset style for element
 function secondsToMinutes(time){ return Math.floor(time / 60)+':'+Math.floor(time % 60); };
 var color = window.getComputedStyle(document.querySelector('a'), ':hover').getPropertyValue('color');

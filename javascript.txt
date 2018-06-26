@@ -1,4 +1,4 @@
-const $ = (selector) => document.querySelectorAll(selector);
+const $ = (selector) => document.querySelectorAll(selector); // jQuery like selector
 window.getSelection().removeAllRanges();
 var selection = window.getSelection().toString();
 var pathArray = window.location.pathname.split("/");

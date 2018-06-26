@@ -1,3 +1,4 @@
+const $ = (selector) => document.querySelectorAll(selector);
 window.getSelection().removeAllRanges();
 var selection = window.getSelection().toString();
 var pathArray = window.location.pathname.split("/");

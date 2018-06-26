@@ -5,12 +5,13 @@ element.style.width = null; // reset style for element
 function secondsToMinutes(time){ return Math.floor(time / 60)+':'+Math.floor(time % 60); };
 var color = window.getComputedStyle(document.querySelector('a'), ':hover').getPropertyValue('color');
 Number.prototype.round = function(places) { return +(Math.round(this + "e+" + places) + "e-" + places); }
+amount.toFixed(2);
 "Splitting String, Into Tokens in JavaScript.".match(/\S+/g); extract all non-whitespace tokens
 "I've found 4 ducks on 11th street.".match(/\d+/g); // extract all digit tokens
 log.dir(document);
 "abc".repeat(3); // "abcabcabc"
 var mydiv = document.getElementById("myDiv");
-var aTag = document.createElement('a');
+var aTag = document.createEle ment('a');
 aTag.setAttribute('href',"yourlink.htm");
 aTag.innerHTML = "link text";
 mydiv.appendChild(aTag);

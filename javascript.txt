@@ -1,3 +1,4 @@
+navigator.userAgent;
 const $ = (selector) => document.querySelectorAll(selector); // jQuery like selector
 window.getSelection().removeAllRanges();
 var selection = window.getSelection().toString();

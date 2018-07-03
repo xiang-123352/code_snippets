@@ -1,3 +1,4 @@
+wmic startup
 firefox -private ; start firefox in the "privacy mode"
 imdisk -a -s 536870912 -m Z: -o rem -p "fs:ntfs /q /y" ; create a virtual usb-stick with 512MB size
 ipconfig /flushdns ; clear the local cache

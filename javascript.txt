@@ -1,3 +1,5 @@
+
+var randomnumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 navigator.userAgent;
 const $ = (selector) => document.querySelectorAll(selector); // jQuery like selector
 window.getSelection().removeAllRanges();

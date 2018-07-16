@@ -1,3 +1,4 @@
+element.classList.add("mystyle");
 someParentObject.insertBefore(someChildObject,someParentObject.firstChild);
 console.dir(object);
 console.trace()

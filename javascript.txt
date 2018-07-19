@@ -1,4 +1,10 @@
 'use strict';
+functionNamesLikeThis;
+variableNamesLikeThis;
+ConstructorNamesLikeThis;
+EnumNamesLikeThis;
+methodNamesLikeThis;
+SYMBOLIC_CONSTANTS_LIKE_THIS;
 element.classList.add("mystyle");
 someParentObject.insertBefore(someChildObject, someParentObject.firstChild);
 console.dir(object);

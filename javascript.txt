@@ -1,6 +1,6 @@
 'use strict';
 element.classList.add("mystyle");
-someParentObject.insertBefore(someChildObject,someParentObject.firstChild);
+someParentObject.insertBefore(someChildObject, someParentObject.firstChild);
 console.dir(object);
 console.trace()
 array.push.apply(array, elements);

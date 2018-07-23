@@ -1,3 +1,4 @@
+["I", "am", "", "still", "here", "", "man"].filter(Boolean); // remove empty strings from an array
 var elements = document.getElementById('myDiv').children.item(0); // get first children of "myDiv"
 'use strict';
 functionNamesLikeThis;

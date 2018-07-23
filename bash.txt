@@ -1,3 +1,4 @@
+lt --port 80 --subdomain myubuntu # access the local web server from https://myubuntu.localtunnel.me
 youtube-dl -F <url> # list all available formats for a specific video
 youtube-dl -f=<format code> <url> # download the video in a specific format
 youtube-dl -f bestaudio -x <url> # download only audio

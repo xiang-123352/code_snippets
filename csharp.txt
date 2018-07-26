@@ -1,1 +1,2 @@
-string lastFolderName = Path.GetFileName(@"C:\Folder1\Folder2"); // get directory from full path
+string directoryName = Path.GetDirectoryName(@"C:\MyDir\MySubDir\myfile.txt");
+string lastFolderName = Path.GetFileName(@"C:\Folder1\Folder2");

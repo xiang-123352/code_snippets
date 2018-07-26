@@ -1,0 +1,1 @@
+string lastFolderName = Path.GetFileName(@"C:\Folder1\Folder2"); // get directory from full path

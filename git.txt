@@ -44,6 +44,7 @@ git config --global user.name "John Doe" # set git account username
 git config --global user.email "john.doe@gmail.com" # set git account email
 git config --global color.ui auto # color highlighted terminal output
 git config --global core.safecrlf false # disable "LF will be replaced by CLRF" warning in git on Windows
+git config --global core.autocrlf input
 git config --global credential.helper cache # cache the password in the memory
 git config --global push.default simple # push only to active upstream branch
 git config --global alias.unstage "reset HEAD" # setup an alias

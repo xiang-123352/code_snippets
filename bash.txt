@@ -71,7 +71,7 @@ ffmpeg -i input_0.mp4 -i input_1.mp4 -c copy -map 0:0 -map 1:1 -shortest out.mp4
 ffmpeg -i input_0.mp4 -i input_1.mp4 -c copy -map 0:v:0 -map 1:a:0 -shortest out.mp4
 dconf reset -f / # reset desktop settings to default
 readelf -h /bin/uname
-tar -zvxf documents.tgz -C /tmp/tgz/ # extract .tar.gz or .tgz files to a different directory
+tar -xvfz documents.tgz -C /tmp/tgz/ # extract .tar.gz or .tgz files to a different directory
 strace -e trace=open <program> # print all fopen-calls sent to the system
 localedef -f ISO-8859-1 -i en_US.new en_NEW # translate en_US.new and safe the locale as en_NEW
 sort -o <file> <file> # safely sort a file in place

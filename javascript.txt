@@ -1,7 +1,9 @@
 document.querySelectorAll("[id]")
 ["I", "am", "", "still", "here", "", "man"].filter(Boolean); // remove empty strings from an array
 var elements = document.getElementById('myDiv').children[0]; // get first children of "myDiv"
-'use strict';
+var newObject = {};
+var newObject = Object.create( Object.prototype );
+var newObject = new Object();
 functionNamesLikeThis;
 variableNamesLikeThis;
 ConstructorNamesLikeThis;

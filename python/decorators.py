@@ -8,10 +8,12 @@ from threading import Thread
 def timeit(func):
     def wrapper(*args, **kwargs):
         # https://realpython.com/primer-on-python-decorators/
-        t1 = time.time()
+        start = time.time()
         func(*args, **kwargs)
-        t2 = time.time()
-        print(">>> Time: " + str((t2 - t1)))
+        end = time.time()
+        
+        seconds = end-start
+        print("{} seconds".format(seconds))
     return wrapper
 
 def thread(func):

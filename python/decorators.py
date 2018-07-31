@@ -14,7 +14,7 @@ def timeit(func):
         print(">>> Time: " + str((t2 - t1)))
     return wrapper
 
-def async(func):
+def thread(func):
     def wrapper(*args, **kwargs):
         # https://www.saltycrane.com/blog/2008/09/simplistic-python-thread-example/
         t = Thread(target=func, args=args, kwargs=kwargs)

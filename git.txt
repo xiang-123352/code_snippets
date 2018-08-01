@@ -3,12 +3,9 @@ octogit create <repo> 'description' # create the repository both locally and on 
 octogit issues # see all the related issues in the current repository
 octogit issues <number> # see a specific issue with summary
 octogit issues <number> close # close an issue
-git stash -u # stash untracked changes
 git clean -n # show what files would be removed
 git tag -a v1.0.0 -m "release version 1.0.0" # create github release
 git push --tags
-git stash <branch> <new_branch> # apply the stashed changes to a new branch before merging them into the old one
-git checkout stash@{0} -- <file> # restore a single file from stash
 gitk --all --date-order $(git log -g --pretty=%H)
 git clone https://github.com/john-doe/my_repo_name.wiki.git
 git clone <repo_url> --branch <tag_name>
@@ -27,6 +24,7 @@ git checkout <branch> # change to another branch
 git checkout <branch> <file>
 git checkout <file> # restore files in working tree from index
 git checkout -b develop origin/develop
+git checkout stash@{0} -- <file> # restore a single file from stash
 git branch -d the_local_branch # delete a local branch
 git branch -m <newname> # rename the current branch, you can do:
 git branch -m <oldname> <newname> # rename a branch
@@ -62,6 +60,8 @@ git stash apply stash@{1} # apply the second stash
 git stash pop # apply the top stash and delete it from the stack
 git stash drop <id> # delete a stash
 git stash clear # delete all stashes
+git stash -u # stash untracked changes
+git stash <branch> <new_branch> # apply the stashed changes to a new branch before merging them into the old one
 git reset # undo "git add"
 git reset <file> # undo "git add" for a file
 git reset --hard HEAD

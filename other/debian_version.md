@@ -6,9 +6,9 @@
 | 14.10  utopic   | jessie  / sid |               |
 | 14.04  trusty   | jessie  / sid |               |
 |                 | jessie  / sid | 201403        |
-|                 | jessie  / sid | 201303        |
 | 13.10  saucy    | wheezy  / sid |               |
 | 13.04  raring   | wheezy  / sid |               |
+|                 | wheezy  / sid | 201303        |
 | 12.10  quantal  | wheezy  / sid |               |
 | 12.04  precise  | wheezy  / sid | 201204        |
 | 11.10  oneiric  | wheezy  / sid |               |

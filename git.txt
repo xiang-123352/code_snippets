@@ -106,11 +106,13 @@ git revert <commit>
 git push --set-upstream origin master
 git push -u origin master # replace master with the name of the branch you want to push
 git push <remote_name> --delete <branch_name>
+git push --tags # push the tags to github
+git push origin tagname
+git push origin :refs/tags/1.28-5 # remove the tag from github
+git push origin :beta # delete remote branch "beta"
+git branch -d beta # delete local branch "beta"
 git tag v1.0.0 <commit> # tag a commit
 git tag -a -m "Tagging version 1.28-5" 1.28-5 # assign a tag
 git tag -d 1.28-5 # delete a tag
 git tag --delete tagname
-git push --tags # push the tags to github
-git push origin tagname
-git push origin :refs/tags/1.28-5 # remove the tag from github
 git diff <tag>..<tag> # show difference from tag to tag

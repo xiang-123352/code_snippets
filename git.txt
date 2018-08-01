@@ -56,6 +56,8 @@ git stash # stash your changes
 git stash save <name> # name your stash
 git stash apply # restore your changes
 git stash list # show all stashes
+git stash show -p
+git stash show -p stash@{1}
 git stash apply stash@{1} # apply the second stash
 git stash pop # apply the top stash and delete it from the stack
 git stash drop <id> # delete a stash

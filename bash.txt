@@ -1,4 +1,5 @@
-awk '{print $1}' <file>
+awk '$1 ~ /^Line:/ {print $2}' <file>
+awk 'BEGIN{print ENVIRON["X"], ENVIRON["TERM"]}'
 lt --port 80 --subdomain myubuntu # access the local web server from https://myubuntu.localtunnel.me
 youtube-dl -F <url> # list all available formats for a specific video
 youtube-dl -f=<format code> <url> # download the video in a specific format

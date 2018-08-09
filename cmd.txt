@@ -1,3 +1,4 @@
+csc file.cs /reference:System.IO.Compression.FileSystem.dll ; add ZipFile assembly via path
 wmic startup
 firefox -private ; start firefox in the "privacy mode"
 imdisk -a -s 536870912 -m Z: -o rem -p "fs:ntfs /q /y" ; create a virtual usb-stick with 512MB size

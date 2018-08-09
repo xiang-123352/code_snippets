@@ -1,5 +1,6 @@
 string path = Environment.ExpandEnvironmentVariables(value);
 String[] substrings = "This is a short string.".Split(" ");
 int numVal = Convert.ToInt32("012345");
+int numVal = int.Parse("012345");
 string directoryName = Path.GetDirectoryName(@"C:\MyDir\MySubDir\myfile.txt");
 string lastFolderName = Path.GetFileName(@"C:\Folder1\Folder2");

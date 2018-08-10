@@ -1,3 +1,4 @@
+pacman -S --force <package-name> # force upgrade package
 cryptsetup luksOpen /dev/sdb2 fedora_khaleesi-home
 mount /dev/mapper/fedora_khaleesi-home /media/fedora_khaleesi-home
 awk '$1 ~ /^Line:/ {print $2}' <file>

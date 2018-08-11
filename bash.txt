@@ -1,3 +1,4 @@
+vimtutor
 pacman -S <package> # install package
 pacman -S --force <package> # force upgrade package
 pacman -Rs <package> # remove package

@@ -1,1 +1,2 @@
+var choice: String = readLine()! // get string from input
 print("Hello", terminator:"") // print without newline

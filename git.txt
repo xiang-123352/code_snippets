@@ -63,6 +63,7 @@ git stash pop # apply the top stash and delete it from the stack
 git stash drop <id> # delete a stash
 git stash clear # delete all stashes
 git stash -u # stash untracked changes
+git stash show -p|git apply # restore untracked files from stash
 git stash <branch> <new_branch> # apply the stashed changes to a new branch before merging them into the old one
 git reset # undo "git add"
 git reset <file> # undo "git add" for a file
